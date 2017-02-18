@@ -7,6 +7,7 @@ const conf = {
 
 const server = restify.createServer();
 
+server.use(restify.fullResponse());
 
 server.get(user.userUrl, user.getUser);
 server.get(proj.projUrl, proj.getProj);
