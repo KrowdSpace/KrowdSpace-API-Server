@@ -69,20 +69,20 @@ function getImp(req, res, n)
     n();
 }
 
-const Socials = [
+const Socials = { socials : [
     {views: '9001', project: 'Poject Views', percentage: '3'},
     {views: '85', project: 'Poject Clicks', percentage: '3'},
     {views: '23', project: 'Poject Backers', percentage: '34'},
     {views: '4567', project: 'Poject Support', percentage: '12'},
     {views: '8800', project: 'Social Media Reach', percentage: '34'},
-];
+]};
 
-const SocialGraph = [
+const SocialGraph = { socialgraph : [
     {alternate: 'odd', title: "Facebook", color: "aero", performance: '30', impressions: '500', reactions: '30', ctr: '5', conversion:'4'},
     {alternate: 'even', title: "Twitter", color: "purple", performance: '10', impressions: '657', reactions: '8', ctr: '5', conversion:'3'},
     {alternate: 'odd', title: "Instagram", color: "red", performance: '15', impressions: '754', reactions: '2', ctr: '5', conversion:'3'},
     {alternate: 'even', title: "Pinterest", color: "green", performance: '45', impressions: '845', reactions: '6', ctr: '5', conversion:'1'}
-];
+]};
 
 //Exports deets as objects, should return an object under normal node 'require'
 export const user = {userUrl, getUser};
