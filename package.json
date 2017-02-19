@@ -7,7 +7,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "buildwatch": "babel --watch src/ -d bin/",
-    "build": "babel src/ -d bin/"
+    "build": "babel src/ -d bin/",
+    "runon": "forever start ./bin/index.js",
+    "runoff": "forever stop ./bin/index.js"
   },
   "author": "Ben Otter <benotter@me.com>",
   "license": "ISC",
@@ -16,6 +18,7 @@
     "babel-preset-env": "^1.1.8"
   },
   "dependencies": {
+    "forever": "^0.15.3",
     "restify": "^4.3.0"
   }
 }
