@@ -70,10 +70,10 @@ function getImp(req, res, n)
 }
 
 const Socials = { socials : [
-    {views: '9001', project: 'Poject Views', percentage: '3'},
-    {views: '85', project: 'Poject Clicks', percentage: '3'},
-    {views: '23', project: 'Poject Backers', percentage: '34'},
-    {views: '4567', project: 'Poject Support', percentage: '12'},
+    {views: '9001', project: 'Project Views', percentage: '3'},
+    {views: '85', project: 'Project Clicks', percentage: '3'},
+    {views: '23', project: 'Project Backers', percentage: '34'},
+    {views: '4567', project: 'Project Support', percentage: '12'},
     {views: '8800', project: 'Social Media Reach', percentage: '34'},
 ]};
 
