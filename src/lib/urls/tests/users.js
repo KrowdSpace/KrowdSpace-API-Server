@@ -9,8 +9,6 @@ export default class UsersURL extends RestURL
     {
         let usrNum = req.params.usernum;
 
-        console.log(req.params);
-
         let returnObj = {
             someValue: doSomethingRandom(usrNum)
         };
