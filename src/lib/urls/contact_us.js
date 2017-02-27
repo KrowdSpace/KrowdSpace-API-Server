@@ -7,12 +7,12 @@ export default class ContactUsURL extends RestURL
     static dbPriv = true;
     
     onLoad(req, res, n)
-    {
+    {   
         var fname = req.body.FNAME,
             lname = req.body.LNAME,
             email = req.body.EMAIL,
             comment = req.body.COMMENT;
-
+        
         this.addContactRequest(fname, lname, email, comment, res, n);
     };
 
@@ -34,7 +34,7 @@ export default class ContactUsURL extends RestURL
             else
                 this.log.info(`Added new Entery to contact_us!`, 'DataBase');
 
-            res.end({success: !!err});
+            res.end(JSON.stringify({success: !!err}));
             n();
         });
     };

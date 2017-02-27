@@ -21,6 +21,10 @@ export default class RestServer
         this.server = restify.createServer(opts);
         this.log = log;
         this.dbC = dbC;
+
+        //Rest Server Opts
+        this.server.use(restify.bodyParser());
+        this.server.use(restify.fullResponse());
     }
 
     addUrl(urlO)
@@ -69,8 +73,6 @@ export default class RestServer
             this.setup();
             this.firstRun = false;
         }
-        
-        this.server.use(restify.fullResponse());
 
         this.server.listen(this.opts.port, ()=>
         {
