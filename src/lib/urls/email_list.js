@@ -38,10 +38,6 @@ export default class EmailListURL extends RestURL
 
         db.query(qu, (err, rs, f)=>
         {
-            console.log(err);
-            console.log(rs);
-            console.log(f);
-
             if(rs[0].notnew == 0)
             {
                 let qu = `INSERT INTO email_list (fname,lname,email,ksuser,iguser,pvalid) VALUES (
