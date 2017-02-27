@@ -22,4 +22,36 @@ function postCU(req, res, n)
 }
 
 export const emailList = {elURL, postEL};
-export const contactUs = {cuURL, postContUS};
+export const contactUs = {cuURL, postCU};
+
+export class ContactUs
+{
+    constructor(db)
+    {
+        this.dbC = db;
+    }
+
+    addContactRequest(fname, lname, email, com)
+    {
+        let db = this.dbC;
+
+        fname = db.escape(fname);
+        lname = db.escape(lname);
+        email = db.escape(email);
+        com = db.escape(com);
+
+        let qu = `INSERT INTO contact_us VALUES (${fname}, ${lname}, ${email}, ${com});`;
+
+        db.query(qu, (er, res, f)=>
+        {
+
+        });
+    }
+
+    addEmailList(fname, lname, email, ks, ig, pv)
+    {
+
+    }
+
+    emailListInfo = {url: elURL, func: postEL}
+}
