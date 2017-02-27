@@ -22,19 +22,19 @@ export default class ContactUsURL extends RestURL
 
         fname = db.escape(fname);
         lname = db.escape(lname);
-        email = db.escape(email);
+        email = db.escape(email).toLowerCase();
         com = db.escape(com);
 
-        let qu = `INSERT INTO contact_us VALUES (${fname}, ${lname}, ${email}, ${com});`;
+        let qu = `INSERT INTO contact_us (fname,lname,email,comment) VALUES (${fname}, ${lname}, ${email}, ${com});`;
 
-        db.query(qu, (err, res, f)=>
+        db.query(qu, (err, rs, f)=>
         {
             if(err)
                 this.log.error(`Error inserting into DB: ${err.stack}`, 'DataBase');
             else
                 this.log.info(`Added new Entery to contact_us!`, 'DataBase');
 
-            res.end(JSON.stringify({success: !!err}));
+            res.end(JSON.stringify({success: !err}));
             n();
         });
     };

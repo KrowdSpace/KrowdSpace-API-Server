@@ -8,7 +8,7 @@ import restify from 'restify';
 
 export default class RestServer
 {
-    servN = "Rest API"
+    serviceName = "Rest API"
 
     urls = new Set();
     loadedURLs = new Set();
@@ -29,7 +29,7 @@ export default class RestServer
 
     addUrl(urlO)
     {
-        this.log.log(`Adding "${urlO.url}", type ${urlO.type}, to URL List.`, this.servN);
+        this.log.log(`Adding "${urlO.url}", type ${urlO.type}, to URL List.`, this.serviceName);
         return this.urls.add(urlO);
     }
 
@@ -60,7 +60,7 @@ export default class RestServer
                 break;
             }
 
-            this.log.info(`Set up Rest API ${UrlT.type} Url "${UrlT.url}" with dbPriv: ${UrlT.dbPriv}`, this.servN);
+            this.log.info(`Set up Rest API ${UrlT.type} Url "${UrlT.url}" with dbPriv: ${UrlT.dbPriv}`, this.serviceName);
 
             UrlT.loaded = true;
         }
@@ -76,7 +76,7 @@ export default class RestServer
 
         this.server.listen(this.opts.port, ()=>
         {
-            this.log.info(`Server Online, and Listening on port ${this.opts.port}.`, this.servN);
+            this.log.info(`Server Online, and Listening on port ${this.opts.port}.`, this.serviceName);
         });
     }
 }
