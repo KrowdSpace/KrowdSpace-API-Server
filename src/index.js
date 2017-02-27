@@ -1,49 +1,44 @@
+//Built-Ins
 import {sep} from 'path';
-
-import restify from 'restify';
+//3rd Party
 import mysql from 'mysql';
-
+//Internal Libs
+import {dbConf, restConf} from './sec/sec.js'; //See Admin for details on sec dir.
 import Logger from './lib/logger.js';
+import RestServer from './lib/ottstify.js';
+import {test_urls, urls} from './lib/ks_urls.js';
 
-import {user, proj, socials, impressions} from './lib/user_test.js';
-import {emailList, contactUs} from './lib/contact_us.js';
-
-//See Admin for details on sec dir.
-import {dbConf, restConf} from './sec/sec.js';
 
 let logDir;
 
 //Can I get a, uhh, Hackity hacky hack, with some jank on the side?
 {
-    let f = __filename.split(sep);
-    f.pop(); f.pop();
+    let f = __filename.split(sep); f.pop(); f.pop(); 
     logDir = f.join(sep) + `${sep}logs${sep}`;
 }
 
-//Logger
 const log = new Logger(logDir);
-log.start();
 
-//Rest server
-const restServer = restify.createServer();
-//DB connection
+log.info("-------------------------------", "------");
+log.info("Krowdsource API Server Startup!", "Server");
+
 const dbC = mysql.createConnection(dbConf);
-
-//Get Cors Started
-restServer.use(restify.fullResponse());
-
-//Test Block
-restServer.get(user.userUrl, user.getUser);
-restServer.get(proj.projUrl, proj.getProj);
-restServer.get(socials.socUrl, socials.getSocials);
-restServer.get(impressions.impUrl, impressions.getImp);
-
-//Email List and Contact us additions
-restServer.post(emailList.elURL, emailList.postEL);
-restServer.post(contactUs.cuURL, contactUs.postCU);
-
-//Start Rest Server
-restServer.listen(restConf.port, ()=>
+dbC.connect((err)=>
 {
-    log.info(`Server On, and Listening on port ${restConf.port}`);
+    if(err)
+        log.error(`Could not connect to DB: ${err.stack}`, 'DataBase');
+    else
+        log.info('Successfuly Connected to DataBase!', 'DataBase');
 });
+
+const restServer = new RestServer(restConf, log, dbC);
+
+for(let Url of test_urls)
+    restServer.addUrl(Url);
+
+for(let Url of urls)
+    restServer.addUrl(Url);
+
+restServer.start();
+
+

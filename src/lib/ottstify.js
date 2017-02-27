@@ -6,68 +6,73 @@
 
 import restify from 'restify';
 
-export class RestServer
+export default class RestServer
 {
     servN = "Rest API"
+
     urls = new Set();
+    loadedURLs = new Set();
+
     firstRun = true;
 
-    constructor(opts, log)
+    constructor(opts, log, dbC)
     {
         this.opts = opts;
         this.server = restify.createServer(opts);
         this.log = log;
+        this.dbC = dbC;
     }
 
-    addURL(urlO)
+    addUrl(urlO)
     {
-        this.log.info(`Adding ${url.url} type ${url.type} to URL List.`, this.servN);
+        this.log.log(`Adding "${urlO.url}", type ${urlO.type}, to URL List.`, this.servN);
         return this.urls.add(urlO);
     }
 
     setup()
     {
         let rs = this.server;
-        for(let url of this.urls)
+        for(let UrlT of this.urls)
         {
-            if(url.loaded) 
-                continue;
+            //Does URL have DB Privileges?
+            let url = UrlT.dbPriv ? new UrlT(this.log, this.dbC) : new UrlT(this.log);
 
-            switch(url.type)
+            switch(UrlT.type)
             {
                 case 'get':
-                rs.get(url.url, (req, res, n) => { url.onLoad(req, res, n); });
+                    rs.get(UrlT.url, (req, res, n) => { url.onLoad(req, res, n); });
                 break;
 
                 case 'post':
-                rs.post(url.url, (req, res, n) => { url.onLoad(req, res, n); });
+                    rs.post(UrlT.url, (req, res, n) => { url.onLoad(req, res, n); });
                 break;
 
                 case 'put':
-                rs.put(url.url, (req, res, n) => { url.onLoad(req, res, n); });
+                    rs.put(UrlT.url, (req, res, n) => { url.onLoad(req, res, n); });
                 break;
 
                 case 'delete':
-                rs.delete(url.url, (req, res, n) => { url.onLoad(req, res, n); });
+                    rs.delete(UrlT.url, (req, res, n) => { url.onLoad(req, res, n); });
                 break;
             }
 
-            this.log.info(`Set up Rest API ${url.type} Url "${url.url}"`, this.servN);
+            this.log.info(`Set up Rest API ${UrlT.type} Url "${UrlT.url}" with dbPriv: ${UrlT.dbPriv}`, this.servN);
 
-            url.loaded = true;
+            UrlT.loaded = true;
         }
     }
 
     start()
     {
-        if(firstRun)
+        if(this.firstRun)
         {
-            setup();
-            firstRun = false;
+            this.setup();
+            this.firstRun = false;
         }
-            
+        
+        this.server.use(restify.fullResponse());
 
-        this.listen(this.opts.port, ()=>
+        this.server.listen(this.opts.port, ()=>
         {
             this.log.info(`Server Online, and Listening on port ${this.opts.port}.`, this.servN);
         });
@@ -76,14 +81,18 @@ export class RestServer
 
 export class RestURL
 {
-    constructor(url, log, type = "get")
-    {
-        this.url = url;
-        this.log = log;
-        this.type = type;
-    }
+    static type = 'get';
+    static url = "";
+
+    static dbPriv = false;
 
     loaded = false;
+
+    constructor(log, dbC)
+    {
+        this.log = log;
+        this.dbC = dbC;
+    }
 
     onLoad(req, res, n)
     {

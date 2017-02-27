@@ -12,10 +12,8 @@ const SocialGraph = {
 //Get User's Impression Details
 export default class ImpressionsURL extends RestURL 
 {
-    constructor(log)
-    {
-        super('/users/:usrnum/impressions', log);
-    };
+    static type = 'get';
+    static url = '/users/:usrnum/impressions';
 
     onLoad(req, res, n)
     {

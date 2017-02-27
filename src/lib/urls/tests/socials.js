@@ -10,14 +10,11 @@ const Socials = {
     ]
 };
 
-
 //Get User's Social details
 export default class SocialsURL extends RestURL 
 {
-    constructor(log)
-    {
-        super('/users/:usernum/socials', log);
-    };
+    static type = 'get';
+    static url = '/users/:usernum/socials';
 
     onLoad(req, res, n)
     {

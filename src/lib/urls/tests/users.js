@@ -1,16 +1,15 @@
 import {RestURL} from '../../ottstify.js';
-
 //Get User Details
 export default class UsersURL extends RestURL 
 {
-    constructor(log)
-    {
-        super('/users/:usernum', log);
-    };
+    static type = 'get';
+    static url = '/users/:usernum';
 
     onLoad(req, res, n)
     {
-        let usrNum = req.params.usrnum;
+        let usrNum = req.params.usernum;
+
+        console.log(req.params);
 
         let returnObj = {
             someValue: doSomethingRandom(usrNum)
@@ -21,4 +20,8 @@ export default class UsersURL extends RestURL
         //Restify's API's method of moving to next request
         n();
     };
+};
+
+function doSomethingRandom(a1) {
+    return a1;
 };

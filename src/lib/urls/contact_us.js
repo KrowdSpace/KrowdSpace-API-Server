@@ -1,13 +1,11 @@
-import RestURL from '../ottstify.js';
+import {RestURL} from '../ottstify.js';
 
 export default class ContactUsURL extends RestURL
 {
-    constructor(log, db)
-    {
-        super('/contact_us', log);
-        this.dbC = db;
-    };
-
+    static type = 'post';
+    static url = '/contact_us';
+    static dbPriv = true;
+    
     onLoad(req, res, n)
     {
         var fname = req.body.fname,

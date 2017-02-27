@@ -1,12 +1,9 @@
 import {RestURL} from '../../ottstify.js';
-
 //Get User's Project Details
 export default class ProjectURL extends RestURL 
 {
-    constructor(log)
-    {
-        super('/users/:usrnum/projects/:projnum', log);
-    };
+    static type = 'get';
+    static url = '/users/:usrnum/projects/:projnum';
 
     onLoad(req, res, n)
     {
@@ -22,4 +19,8 @@ export default class ProjectURL extends RestURL
         //Restify's API's method of moving to next request
         n();
     };
+};
+
+function doSomethingRandom(a1) {
+    return a1;
 };
