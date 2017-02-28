@@ -61,7 +61,7 @@ export default class EmailListURL extends RestURL
             }
             else
             {
-                res.end(JSON.stringify({success:false, notnew: 1}));
+                res.end(JSON.stringify({success:false, notnew: true}));
                 n();
             }
         });
