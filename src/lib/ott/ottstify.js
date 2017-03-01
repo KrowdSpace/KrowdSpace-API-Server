@@ -3,9 +3,9 @@
  * (Pronounced Aught-Stiff-Eye, not ott-stiffy >.>)
  * (C) Ben Otter (Benjamin McLean), 2017
  */
-
 import restify from 'restify';
 
+/** Otters Restify Abstraction Class */
 export default class RestServer
 {
     serviceName = "Rest API"
@@ -15,12 +15,20 @@ export default class RestServer
 
     firstRun = true;
 
+    /**
+     * Creates a new Ott Restify Abstractor.
+     * @constructor
+     * @param {Object} opts Restify createServer Opts Object.
+     * @param {Logger} log Instance of Logger.
+     * @param {Object} dbC Database Connection from mySql Lib
+     */
     constructor(opts, log, dbC)
     {
         this.opts = opts;
-        this.server = restify.createServer(opts);
         this.log = log;
         this.dbC = dbC;
+
+        this.server = restify.createServer(opts);
 
         //Rest Server Opts
         this.server.use(restify.bodyParser());
@@ -81,6 +89,7 @@ export default class RestServer
     }
 }
 
+/**Base class for extending URL behaviors */
 export class RestURL
 {
     static type = 'get';

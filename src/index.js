@@ -1,17 +1,20 @@
 //Built-Ins
 import {sep} from 'path';
+
 //3rd Party
 import mysql from 'mysql';
+
 //Internal Libs
-import {dbConf, restConf} from './sec/sec.js'; //See Admin for details on sec dir.
-import Logger from './lib/logger.js';
-import RestServer from './lib/ottstify.js';
-import {test_urls, urls} from './lib/ks_urls.js';
+import {dbConf, restConf} from './sec/sec'; //See Admin for details on sec dir.
+
+//OttLibs
+import Logger from './lib/ott/ottlogger';
+import RestServer from './lib/ott/ottstify';
+
+import {test_urls, urls} from './lib/urls/ks_urls';
 
 
-let logDir;
-
-//Can I get a, uhh, Hackity hacky hack, with some jank on the side?
+let logDir; //Can I get a, uhh, Hackity hacky hack, with some jank on the side?
 {
     let f = __filename.split(sep); f.pop(); f.pop(); 
     logDir = f.join(sep) + `${sep}logs${sep}`;

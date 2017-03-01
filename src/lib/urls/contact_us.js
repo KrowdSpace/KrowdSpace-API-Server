@@ -1,4 +1,4 @@
-import {RestURL} from '../ottstify.js';
+import {RestURL} from '../ott/ottstify';
 
 export default class ContactUsURL extends RestURL
 {

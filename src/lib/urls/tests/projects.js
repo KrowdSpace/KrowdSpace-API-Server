@@ -1,4 +1,4 @@
-import {RestURL} from '../../ottstify.js';
+import {RestURL} from '../../ott/ottstify';
 //Get User's Project Details
 export default class ProjectURL extends RestURL 
 {

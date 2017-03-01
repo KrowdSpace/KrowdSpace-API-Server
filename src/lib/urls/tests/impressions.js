@@ -1,4 +1,4 @@
-import {RestURL} from '../../ottstify.js';
+import {RestURL} from '../../ott/ottstify';
 
 const SocialGraph = { 
     socialgraph : [
