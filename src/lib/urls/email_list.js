@@ -33,9 +33,7 @@ export default class EmailListURL extends RestURL
 
         let qu = `SELECT EXISTS (
                     SELECT 1 FROM email_list WHERE 
-                        email=${email} OR 
-                        ksuser=${ksuser} OR 
-                        iguser=${iguser}
+                        email=${email}
         ) AS notnew;`;
 
         db.query(qu, (err, rs, f)=>
