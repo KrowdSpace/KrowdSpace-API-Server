@@ -1,4 +1,4 @@
-/**
+/*
  * Ottstify.js
  * (Pronounced Aught-Stiff-Eye, not ott-stiffy >.>)
  * (C) Ben Otter (Benjamin McLean), 2017

@@ -8,12 +8,14 @@ export default class EmailListURL extends RestURL
 
     onLoad(req, res, n)
     {
-        var fname = req.body.FNAME,
-            lname = req.body.LNAME,
-            email = req.body.EMAIL,
-            ksuser = req.body.KSUSER,
-            iguser = req.body.IGUSER,
-            pvalid = req.body.PVALID;
+        let dataO = req.body;
+
+        let fname = dataO.FNAME,
+            lname = dataO.LNAME,
+            email = dataO.EMAIL,
+            ksuser = dataO.KSUSER || void 0,
+            iguser = dataO.IGUSER || void 0,
+            pvalid = dataO.PVALID.toUpperCase() === "Y" ? "Y" : "N";
 
         this.addEmailList(fname, lname, email, ksuser, iguser, pvalid, res, n);
     };
@@ -51,7 +53,10 @@ export default class EmailListURL extends RestURL
                 db.query(qu, (err, rs, f)=>
                 {
                     if(err)
-                        this.log.error(`Error inserting into DB: ${err.stack}`, 'DataBase');
+                    {
+                        let ls = `${fname}:${lname}:${email}:${ksuser}:${iguser}:${pvalid}`;
+                        this.log.error(`Error inserting into DB with data: \r\n ${ls} \r\n ${err.stack}`, 'DataBase');
+                    }
                     else
                         this.log.info(`Added new Entery to Email List!`, 'DataBase');
 
