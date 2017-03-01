@@ -30,6 +30,9 @@ export default class Logger
     {
         let d = new Date().toLocaleDateString().replace(/\//g, '-');
 
+        if(!fs.existsSync(this.logDir))
+            fs.mkdirSync(this.logDir);
+
         this.logS = fs.createWriteStream(`${this.logDir}/general.${d}.log`, {flags: 'a+'});
         this.errS = fs.createWriteStream(`${this.logDir}/error.${d}.log`, {flags: 'a+'});
         this.wrnS = fs.createWriteStream(`${this.logDir}/warn.${d}.log`, {flags: 'a+'});
