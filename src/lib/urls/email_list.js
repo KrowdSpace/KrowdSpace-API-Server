@@ -1,4 +1,5 @@
 import {RestURL} from '../ott/ottstify';
+import crypto from 'crypto';
 
 export default class EmailListURL extends RestURL
 {
@@ -31,42 +32,34 @@ export default class EmailListURL extends RestURL
         iguser = db.escape(iguser).toLowerCase();
         pvalid = db.escape(pvalid);
 
-        let qu = `SELECT EXISTS (
-                    SELECT 1 FROM email_list WHERE 
-                        email=${email}
-        ) AS notnew;`;
+        let qu = `SELECT EXISTS (SELECT 1 FROM email_list WHERE email=${email} AND verified={'Y'}) AS notnew;`;
 
         db.query(qu, (err, rs, f)=>
         {
-            if(rs[0].notnew == 0)
-            {
-                let qu = `INSERT INTO email_list (fname,lname,email,ksuser,iguser,pvalid) VALUES (
-                    ${fname},
-                    ${lname},
-                    ${email},
-                    ${ksuser},
-                    ${iguser},
-                    ${pvalid});`;
-
-                db.query(qu, (err, rs, f)=>
-                {
-                    if(err)
-                    {
-                        let ls = `${fname}:${lname}:${email}:${ksuser}:${iguser}:${pvalid}`;
-                        this.log.error(`Error inserting into DB with data: \r\n ${ls} \r\n ${err.stack}`, 'DataBase');
-                    }
-                    else
-                        this.log.info(`Added new Entery to Email List!`, 'DataBase');
-
-                    res.end(JSON.stringify({success:!err}));
-                    n();
-                });
-            }
-            else
+            if(rs[0].notnew == 1)
             {
                 res.end(JSON.stringify({success:false, notnew: true}));
-                n();
+                return n();
             }
+
+            let vcode = crypto.randomBytes(64).toString('base64');
+
+            let qu = `INSERT INTO email_list (fname,lname,email,ksuser,iguser,pvalid,verify_code) 
+                          VALUES (${fname},${lname},${email},${ksuser},${iguser},${pvalid},${vcode});`;
+
+            db.query(qu, (err, rs, f)=>
+            {
+                if(err)
+                {
+                    let ls = `${fname}:${lname}:${email}:${ksuser}:${iguser}:${pvalid}`;
+                    this.log.error(`Error inserting into DB with data: \r\n ${ls} \r\n ${err.stack}`, 'DataBase');
+                }
+                else
+                    this.log.info(`Added new Entery to Email List!`, 'DataBase');
+
+                res.end(JSON.stringify({success:!err}));
+                n();
+            });
         });
     };
 };
