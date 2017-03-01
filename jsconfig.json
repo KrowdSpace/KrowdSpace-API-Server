@@ -1,0 +1,14 @@
+{
+    "compilerOptions":{
+        "target": "ES6",
+        "allowSyntheticDefaultImports": true,
+        "experimentalDecorators": true
+    },
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "bin",
+        "node_modules"
+    ]
+}
