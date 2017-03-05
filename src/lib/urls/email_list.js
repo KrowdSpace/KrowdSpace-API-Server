@@ -42,6 +42,9 @@ export default class EmailListURL extends RestURL
 
         db.query(qu, (err, rs, f)=>
         {
+            if(err) 
+                this.log.error(`DB Error: ${err.code}`, "DataBase");
+                
             if(rs[0].notnew == 1)
             {
                 res.end(JSON.stringify({success:false, notnew: true}));
