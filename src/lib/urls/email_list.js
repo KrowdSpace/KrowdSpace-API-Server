@@ -51,7 +51,7 @@ export default class EmailListURL extends RestURL
                 return n();
             }
 
-            let vcode = crypto.randomBytes(64).toString('base64');
+            let vcode = db.escape(crypto.randomBytes(64).toString('base64'));
 
             let qu = `INSERT INTO email_list (fname,lname,email,ksuser,iguser,pvalid,verify_code) 
                           VALUES (${fname},${lname},${email},${ksuser},${iguser},${pvalid},${vcode});`;
