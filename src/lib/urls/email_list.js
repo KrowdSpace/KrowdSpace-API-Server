@@ -38,13 +38,13 @@ export default class EmailListURL extends RestURL
         iguser = db.escape(iguser).toLowerCase();
         pvalid = db.escape(pvalid);
 
-        let qu = `SELECT EXISTS (SELECT 1 FROM email_list WHERE email=${email} AND verified={'Y'}) AS notnew;`;
+        let qu = `SELECT EXISTS (SELECT 1 FROM email_list WHERE email=${email} AND verified='Y') AS notnew;`;
 
         db.query(qu, (err, rs, f)=>
         {
             if(err) 
                 this.log.error(`DB Error: ${err.code}`, "DataBase");
-                
+
             if(rs[0].notnew == 1)
             {
                 res.end(JSON.stringify({success:false, notnew: true}));
