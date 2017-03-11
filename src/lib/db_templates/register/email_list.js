@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import {DBTemplate} from '../ott/ottdb';
+import {DBTemplate} from '../../ott/ottdb';
 
 export default class ELTemplate extends DBTemplate
 {

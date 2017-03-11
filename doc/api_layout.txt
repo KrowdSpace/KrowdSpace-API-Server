@@ -2,23 +2,24 @@ Rest based API
 
 === Pre-Launch ===
 
-/contact_us
++ /contact_us
 
 POST - Post formated JSON data (look to code for now)
 
 
-/register/email_list
++ /register/email_list
 
     POST - Post formated JSON data (look to code for now)
 
 === Prototype-Development ===
 
-/register/user
++ /register/user
 
     POST - Post formated JSON data, registers unverified user on success.
 
 /register/verify
 
+    GET - Format data in URL get argument as clickable URL to validate EMAIL
     POST - Post formated JSON data, verifies user based on email-auth code.
 
 /register/project
@@ -34,6 +35,10 @@ POST - Post formated JSON data (look to code for now)
 
     GET - Returns user submitted projects
 
+/users/login
+
+    POST - Send User Creds, returns success/fail, upon success also returns auth stuff
+
 (REQUIRES AUTH TOKEN) /users/user-id/projects/project-id
 
     GET - Returns detailed, owner-only, project stats.
@@ -42,6 +47,3 @@ POST - Post formated JSON data (look to code for now)
 /projects/project-id
 
     GET - Returns Project Data based on project-id
-
-
-
