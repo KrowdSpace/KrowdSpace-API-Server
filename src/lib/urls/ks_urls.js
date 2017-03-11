@@ -5,7 +5,7 @@ import RegisterUrserURL from './register/user';
 export const urls = [
     ContactUsURL, 
     EmailListURL,
-    //RegisterUrserURL,
+    RegisterUrserURL,
 ];
 
 import UsersURL from './tests/users';

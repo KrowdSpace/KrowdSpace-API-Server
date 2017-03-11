@@ -4,6 +4,6 @@ import CUTemplate from './contact_us';
 
 export const templates = [
     ELTemplate,
-    //RUTemplate,
+    RUTemplate,
     CUTemplate,
 ];
