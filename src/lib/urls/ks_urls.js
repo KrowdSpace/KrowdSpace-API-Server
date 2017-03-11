@@ -1,5 +1,6 @@
 import ContactUsURL from './contact_us';
-import EmailListURL from './email_list';
+
+import EmailListURL from './register/email_list';
 
 export const urls = [
     ContactUsURL, 

@@ -12,29 +12,16 @@ export default class ContactUsURL extends RestURL
             lname = req.body.LNAME,
             email = req.body.EMAIL,
             comment = req.body.COMMENT;
-        
-        this.addContactRequest(fname, lname, email, comment, res, n);
-    };
 
-    addContactRequest(fname, lname, email, com, res, n)
-    {
-        let db = this.dbC;
+        let cu_template = this.dbC.templates.get('contact_us');
 
-        fname = db.escape(fname);
-        lname = db.escape(lname);
-        email = db.escape(email).toLowerCase();
-        com = db.escape(com);
-
-        let qu = `INSERT INTO contact_us (fname,lname,email,comment) VALUES (${fname}, ${lname}, ${email}, ${com});`;
-
-        db.query(qu, (err, rs, f)=>
+        cu_template.submit(fname, lname, email, comment, (err)=>
         {
-            if(err)
-                this.log.error(`Error inserting into DB: ${err.stack}`, 'DataBase');
+            if(!err)
+                res.end(JSON.stringify({success:true}));
             else
-                this.log.info(`Added new Entery to contact_us!`, 'DataBase');
-
-            res.end(JSON.stringify({success: !err}));
+                res.send(JSON.stringify({success:false}));
+            
             n();
         });
     };

@@ -1,0 +1,47 @@
+Rest based API
+
+=== Pre-Launch ===
+
+/contact_us
+
+POST - Post formated JSON data (look to code for now)
+
+
+/register/email_list
+
+    POST - Post formated JSON data (look to code for now)
+
+=== Prototype-Development ===
+
+/register/user
+
+    POST - Post formated JSON data, registers unverified user on success.
+
+/register/verify
+
+    POST - Post formated JSON data, verifies user based on email-auth code.
+
+/register/project
+
+    POST - Post formated JSON data, registers new project on success.
+
+
+/users/user-id
+
+    GET - Returns User Data based on user-id
+
+/users/user-id/projects
+
+    GET - Returns user submitted projects
+
+(REQUIRES AUTH TOKEN) /users/user-id/projects/project-id
+
+    GET - Returns detailed, owner-only, project stats.
+    POST - Updates Project with Posted formated JSON Data, then Returns detailed, owner-only, project stats.
+
+/projects/project-id
+
+    GET - Returns Project Data based on project-id
+
+
+

@@ -19,14 +19,14 @@ export default class RestServer
      * Creates a new Ott Restify Abstractor.
      * @constructor
      * @param {Object} opts Restify createServer Opts Object.
-     * @param {Logger} log Instance of Logger.
      * @param {Object} dbC Database Connection from mySql Lib
+     * @param {Logger} log Instance of Logger.
      */
-    constructor(opts, log, dbC)
+    constructor(opts, dbC, log)
     {
         this.opts = opts;
-        this.log = log;
         this.dbC = dbC;
+        this.log = log;
 
         this.server = restify.createServer(opts);
 
