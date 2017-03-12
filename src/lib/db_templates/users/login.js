@@ -12,7 +12,7 @@ export default class LOGTemplate extends DBTemplate
         username = db.escape(username);
         password = db.escape(password);
 
-        let qu = `SELECT EXISTS (SELECT 1 FROM email_list WHERE username=${username} AND pass_hash=${}) as notnew;`;
+        let qu = `SELECT EXISTS (SELECT 1 FROM email_list WHERE username=${username} AND pass_hash=${password}) as notnew;`;
 
         db.query(qu, (err, res, f)=>
         {
@@ -26,7 +26,7 @@ export default class LOGTemplate extends DBTemplate
         });
     }
 
-    check(username, cb)
+    check(username, password, cb)
     {
         
     }
