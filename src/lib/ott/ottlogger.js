@@ -1,6 +1,6 @@
 /*
  * OttLogger.js
- * (C)  Ben Otter (Benjamin McLean), 2017
+ * (C) Ben Otter (Benjamin McLean), 2017
  */
 import fs from 'fs';
 import colors from 'colors';
@@ -8,10 +8,10 @@ import colors from 'colors';
 /** Otts Logger Class */
 export default class Logger
 {
-
     /**
      * Creates a new Ott Logger
      * @constructor
+     * @typedef { {} } Logger
      * @param {string} logDir Directory for log files
      * @param {boolean} logInConsole If logger should log to console or not.
      */
@@ -22,10 +22,13 @@ export default class Logger
 
         this.start();
     }
-
+    /**
+     * Get current timestamp;
+     * @returns {string}
+     */
     get timestamp() { return (new Date).toISOString(); };
     set timestamp(d) { };
-
+    /** Starts the Logger */
     start()
     {
         let d = new Date().toLocaleDateString().replace(/\//g, '-');

@@ -12,35 +12,29 @@ export default class loginURL extends RestURL
 
         if(!dataO)
         {
-            this.log.error('Post Data Incorrectly formed!', "REGISTER/EMAIL_LIST");
+            this.log.error('Post Data Incorrectly formed!', this.constructor.url);
             return n();
         }
 
-        let fname = dataO.FNAME,
-            lname = dataO.LNAME,
-            email = dataO.EMAIL,
-            ksuser = dataO.KSUSER || void 0,
-            iguser = dataO.IGUSER || void 0,
-            pvalid = dataO.PVALID.toUpperCase() === "Y" ? "Y" : "N";
+        let {
+            username: USERNAME,
+            password: PASSWORD
+            } = dataO;
 
-        let el_template = this.dbC.templates.get('email_list');
+        let ul_template = this.dbC.getTemplate('users_login');
 
-        el_template.check(email, (exists)=>
+        ul_template.check(username, password, (authed, uData)=>
         {
-            if(exists)
+            if(!authed)
             {
-                res.end(JSON.stringify({success:false, notnew:true}));
+                res.end(JSON.stringify({success:false, authed:false}));
                 return n();
             }
-            else
-                el_template.submit(fname, lname, email, ksuser, iguser, pvalid, (err)=>
-                {
-                    if(!err)
-                    {
-                        res.end(JSON.stringify({success:true}));
-                        return n();
-                    }
-                });
+
+            ul_template.submit()
+            
+            res.end(JSON.stringify({success: true, user_details: uData}));
+            return n();
         });
     };
 };
