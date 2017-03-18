@@ -1,4 +1,3 @@
-import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { DBTemplate } from '../../ott/ottdb';
 
@@ -6,12 +5,26 @@ export default class LOGTemplate extends DBTemplate
 {
     static serviceName = "users_login";
 
-    submit(id, session_id)
+
+    submit(username, session_id, cb)
     {
         let db = this.db;
 
-        id = db.escape(id);
+        username = db.escape(username);
         session_id = db.escape(session_id);
+
+        let qu = `UPDATE users SET session_id=${session_id} where username=${username};`;
+
+        db.query(qu, (err, res, f)=>
+        {
+            if(err)
+            {
+                this.log.error(`Error in Login Submit query: ${err.stack}`);
+                cb && cb(false);
+            }                
+            else
+                cb && cb(true);
+        });
     }
 
     check(username, password, cb)
@@ -19,27 +32,48 @@ export default class LOGTemplate extends DBTemplate
         let db = this.db;
 
         username = db.escape(username);
+        password = db.escape(password);
 
-        let qu = `SELECT pash_hash,user_data,id from users where username=${username};`;
+        let qu = `SELECT pass_hash,user_data,id from users where username=${username};`;
 
         db.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in Login check query: ${err.stack}`, this.serviceName);
 
-            if(!err && res[0])
+            if(res[0])
             {
                 let ph = res[0].pass_hash;
                 bcrypt.compare(password, ph, (e, s)=>
                 {
                     if(s)
-                        cb && cb(s, res[0].user_details, id);
+                        cb && cb(s, res[0].user_details);    
                     else
-                        cb && cb(false, {}, null);
+                        cb && cb(false, {});
                 });
             }
             else
                 cb && cb(false, {});
+        });
+    }
+
+    get(sesh_id, cb)
+    {
+        let db = this.db;
+
+        sesh_id = db.escape(sesh_id);
+
+        let qu = `SELECT user_data,level from users where session_id=${sesh_id};`;
+        
+        db.query(qu, (err, res, f)=>
+        {
+            if(err)
+                this.log.error(`Error in GET query: ${err.stack}`, this.serviceName);
+
+            if(res[0]) 
+                cb && cb(res[0]);
+            else
+                cb && cb(false);
         });
     }
  }
