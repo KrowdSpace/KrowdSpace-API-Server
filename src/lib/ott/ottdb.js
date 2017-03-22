@@ -70,6 +70,7 @@ export default class DataBase
  */
 export class DBTemplate
 {
+    /** @type {string} serviceName Name of the service */
     static serviceName = "BaseTemplate_DB";
 
     /**

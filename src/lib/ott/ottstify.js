@@ -33,6 +33,8 @@ export default class RestServer
         this.dbC = dbC;
         this.log = log;
 
+        this.domain = opts.domain || "";
+
         this.server = restify.createServer(opts);
 
         //Rest Server Opts
@@ -41,7 +43,11 @@ export default class RestServer
 
         //Cookie Support
         this.server.use(resCookies.parse);
+
+        //CORS Support
+        this.server.use(restify.CORS({credentials: true}));
     }
+
     /**
      * Add URL to rest server
      * @param {RestURL} urlO URL Object Class
@@ -51,6 +57,7 @@ export default class RestServer
         this.log.log(`Adding "${urlO.url}", type ${urlO.type}, to URL List.`, this.serviceName);
         return this.urls.add(urlO);
     }
+
     /**
      * Sets up Rest Server
      */
@@ -81,11 +88,14 @@ export default class RestServer
                 break;
             }
 
+            url.domain = this.domain;
+
             this.log.info(`Set up Rest API ${UrlT.type} Url "${UrlT.url}" with dbPriv: ${UrlT.dbPriv}`, this.serviceName);
 
             UrlT.loaded = true;
         }
     }
+
     /**
      * Starts Rest Server
      */
@@ -109,6 +119,7 @@ export class RestURL
 {
     /** @type {string} type type of request */
     static type = 'get';
+
     /** @type {string} url url for the rest server */
     static url = "";
 
@@ -117,6 +128,10 @@ export class RestURL
 
     /** @type {boolean} loaded if this template object has been loaded into a rest server */
     loaded = false;
+
+    /** @type {string} domain Domain of the server*/
+    domain = "";
+
     /**
      * Creates new Rest URL Object for RestServer
      * @param {Logger} log Logger Object

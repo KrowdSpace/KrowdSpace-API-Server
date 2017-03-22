@@ -26,7 +26,7 @@ export default class loginURL extends RestURL
             return n();
         }
 
-        let { USERNAME: username, PASSWORD: password } = dataO;
+        let { USERNAME: username, PASSWORD: password, STAYLOGGED: stayLog } = dataO;
 
         let ul_template = this.dbC.getTemplate('users_login');
 
@@ -48,15 +48,18 @@ export default class loginURL extends RestURL
                     return n();
                 }
 
-                res.setCookie('ks-session', 'sesh_id', {
-                    domain: 'localhost:8080'
-                });
+                var cookieOpts = {
+                    httpOnly: true,
+                    domain: this.domain,
+                    path: '/'
+                };
 
-                //res.setHeader('Access-Control-Allow-Origin', '*');
-                //res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
-                //res.setHeader('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token');
+                if(stayLog) 
+                    cookieOpts.maxAge = 
 
-                res.end(JSON.stringify({success: true, user_details: uData}));
+                res.setCookie('ks-session', sesh_id, cookieOpts);
+
+                res.end(JSON.stringify({success: true, user_details: true}));
                 return n();
             });
         });
