@@ -6,8 +6,11 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "buildwatch": "babel --watch src/ -d bin/",
-    "build": "babel src/ -d bin/",
+    "install": "npm run build",
+
+    "buildwatch": "babel --watch src/ -d bin/ --source-maps",
+    "build": "babel src/ -d bin/ --source-maps",
+    
     "runon": "forever start ./bin/index.js",
     "runoff": "forever stop ./bin/index.js"
   },

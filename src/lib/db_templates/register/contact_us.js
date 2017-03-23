@@ -1,8 +1,8 @@
-import {DBTemplate} from '../ott/ottdb';
+import {DBTemplate} from '../../ott/ottdb';
 
 export default class CUTemplate extends DBTemplate
 {
-    static serviceName = "contact_us";
+    static serviceName = "/register/contact_us";
 
     submit(fname, lname, email, comment, cb)
     {

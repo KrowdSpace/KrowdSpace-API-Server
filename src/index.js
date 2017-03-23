@@ -1,3 +1,8 @@
+/**
+ * Copyright KrowdSpace LLC, 2017
+ * Project and its 1st Party Libraries Licensed under the MIT LICENSE, and owned by KrowdSpace LLC, unless otherwise stated.
+ * 3RD party Libraries subject to their own licenses, respectfully.
+ */
 import {sep} from 'path';
 
 import ConfigLoader from './lib/ott/ottconf';
@@ -34,7 +39,6 @@ const restServer = new RestServer(cfg, dbC, log);
 //Adding DataBase API templates
 for(let Template of templates)
     dbC.addTemplate(Template);
-
 
 //Adding Rest API Urls
 

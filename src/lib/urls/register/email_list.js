@@ -10,12 +10,13 @@ export default class EmailListURL extends RestURL
     {
         let dataO = req.body;
 
-        if(!dataO)
+        if(!dataO || typeof dataO === 'string')
         {
-            this.log.error('Post Data Incorrectly formed!', "REGISTER/EMAIL_LIST");
+            this.log.error('Post Data Incorrectly formed!', this.constructor.url);
+            res.end(JSON.stringify({success:false, error: true}));
             return n();
         }
-
+        
         let fname = dataO.FNAME,
             lname = dataO.LNAME,
             email = dataO.EMAIL,
