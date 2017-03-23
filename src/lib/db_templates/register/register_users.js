@@ -15,9 +15,12 @@ export default class RUTemplate extends DBTemplate
         email = db.escape(email);
         password = db.escape(password);
 
-        let vcode = db.escape(crypto.randomBytes(64).toString('base64'));
+        //pulls byte count from config
+        let byC = this.config.user_security.validate_key_length;
 
-        let salts = 11;
+        let vcode = db.escape(crypto.randomBytes(byC).toString('base64'));
+
+        let salts = this.config.user_security.pass_salts;
         
         bcrypt.hash(password, salts, (err, hash)=>
         {

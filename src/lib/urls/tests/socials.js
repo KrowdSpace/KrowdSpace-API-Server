@@ -14,7 +14,7 @@ const Socials = {
 export default class SocialsURL extends RestURL 
 {
     static type = 'get';
-    static url = '/users/:usernum/socials';
+    static url = '/test/users/:usernum/socials';
 
     onLoad(req, res, n)
     {

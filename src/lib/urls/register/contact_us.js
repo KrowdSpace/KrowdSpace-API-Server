@@ -1,4 +1,4 @@
-import {RestURL} from '../ott/ottstify';
+import {RestURL} from '../../ott/ottstify';
 
 export default class ContactUsURL extends RestURL
 {

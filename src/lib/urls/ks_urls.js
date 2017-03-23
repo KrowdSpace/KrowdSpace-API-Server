@@ -1,4 +1,4 @@
-import ContactUsURL from './contact_us';
+import ContactUsURL from './register/contact_us';
 import EmailListURL from './register/email_list';
 import RegisterUrserURL from './register/user';
 

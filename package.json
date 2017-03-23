@@ -1,7 +1,7 @@
 {
-  "name": "krowdspace-server",
-  "version": "0.0.1",
-  "description": "KrowdSpace Server Software",
+  "name": "krowdspace-api-server",
+  "version": "0.1.0",
+  "description": "KrowdSpace API Server Software",
   "readme": "readme.txt",
   "main": "bin/index.js",
   "scripts": {

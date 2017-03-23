@@ -3,11 +3,12 @@
  * (Pronounced Aught-Stiff-Eye, not ott-stiffy >.>)
  * (C) Ben Otter (Benjamin McLean), 2017
  */
-import restify from 'restify';
+import * as restify from 'restify';
 import resCookies from 'restify-cookies';
 
 import Logger from './ottlogger';
 import DataBase from './ottdb';
+import {def_config} from './ottconf';
 
 /** Otter's Restify Abstraction Class */
 export default class RestServer
@@ -23,29 +24,35 @@ export default class RestServer
      * Creates a new Ott Restify Abstractor.
      * @constructor
      * @typedef { {} } RestServer
-     * @param {Object} opts Restify createServer Opts Object
+     * @param {def_config} cfg Restify createServer Opts Object
      * @param {DataBase} dbC Ott DataBase Object
      * @param {Logger} log Instance of Logger
      */
-    constructor(opts, dbC, log)
+    constructor(cfg, dbC, log)
     {
-        this.opts = opts;
+        this.config = cfg;
+
+        this.opts = cfg.restConf;
         this.dbC = dbC;
         this.log = log;
 
-        this.domain = opts.domain || "";
+        this.domain = cfg.domain || "";
 
-        this.server = restify.createServer(opts);
+        this.server = restify.createServer(cfg.restConf || cfg);
 
         //Rest Server Opts
         this.server.use(restify.bodyParser());
         this.server.use(restify.fullResponse());
+        this.server.use(restify.queryParser());
 
         //Cookie Support
         this.server.use(resCookies.parse);
 
         //CORS Support
-        this.server.use(restify.CORS({credentials: true}));
+        this.server.use(restify.CORS({
+            credentials: true,
+            headers: ['Content-Type']
+        }));
     }
 
     /**
@@ -67,7 +74,7 @@ export default class RestServer
         for(let UrlT of this.urls)
         {
             //Does URL have DB Privileges?
-            let url = UrlT.dbPriv ? new UrlT(this.log, this.dbC) : new UrlT(this.log);
+            let url = UrlT.dbPriv ? new UrlT(this.log, this.dbC, this.config) : new UrlT(this.log);
             
             switch(UrlT.type)
             {
@@ -136,11 +143,13 @@ export class RestURL
      * Creates new Rest URL Object for RestServer
      * @param {Logger} log Logger Object
      * @param {DataBase} dbC DataBase Object
+     * @param {def_config} cfg Config Object
      */
-    constructor(log, dbC)
+    constructor(log, dbC, cfg)
     {
         this.log = log;
         this.dbC = dbC;
+        this.config = cfg;
     }
     /**
      * Called when your URL is visited

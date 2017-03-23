@@ -38,7 +38,10 @@ export default class loginURL extends RestURL
                 return n();
             }  
 
-            let sesh_id = crypto.randomBytes(64).toString('base64');
+            
+            let byC = this.config.user_security.sess_key_length;
+
+            let sesh_id = crypto.randomBytes(byC).toString('base64');
 
             ul_template.submit(username, sesh_id, (ok)=>
             {
@@ -54,8 +57,8 @@ export default class loginURL extends RestURL
                     path: '/'
                 };
 
-                if(stayLog) 
-                    cookieOpts.maxAge = 
+                //hardcoded for test only
+                if(stayLog) cookieOpts.maxAge = 172800;
 
                 res.setCookie('ks-session', sesh_id, cookieOpts);
 

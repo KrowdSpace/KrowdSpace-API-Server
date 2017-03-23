@@ -3,7 +3,7 @@ import {RestURL} from '../../ott/ottstify';
 export default class ProjectURL extends RestURL 
 {
     static type = 'get';
-    static url = '/users/:usrnum/projects/:projnum';
+    static url = '/test/users/:usrnum/projects/:projnum';
 
     onLoad(req, res, n)
     {

@@ -4,6 +4,7 @@
  */
 import mysql from 'mysql';
 import Logger from './ottlogger';
+import {def_config} from './ottconf';
 
 /** Otter's DataBase Abstraction Class */
 export default class DataBase
@@ -14,13 +15,15 @@ export default class DataBase
 
     /**
      * Creates New Ott DataBase Abstractor
-     * @param {Object} dbConf Database Config
+     * @param {def_config} cfg Config Object
      * @param {Logger} log Logger Object
      */
-    constructor(dbConf, log)
+    constructor(cfg, log)
     {
+        this.config = cfg;
+
         this.log = log;
-        this.dbC = mysql.createConnection(dbConf);
+        this.dbC = mysql.createConnection(cfg.dbConf || cfg);
     }
     /** Starts the DataBase Connection */
     start()
@@ -41,7 +44,7 @@ export default class DataBase
     {
         if(!this.templates.has(temp.serviceName))
         {
-            let template = new temp(this.dbC, this.log);
+            let template = new temp(this.dbC, this.log, this.config);
 
             this.templates.set(temp.serviceName, template);
         }
@@ -75,13 +78,15 @@ export class DBTemplate
 
     /**
      * Creates New DataBase Template Object
-     * @param {DataBase} db 
-     * @param {Logger} log 
+     * @param {DataBase} db - DataBase Object
+     * @param {Logger} log - Logger Object.
+     * @param {def_config} cfg - Config Object.
      */
-    constructor(db, log)
+    constructor(db, log, cfg)
     {
         this.log = log;
         this.db = db;
+        this.config = cfg;
 
         this.serviceName = this.constructor.serviceName;
     }

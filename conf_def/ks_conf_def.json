@@ -1,8 +1,12 @@
 {
     "comment":"Default (hopefully) safe settings",
-    "security": {
+
+    "user_security": {
         "sess_key_length": 10,
         "validate_key_length": 64,
         "pass_salts": 11
+    },
+    "cors": {
+            "safeOrgins": ["krowdspace.com"]
     }
 }

@@ -13,7 +13,7 @@ const SocialGraph = {
 export default class ImpressionsURL extends RestURL 
 {
     static type = 'get';
-    static url = '/users/:usrnum/impressions';
+    static url = '/test/users/:usrnum/impressions';
 
     onLoad(req, res, n)
     {

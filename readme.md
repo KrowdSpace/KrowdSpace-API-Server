@@ -1,8 +1,8 @@
-## KrowdSpace Server Software
+## KrowdSpace API Server
 
-**Please note:** KServer is written in ES6 and (for now) requires building with Babel to run in a NodeJS environment!
+**Please note:** The KrowdSpace API Server is written in ES6 and (for now) requires building with Babel to run in a NodeJS environment!
 ___
-This is the KrowdSpace_Server, the software that powers KrowdSpaces Backend Utilities!
+This is KrowdSpace API Server software that powers KrowdSpaces Backend Utilities!
 
 ---
 

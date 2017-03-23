@@ -7,4 +7,6 @@ logs/
 */sec/
 */sec/*
 
+conf/
+
 npm-debug.*
