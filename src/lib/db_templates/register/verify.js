@@ -22,7 +22,7 @@ export default class VUTemplate extends DBTemplate
                 break;
         }
         
-        let qu = `UPDATE ${tbl} SET verified='Y' where verify_code=${veriCode}`;
+        let qu = `UPDATE ${tbl} SET verified='Y' where verify_code=${veriCode} LIMIT 1;`;
 
         db.query(qu, (err, res, f)=>
         {
