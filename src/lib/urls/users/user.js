@@ -32,4 +32,9 @@ export default class UserURL extends RestURL
                 });
         });
     };
+
+    getUserDetails(req, res, n)
+    {
+
+    }
 };

@@ -8,6 +8,8 @@ import resCookies from 'restify-cookies';
 
 import Logger from './ottlogger';
 import DataBase from './ottdb';
+import SessionsManager from './ottsesh';
+
 import {def_config} from './ottconf';
 
 /** Otter's Restify Abstraction Class */
@@ -37,6 +39,11 @@ export default class RestServer
         this.log = log;
 
         this.domain = cfg.domain || "";
+
+        if(cfg.sessions)
+            this.sessions = new SessionsManager(cfg.sessions, this.log);
+
+        console.log(cfg.sessions);
 
         this.server = restify.createServer(cfg.restConf || cfg);
 
@@ -74,7 +81,10 @@ export default class RestServer
         for(let UrlT of this.urls)
         {
             //Does URL have DB Privileges?
-            let url = UrlT.dbPriv ? new UrlT(this.log, this.dbC, this.config) : new UrlT(this.log);
+            let url = UrlT.dbPriv ? new UrlT(this.log, this.dbC, this.config) : new UrlT(this.log, null, this.config);
+
+            if(this.sessions) 
+                url.sessions = this.sessions;
             
             switch(UrlT.type)
             {
@@ -114,6 +124,9 @@ export default class RestServer
             this.firstRun = false;
         }
 
+        if(this.sessions)
+            this.sessions.start();
+
         this.server.listen(this.opts.port, ()=>
         {
             this.log.info(`Server Online, and Listening on port ${this.opts.port}.`, this.serviceName);
@@ -138,6 +151,9 @@ export class RestURL
 
     /** @type {string} domain Domain of the server*/
     domain = "";
+
+    /** @type {SessionsManager} sessions Null if sessions not enabled, otherwise */
+    sessions = null;
 
     /**
      * Creates new Rest URL Object for RestServer

@@ -19,12 +19,12 @@ export default class loginURL extends RestURL
         }
 
         let ul_template = this.dbC.getTemplate('users_login');
-
+        
         if(dataO.CHECK && req.cookies['ks-session'])
             ul_template.get(req.cookies['ks-session'], (res)=>
             {
                 if(res)
-                    this.end(res, n, {success:true} );
+                    this.end(res, n, {success:true, alreadyLoggedIn:true} );
                 else
                     this.login(req, res, n, dataO);
             });
@@ -62,7 +62,7 @@ export default class loginURL extends RestURL
                     cookieOpts.maxAge = 172800;
 
                 res.setCookie('ks-session', sesh_id, cookieOpts);
-                
+
                 return this.end(res, n, {success: true} );
             });
         });
