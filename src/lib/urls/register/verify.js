@@ -13,22 +13,16 @@ export default class VerifyURL extends RestURL
         if(!dataO || typeof dataO === 'string')
         {
             this.log.error('Post Data Incorrectly formed!', this.constructor.url);
-            res.end(JSON.stringify({success:false, error: true}));
-            return n();
+            return this.end(res, n, {success:false, error: true} );
         }
 
-        let veriCode = dataO.verify_code;
+        let veriCode = dataO.VERTIFYCODE;
 
         let vu_template = this.dbC.templates.get('verify_user');
 
         vu_template.submit(veriCode, (err)=>
         {
-            if(!err)
-                res.end(JSON.stringify({success:true}));
-            else
-                res.send(JSON.stringify({success:false}));
-            
-            n();
+            this.end(res, n, {success: !!err});
         });
     };
 };

@@ -13,8 +13,7 @@ export default class EmailListURL extends RestURL
         if(!dataO || typeof dataO === 'string')
         {
             this.log.error('Post Data Incorrectly formed!', this.constructor.url);
-            res.end(JSON.stringify({success:false, error: true}));
-            return n();
+            return this.end(res, n, {success:false, error: true} );
         }
         
         let fname = dataO.FNAME,
@@ -29,18 +28,12 @@ export default class EmailListURL extends RestURL
         el_template.check(email, (exists)=>
         {
             if(exists)
-            {
-                res.end(JSON.stringify({success:false, notnew:true}));
-                return n();
-            }
+                return this.end(res, n, {success:false, notnew:true} );
             else
                 el_template.submit(fname, lname, email, ksuser, iguser, pvalid, (err)=>
                 {
                     if(!err)
-                    {
-                        res.end(JSON.stringify({success:true}));
-                        return n();
-                    }
+                        return this.end(res, n, {success:true} );
                 });
         });
     };

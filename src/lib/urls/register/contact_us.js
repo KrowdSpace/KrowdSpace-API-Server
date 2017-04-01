@@ -17,12 +17,7 @@ export default class ContactUsURL extends RestURL
 
         cu_template.submit(fname, lname, email, comment, (err)=>
         {
-            if(!err)
-                res.end(JSON.stringify({success:true}));
-            else
-                res.send(JSON.stringify({success:false}));
-            
-            n();
+            this.end(res, n, {success: !!err});            
         });
     };
 };

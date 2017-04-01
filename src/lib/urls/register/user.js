@@ -12,31 +12,30 @@ export default class RegisterUserURL extends RestURL
 
         if(!dataO)
         {
-            this.log.error('Post Data Incorrectly formed!', "REGISTER/EMAIL_LIST");
-            return n();
+            this.log.error('Post Data Incorrectly formed!', this.constructor.url);
+            return this.end(res, n, {success:false, error: true} );
         }
 
-        let username = dataO.username,
-            password = dataO.password,
-            email = dataO.email;
+        let username = dataO.USERNAME,
+            password = dataO.PASSWORD,
+            email = dataO.EMAIL;
+
+        let banNames = this.config.user_register.banned_names;
+
+        if(banNames.indexOf(username) >= 0)
+            return this.end(res, n, {success:false, badname:true} );
 
         let ru_template = this.dbC.templates.get('register_user');
 
         ru_template.check(username, email, (exists)=>
         {
             if(exists)
-            {
-                res.end(JSON.stringify({success:false, notnew:true}));
-                return n();
-            }
+                return this.end(res, n, {success:false, notnew:true} );
             else
                 ru_template.submit(username, email, password, (err)=>
                 {
                     if(!err)
-                    {
-                        res.end(JSON.stringify({success:true}));
-                        return n();
-                    }
+                        return this.end(res, n, {success:true} );
                 });
         });
     };

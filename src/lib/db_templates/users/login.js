@@ -34,6 +34,9 @@ export default class LOGTemplate extends DBTemplate
         username = db.escape(username);
         password = db.escape(password);
 
+        if(!username || !password)
+            return cb && cb(false, {});
+
         let qu = `SELECT pass_hash,user_data,id from users where username=${username};`;
 
         db.query(qu, (err, res, f)=>
@@ -41,7 +44,7 @@ export default class LOGTemplate extends DBTemplate
             if(err)
                 this.log.error(`Error in Login check query: ${err.stack}`, this.serviceName);
 
-            if(res[0])
+            if(res && res[0])
             {
                 let ph = res[0].pass_hash;
                 bcrypt.compare(password, ph, (e, s)=>
@@ -70,7 +73,7 @@ export default class LOGTemplate extends DBTemplate
             if(err)
                 this.log.error(`Error in GET query: ${err.stack}`, this.serviceName);
 
-            if(res[0]) 
+            if(res && res[0]) 
                 cb && cb(res[0]);
             else
                 cb && cb(false);

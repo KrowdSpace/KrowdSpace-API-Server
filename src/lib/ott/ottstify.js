@@ -162,4 +162,17 @@ export class RestURL
         res.end();
         n();
     }
+
+    /**
+     * Called when you want to end and send your URL data
+     * @param {Object} res - Response Object
+     * @param {Function} n - Next Function
+     * @param {any} data - Data to send, turned into JSON
+     * @returns {Any} - Next function in setup call!
+     */
+    end(res, n, data)
+    {
+        res.end(JSON.stringify(data));
+        return n();
+    }
 }
