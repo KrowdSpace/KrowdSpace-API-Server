@@ -24,22 +24,33 @@ export default class RegisterUserURL extends RestURL
             ksuser = dataO.KS_USER,
             iguser = dataO.IG_USER;
 
+        let details = {
+            fname,
+            lname,
+            ksuser,
+            iguser
+        };
+
         let banNames = this.config.user_register.banned_names;
 
         if(banNames.indexOf(username) >= 0)
             return this.end(res, n, {success:false, badname:true} );
 
-        let ru_template = this.dbC.templates.get('register_user');
+        let ru_template = this.dbC.getTemplate('register_user');
 
         ru_template.check(username, email, (exists)=>
         {
             if(exists)
                 return this.end(res, n, {success:false, notnew:true} );
             else
-                ru_template.submit(username, email, password, (err)=>
+                ru_template.submit(username, email, password, details, (err, verify_code)=>
                 {
                     if(!err)
+                    {
+                        let m = this.mailer.getTemplate('email_verify');
+
                         return this.end(res, n, {success:true} );
+                    }
                 });
         });
     };

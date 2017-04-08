@@ -7,13 +7,15 @@ export default class RUTemplate extends DBTemplate
 {
     static serviceName = "register_user";
 
-    submit(username, email, password, cb)
+    submit(username, email, password, details, cb)
     {
         let db = this.db;
 
         username = db.escape(username);
         email = db.escape(email);
         password = db.escape(password);
+
+        details = db.escape(JSON.stringify(details));
 
         //pulls byte count from config
         let byC = this.config.user_security.validate_key_length;
@@ -34,8 +36,8 @@ export default class RUTemplate extends DBTemplate
                 
             let pass_hash = db.escape(hash);
 
-            let qu = `INSERT INTO users (username,pass_hash,email,validation_code) 
-                             VALUES (${username}, ${pass_hash}, ${email}, ${vcode});`;
+            let qu = `INSERT INTO users (username,pass_hash,email,validation_code,user_data) 
+                             VALUES (${username}, ${pass_hash}, ${email}, ${vcode}, ${details});`;
 
             db.query(qu, (err, res, f)=>
             {
@@ -45,7 +47,7 @@ export default class RUTemplate extends DBTemplate
                     this.log.info(`Added new User!`, this.serviceName);
                 
                 if(cb)
-                    cb(!!err);
+                    cb(!!err, vcode);
             });
         }); 
     }

@@ -9,15 +9,16 @@
  */
 import {sep} from 'path';
 
-import ConfigLoader from './lib/ott/ottconf';
 import Logger from './lib/ott/ottlogger';
-import RestServer from './lib/ott/ottstify';
+import ConfigLoader from './lib/ott/ottconf';
 import DataBase from './lib/ott/ottdb';
+import EMailer from './lib/ott/ottmail';
+import RestServer from './lib/ott/ottstify';
 
-import {db_templates} from './lib/db_templates/ks_templates';
+import {db_templates} from './lib/db_templates/db_templates';
 import {email_templats} from './lib/email_templates/email_templates';
 
-import {test_urls, urls} from './lib/urls/ks_urls';
+import {test_urls, urls} from './lib/urls/urls';
 
 
 let logDir, cfgDir; //Can I get a, uhh, Hackity hacky hack, with some jank on the side?
@@ -43,11 +44,16 @@ cfgL.start();
 const cfg = cfgL.config;
 
 const dbC = new DataBase(cfg, log);
-const restServer = new RestServer(cfg, dbC, log);
+const mailer = new EMailer(cfg, log);
+const restServer = new RestServer(cfg, dbC, mailer, log);
 
 //Adding DataBase API templates
 for(let Template of db_templates)
     dbC.addTemplate(Template);
+
+//Adding Email API templates
+for(let Template of email_templates)
+    mailer.addTemplate(Template);
 
 //Adding Rest API Urls
 

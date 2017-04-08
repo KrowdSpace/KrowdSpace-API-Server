@@ -8,6 +8,7 @@ import resCookies from 'restify-cookies';
 
 import Logger from './ottlogger';
 import DataBase from './ottdb';
+import EMailer from './ottmail';
 import SessionsManager from './ottsesh';
 
 import {def_config} from './ottconf';
@@ -28,14 +29,16 @@ export default class RestServer
      * @typedef { {} } RestServer
      * @param {def_config} cfg Restify createServer Opts Object
      * @param {DataBase} dbC Ott DataBase Object
+     * @param {EMailer} mailer Ott EMailer Object
      * @param {Logger} log Instance of Logger
      */
-    constructor(cfg, dbC, log)
+    constructor(cfg, dbC, mailer, log)
     {
         this.config = cfg;
 
         this.opts = cfg.restConf;
         this.dbC = dbC;
+        this.mailer = mailer;
         this.log = log;
 
         this.domain = cfg.domain || "";
@@ -43,12 +46,12 @@ export default class RestServer
         if(cfg.sessions)
             this.sessions = new SessionsManager(cfg.sessions, this.log);
 
-        console.log(cfg.sessions);
-
         this.server = restify.createServer(cfg.restConf || cfg);
 
         //Rest Server Opts
-        this.server.use(restify.bodyParser());
+        this.server.use(restify.bodyParser({
+            mapFiles: true
+        }));
         this.server.use(restify.fullResponse());
         this.server.use(restify.queryParser());
 
@@ -80,11 +83,11 @@ export default class RestServer
         let rs = this.server;
         for(let UrlT of this.urls)
         {
-            //Does URL have DB Privileges?
-            let url = UrlT.dbPriv ? new UrlT(this.log, this.dbC, this.config) : new UrlT(this.log, null, this.config);
-
-            if(this.sessions) 
-                url.sessions = this.sessions;
+            let dbC = UrlT.dbPriv ? this.dbC : null,
+                mailer = UrlT.emPrive ? this.mailer : null,
+                sessions = this.sessions ? this.sessions : null;
+            
+            let url = new UrlT(this.config, dbC, mailer, sessions, this.log);
             
             switch(UrlT.type)
             {
@@ -104,8 +107,6 @@ export default class RestServer
                     rs.delete(UrlT.url, (req, res, n) => { url.onLoad(req, res, n); });
                 break;
             }
-
-            url.domain = this.domain;
 
             this.log.info(`Set up Rest API ${UrlT.type} Url "${UrlT.url}" with dbPriv: ${UrlT.dbPriv}`, this.serviceName);
 
@@ -146,6 +147,9 @@ export class RestURL
     /** @type {boolean} dbPriv if this template needs DB privileges */
     static dbPriv = false;
 
+    /** @type {boolean} emPriv if this emplate needs EMailer privileges */
+    static emPriv = false;
+
     /** @type {boolean} loaded if this template object has been loaded into a rest server */
     loaded = false;
 
@@ -159,13 +163,19 @@ export class RestURL
      * Creates new Rest URL Object for RestServer
      * @param {Logger} log Logger Object
      * @param {DataBase} dbC DataBase Object
+     * @param {EMailer} mailer DataBase Object
+     * @param {SessionsManager} sessions DataBase Object
      * @param {def_config} cfg Config Object
      */
-    constructor(log, dbC, cfg)
+    constructor(cfg, dbC, mailer, sessions, log)
     {
         this.log = log;
         this.dbC = dbC;
+        this.mailer = mailer;
+        this.sessions = sessions;
         this.config = cfg;
+
+        this.domain = cfg.domain;
     }
     /**
      * Called when your URL is visited

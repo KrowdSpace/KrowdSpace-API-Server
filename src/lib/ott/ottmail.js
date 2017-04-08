@@ -8,6 +8,8 @@ import sendMail from 'sendmail';
 export default class EMailer 
 {
     serviceName = "EMailer"
+
+    templates = new Map();
     
     constructor(cfg, log)
     {
@@ -31,10 +33,31 @@ export default class EMailer
     {
         this.mailer(mail, cb);
     }
+
+    getTemplate(name)
+    {
+        return this.templates.get(name);
+    }
+
+    addTemplate(temp)
+    {
+        if(!this.templates.has(temp.serviceName))
+        {
+            let template = new temp(this, this.config, this.log);
+            this.templates.set(temp.serviceName, template);
+        }
+    }
+
+    removeTemplate(name)
+    {
+        this.templates.delete(name);
+    }
 }
 
 export class MailTemplate 
 {
+    serviceName = "email_default";
+
     name = "Default";
     from = "default";
 
@@ -48,7 +71,7 @@ export class MailTemplate
         return "Default Subject!";
     }
 
-    constructor(cfg, log, mailer)
+    constructor(cfg, mailer, log)
     {
         this.config = cfg;
         this.log = log;
@@ -69,7 +92,7 @@ export class MailTemplate
         {
             if(err)
                 this.log.error(`Error in email: ${err.stack}`, this.name);
-                
+
             cb && cb(err, reply);
         });
     }
