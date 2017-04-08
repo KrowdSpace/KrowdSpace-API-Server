@@ -1,6 +1,7 @@
 import ContactUsURL from './register/contact_us';
 import EmailListURL from './register/email_list';
 import RegisterUrserURL from './register/user';
+import VerifyURL from './register/verify';
 
 import LoginUserURL from './users/login';
 
@@ -8,6 +9,8 @@ export const urls = [
     ContactUsURL, 
     EmailListURL,
     RegisterUrserURL,
+    VerifyURL,
+    
     LoginUserURL,
 ];
 

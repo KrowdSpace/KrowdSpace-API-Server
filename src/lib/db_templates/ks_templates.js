@@ -5,7 +5,7 @@ import VUTemplate from './register/verify';
 
 import ULTemplate from './users/login';
 
-export const templates = [
+export const db_templates = [
     ELTemplate,
     RUTemplate,
     CUTemplate,

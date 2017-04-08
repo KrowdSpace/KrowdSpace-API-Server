@@ -18,7 +18,11 @@ export default class RegisterUserURL extends RestURL
 
         let username = dataO.USERNAME,
             password = dataO.PASSWORD,
-            email = dataO.EMAIL;
+            email = dataO.EMAIL,
+            fname = dataO.FNAME,
+            lname = dataO.LNAME,
+            ksuser = dataO.KS_USER,
+            iguser = dataO.IG_USER;
 
         let banNames = this.config.user_register.banned_names;
 
