@@ -20,6 +20,7 @@ export default class EMailer
 
         let mailCfg = {
             logger: {
+                debug: (log)=>{ this.log.info(log, this.serviceName); },
                 info: (log)=>{ this.log.info(log, this.serviceName); },
                 warn: (log)=>{ this.log.warn(log, this.serviceName); },
                 error: (log)=>{ this.log.error(log, this.serviceName); },
