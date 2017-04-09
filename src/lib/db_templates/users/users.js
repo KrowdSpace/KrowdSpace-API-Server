@@ -7,13 +7,13 @@ export default class UDTemplate extends DBTemplate
 {
     static serviceName = "user_details";
 
-    submit(userID, cb)
+    submit(sesh_id, cb)
     {
         let db = this.db;
 
-        userID = db.escape(userID);
+        sesh_id = db.escape(sesh_id);
 
-        let qu = `SELECT username,email,level,user_data from users where session_id=${}`;
+        let qu = `SELECT username,email,level,user_data from users where session_id=${sesh_id}`;
 
         db.query(qu, (err, res, f)=>
         {
