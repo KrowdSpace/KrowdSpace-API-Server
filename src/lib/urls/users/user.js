@@ -32,7 +32,7 @@ export default class UserURL extends RestURL
 
     getOwnUserDetails(req, res, n)
     {
-        let s = this.sessions.getSession(req.cookies['ks-session']);
+        let s = this.sessions.checkSession(req.cookies['ks-session']);
 
         let ul_template = this.dbC.templates.get('users_login');
 
