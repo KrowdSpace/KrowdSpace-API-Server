@@ -5,6 +5,7 @@ export default class RegisterUserURL extends RestURL
     static type = 'post';
     static url = '/register/user';
     static dbPriv = true;
+    static emPrive = true;
 
     onLoad(req, res, n)
     {

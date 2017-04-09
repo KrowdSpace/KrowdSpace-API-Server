@@ -36,7 +36,7 @@ export default class RUTemplate extends DBTemplate
                 
             let pass_hash = db.escape(hash);
 
-            let qu = `INSERT INTO users (username,pass_hash,email,validation_code,user_data) 
+            let qu = `INSERT INTO users (username,pass_hash,email,verify_code,user_data) 
                              VALUES (${username}, ${pass_hash}, ${email}, ${vcode}, ${details});`;
 
             db.query(qu, (err, res, f)=>

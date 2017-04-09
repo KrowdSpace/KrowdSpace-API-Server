@@ -5,6 +5,7 @@ export default class VerifyURL extends RestURL
     static type = 'post';
     static url = '/register/verify';
     static dbPriv = true;
+    static emPrive = true;
     
     onLoad(req, res, n)
     {   

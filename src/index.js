@@ -16,7 +16,7 @@ import EMailer from './lib/ott/ottmail';
 import RestServer from './lib/ott/ottstify';
 
 import {db_templates} from './lib/db_templates/db_templates';
-import {email_templats} from './lib/email_templates/email_templates';
+import {email_templates} from './lib/email_templates/email_templates';
 
 import {test_urls, urls} from './lib/urls/urls';
 
