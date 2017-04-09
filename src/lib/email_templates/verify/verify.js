@@ -2,6 +2,7 @@ import {MailTemplate} from '../../ott/ottmail';
 
 export default class VerifyEMT extends MailTemplate 
 {
+    static serviceName = "email_verify";
     serviceName = "email_verify";
 
     name = "Verify Account";
