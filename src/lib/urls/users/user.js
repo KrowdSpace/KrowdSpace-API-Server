@@ -41,7 +41,7 @@ export default class UserURL extends RestURL
             if(!details)
                 return this.end(res, n, {success: false, error: true} );
             else
-                return this.end(res, n, {success: true, user_details: true} )
+                return this.end(res, n, {success: true, user_details: details} )
         });
     }
 };
