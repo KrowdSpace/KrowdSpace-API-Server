@@ -4,6 +4,7 @@ import RegisterUrserURL from './register/user';
 import VerifyURL from './register/verify';
 
 import LoginUserURL from './users/login';
+import UserURL from './users/user';
 
 export const urls = [
     ContactUsURL, 
@@ -12,6 +13,7 @@ export const urls = [
     VerifyURL,
     
     LoginUserURL,
+    UserURL,
 ];
 
 import UsersURL from './tests/users';
