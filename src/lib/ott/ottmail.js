@@ -83,7 +83,7 @@ export class MailTemplate
     {
         let dm = this.config.domain;
         let mail = {
-            from: `${this.from}@${dm} (${this.name})`,
+            from: `${this.from}@${dm}`,
             to,
             subject: this.getSubject(details),
             html: this.getHTML(details)
