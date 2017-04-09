@@ -13,8 +13,7 @@ export default class UDTemplate extends DBTemplate
 
         userID = db.escape(userID);
 
-        let qu = `INSERT INTO users (username,pass_hash,email,validation_code) 
-                             VALUES (${username}, ${pass_hash}, ${email}, ${vcode});`;
+        let qu = `SELECT username,email,level,user_data from users where session_id=${}`;
 
         db.query(qu, (err, res, f)=>
         {

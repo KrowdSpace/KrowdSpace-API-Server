@@ -17,17 +17,9 @@ export default class loginURL extends RestURL
             this.log.error('Post Data Incorrectly formed!', this.constructor.url);
             return this.end(res, n, {success: false, error: true} );
         }
-
-        let ul_template = this.dbC.getTemplate('users_login');
         
-        if(dataO.CHECK && req.cookies['ks-session'])
-            this.sessions.checkSession(req.cookies['ks-session'], (res)=>
-            {
-                if(res)
-                    this.end(res, n, {success: true, alreadyLoggedIn: true} );
-                else
-                    this.login(req, res, n, dataO);
-            });
+        if(dataO.CHECK && req.cookies['ks-session'] && this.sessions.checkSession(req.cookies['ks-session']) )
+            this.end(res, n, {success: true, alreadyLoggedIn: true} );
         else
             this.login(req, res, n, dataO);
     };
@@ -42,11 +34,16 @@ export default class loginURL extends RestURL
         {
             if(!authed)
                 return this.end(res, n, {success:false, authed:false} );
+            
+            let c = this.sessions.makeSession();
 
-            ul_template.submit(username, sesh_id, (ok)=>
+            ul_template.submit(username, c.id, (ok, details)=>
             {
                 if(!ok)
+                {
+                    c.logout();
                     return this.end(res, n, {success: false, error: false} );
+                }
 
                 var cookieOpts = {
                     httpOnly: true,
@@ -57,8 +54,6 @@ export default class loginURL extends RestURL
                 //hardcoded for test only
                 if(stayLog) 
                     cookieOpts.maxAge = 172800;
-
-                let c = this.sessions.makeSession();
 
                 res.setCookie('ks-session', c.id, cookieOpts);
 

@@ -3,6 +3,7 @@
  * Otter's Sessions Abstractor
  * (C) Ben Otter (Benjamin McLean), 2017
  */
+import crypto from 'crypto';
 import Logger from './ottlogger';
 
 export default class SessionsManager
@@ -32,7 +33,7 @@ export default class SessionsManager
         if(this.checkSession(sesh))
             return null;
 
-        this.sessions.set(seshID, sesh);
+        this.sessions.set(sesh_id, sesh);
         return sesh;
     }
 
@@ -56,6 +57,8 @@ export class Session
         this.id = id;
         this.manager = mngr;
         this.log = log;
+        
+        this.data = {};
     }
 
     logout()

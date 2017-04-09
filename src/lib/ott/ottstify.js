@@ -44,7 +44,7 @@ export default class RestServer
         this.domain = cfg.domain || "";
 
         if(cfg.sessions)
-            this.sessions = new SessionsManager(cfg.sessions, this.log);
+            this.sessions = new SessionsManager(cfg, this.log);
 
         this.server = restify.createServer(cfg.restConf || cfg);
 
