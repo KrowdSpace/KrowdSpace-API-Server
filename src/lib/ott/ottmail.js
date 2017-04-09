@@ -43,7 +43,7 @@ export default class EMailer
     {
         if(!this.templates.has(temp.serviceName))
         {
-            let template = new temp(this, this.config, this.log);
+            let template = new temp(this.config, this, this.log);
             this.templates.set(temp.serviceName, template);
         }
     }
