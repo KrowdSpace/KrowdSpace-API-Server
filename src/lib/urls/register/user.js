@@ -50,6 +50,15 @@ export default class RegisterUserURL extends RestURL
                     {
                         let m = this.mailer.getTemplate('email_verify');
 
+                        m.sendMail(email, {
+                            fname,
+                            lname,
+                            verify_code
+                        }, (res)=>
+                        {
+
+                        });
+
                         return this.end(res, n, {success:true} );
                     }
                 });

@@ -7,12 +7,15 @@ export default class VerifyEMT extends MailTemplate
     name = "Verify Account";
     from = "no-reply";
 
-    getHTML(details)
+    getHTML(d)
     {
-
+        return `Heya ${d.fname}, this is a test!
+                Your Code is:- ${d.verify_code} -!
+                Thanks for testing!
+                -PostMaster`;
     }
     getSubject(details)
     {
-
+        return `Heya ${d.fname} ${d.lname}!`;
     }
 }
