@@ -15,7 +15,7 @@ export default class VerifyEMT extends MailTemplate
                 Thanks for testing!
                 -PostMaster`;
     }
-    getSubject(details)
+    getSubject(d)
     {
         return `Heya ${d.fname} ${d.lname}!`;
     }
