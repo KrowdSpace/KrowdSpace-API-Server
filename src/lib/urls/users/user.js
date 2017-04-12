@@ -37,11 +37,12 @@ export default class UserURL extends RestURL
 
         let ul_template = this.dbC.templates.get('users_login');
 
-        if(typeof details.user_data === "string")
-            details.user_data = ottUtil.JSON2OBJ(details.user_data);
-
         ul_template.get(s.id, (details)=>
         {
+
+            if(typeof details.user_data === "string")
+                details.user_data = ottUtil.JSON2OBJ(details.user_data);
+
             if(!details)
                 return this.end(res, n, {success: false, error: true} );
             else
