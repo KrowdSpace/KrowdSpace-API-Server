@@ -58,11 +58,14 @@ export default class RestServer
         //Cookie Support
         this.server.use(resCookies.parse);
 
+        let corsOpts = cfg.cors ? cfg.cors : {};
+
+        //Override Some CORS Config Settings
+        corsOpts.credentials = true;
+        corsOpts.headers = ['Content-Type'];
+
         //CORS Support
-        this.server.use(restify.CORS({
-            credentials: true,
-            headers: ['Content-Type']
-        }));
+        this.server.use(restify.CORS(corsOpts));
     }
 
     /**

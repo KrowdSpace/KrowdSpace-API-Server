@@ -1,4 +1,5 @@
 import {RestURL} from '../../ott/ottstify';
+import * as ottUtil from "../../ott/ottutil";
 
 export default class UserURL extends RestURL
 {
@@ -35,6 +36,9 @@ export default class UserURL extends RestURL
         let s = this.sessions.checkSession(req.cookies['ks-session']);
 
         let ul_template = this.dbC.templates.get('users_login');
+
+        if(typeof details.user_data === "string")
+            details.user_data = ottUtil.JSON2OBJ(details.user_data);
 
         ul_template.get(s.id, (details)=>
         {

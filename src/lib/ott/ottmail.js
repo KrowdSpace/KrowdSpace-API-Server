@@ -24,7 +24,8 @@ export default class EMailer
                 info: (log)=>{ this.log.info(log, this.serviceName); },
                 warn: (log)=>{ this.log.warn(log, this.serviceName); },
                 error: (log)=>{ this.log.error(log, this.serviceName); },
-            }
+            },
+            silent: true,
         };
 
         this.mailer = sendMail(mailCfg);
