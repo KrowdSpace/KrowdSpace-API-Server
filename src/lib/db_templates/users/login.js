@@ -66,7 +66,9 @@ export default class LOGTemplate extends DBTemplate
 
         sesh_id = db.escape(sesh_id);
 
-        let qu = `SELECT username,email,user_data,level from users where session_id=${sesh_id};`;
+        let qu = `SELECT username, email, level,
+                    user_data-> "$.[*]"
+                    from users where session_id=${sesh_id};`;
         
         db.query(qu, (err, res, f)=>
         {
