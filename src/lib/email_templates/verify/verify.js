@@ -47,8 +47,7 @@ export default class VerifyEMT extends MailTemplate
                             </tr>
                         </table>
                     </body>
-                </html>`
-;
+                </html>`;
     }
     getSubject(d)
     {

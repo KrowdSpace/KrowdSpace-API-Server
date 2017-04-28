@@ -53,7 +53,8 @@ export default class RegisterUserURL extends RestURL
                         m.sendMail(email, {
                             fname,
                             lname,
-                            verify_code
+                            verify_code,
+                            username
                         }, (res)=>
                         {
 
