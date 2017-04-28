@@ -41,6 +41,7 @@ export default class LOGTemplate extends DBTemplate
 
         db.query(qu, (err, res, f)=>
         {
+            
             if(err)
                 this.log.error(`Error in Login check query: ${err.stack}`, this.serviceName);
 
