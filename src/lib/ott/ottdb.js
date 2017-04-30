@@ -44,7 +44,7 @@ export default class DataBase
     {
         if(!this.templates.has(temp.serviceName))
         {
-            let template = new temp(this.dbC, this.log, this.config);
+            let template = new temp(this, this.dbC, this.log, this.config);
 
             this.templates.set(temp.serviceName, template);
         }
@@ -66,6 +66,18 @@ export default class DataBase
     {
         return this.templates.get(name);
     }
+
+    updateCon()
+    {
+        let newCon = mysql.createConnection(this.cfg.dbConf || this.cfg);
+
+        for(let temp of this.templates)
+            temp[1].db = newCon;
+        
+        this.dbC = newCon;
+
+        this.start();
+    }
 }
 
 /**
@@ -82,12 +94,13 @@ export class DBTemplate
      * @param {Logger} log - Logger Object.
      * @param {def_config} cfg - Config Object.
      */
-    constructor(db, log, cfg)
+    constructor(par, db, log, cfg)
     {
+        this.parent = par;
         this.log = log;
         this.db = db;
         this.config = cfg;
-
+    
         this.serviceName = this.constructor.serviceName;
     }
     /**
@@ -108,4 +121,15 @@ export class DBTemplate
      * @param {Function} cb 
      */
     get(data, cb) {}
+
+    query(qu, cb)
+    {
+        this.db.query(qu, (err, res, f)=>
+        {
+            if(err && err.fatal)
+                this.parent.updateCon();
+            
+            cb(err, res, f);
+        });
+    }
 }
