@@ -21,7 +21,7 @@ export default class ELTemplate extends DBTemplate
         let qu = `INSERT INTO email_list (fname,lname,email,ksuser,iguser,pvalid,verify_code) 
                           VALUES (${fname},${lname},${email},${ksuser},${iguser},${pvalid},${vcode});`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in Email_List SUBMIT query: ${err.stack}`, this.serviceName);
@@ -41,7 +41,7 @@ export default class ELTemplate extends DBTemplate
 
         let qu = `SELECT EXISTS (SELECT 1 FROM email_list WHERE email=${email} AND verified='Y') as notnew;`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in Email_List CHECK query: ${err.stack}`, this.serviceName);

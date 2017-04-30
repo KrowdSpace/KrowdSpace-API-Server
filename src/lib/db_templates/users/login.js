@@ -15,7 +15,7 @@ export default class LOGTemplate extends DBTemplate
 
         let qu = `UPDATE users SET session_id=${session_id} where username=${username};`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
             {
@@ -39,7 +39,7 @@ export default class LOGTemplate extends DBTemplate
 
         let qu = `SELECT pass_hash,user_data,id from users where username=${username};`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             
             if(err)
@@ -74,7 +74,7 @@ export default class LOGTemplate extends DBTemplate
 		            user_data->>"$.iguser" as iguser
                     from users where session_id=${sesh_id};`;
         
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in GET query: ${err.stack}`, this.serviceName);

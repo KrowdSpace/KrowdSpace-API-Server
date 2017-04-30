@@ -15,7 +15,7 @@ export default class CUTemplate extends DBTemplate
 
         let qu = `INSERT INTO contact_us (fname,lname,email,comment) VALUES (${fname}, ${lname}, ${email}, ${comment});`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in Contact Us SUBMIT query: ${err.stack}`, this.serviceName);

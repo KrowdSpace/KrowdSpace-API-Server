@@ -39,7 +39,7 @@ export default class RUTemplate extends DBTemplate
             let qu = `INSERT INTO users (username,pass_hash,email,verify_code,user_data) 
                              VALUES (${username}, ${pass_hash}, ${email}, ${vcode}, ${details});`;
 
-            db.query(qu, (err, res, f)=>
+            this.query(qu, (err, res, f)=>
             {
                 if(err)
                     this.log.error(`Error in Register User SUBMIT query: ${err.stack}`, this.serviceName);
@@ -61,7 +61,7 @@ export default class RUTemplate extends DBTemplate
 
         let qu = `SELECT EXISTS (SELECT 1 FROM users WHERE username=${username} and email=${email}) as notnew;`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in checking registered CHECK`, this.serviceName);

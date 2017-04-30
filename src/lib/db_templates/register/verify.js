@@ -24,7 +24,7 @@ export default class VUTemplate extends DBTemplate
         
         let qu = `UPDATE ${tbl} SET verified='Y' where verify_code=${veriCode} LIMIT 1;`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in Verify SUBMIT query: ${err.stack}`, this.serviceName);

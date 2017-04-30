@@ -15,7 +15,7 @@ export default class UDTemplate extends DBTemplate
 
         let qu = `SELECT username,email,level,user_data from users where session_id=${sesh_id}`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             
         }); 
@@ -30,7 +30,7 @@ export default class UDTemplate extends DBTemplate
 
         let qu = `SELECT EXISTS (SELECT 1 FROM users WHERE username=${username} and email=${email}) as notnew;`;
 
-        db.query(qu, (err, res, f)=>
+        this.query(qu, (err, res, f)=>
         {
             if(err)
                 this.log.error(`Error in checking registered CHECK`, this.serviceName);
