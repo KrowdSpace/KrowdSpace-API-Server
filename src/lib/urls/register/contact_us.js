@@ -3,7 +3,7 @@ import {RestURL} from '../../ott/ottstify';
 export default class ContactUsURL extends RestURL
 {
     static type = 'post';
-    static url = '/contact_us';
+    static url = '/register/contact_us';
     static dbPriv = true;
     
     onLoad(req, res, n)

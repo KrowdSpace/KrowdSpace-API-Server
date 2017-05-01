@@ -14,8 +14,6 @@ let logDir, cfgDir; //Can I get a, uhh, Hackity hacky hack, with some jank on th
     f.splice(-2);
     f = f.join(sep);
 
-    console.log(f);
-
     logDir = `${f + sep}logs${sep}`;
     cfgDir = `${f + sep}conf${sep}ks_conf.json`;
 }
@@ -33,23 +31,20 @@ async function serverStartup()
 
     let restServer = new RestServer(cfg.restConf, dataMan);
 
+    for(let UrlC of urls)
+        restServer.addURL(UrlC);
+
     let dcP = dataCon.open(),
         rsP = restServer.start();
 
     let dcR = await dcP;
     let rsR = await rsP;
 
-    let cuG = dataMan.dataGetters['contact_us_getter'];
-    let td = {fname: 'Ben', lname: 'Otter', email: 'Redford@deadford.com', comment: 'Uhhhh'};
-    cuG.add(td).then(
-        (res)=>
-        {
-            console.log("Golden!");
-        },
-        (err)=>
-        {
-            console.log(err);
-        });
+    if(dcR.success)
+        console.log("DataBase Connected!");
+    
+    if(rsR.success)
+        console.log("Rest Server Loaded!");
 }
 
 serverStartup();
