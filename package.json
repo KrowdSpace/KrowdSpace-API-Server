@@ -11,19 +11,21 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "install": "npm run build",
-
+    "start": "node .",
     "buildwatch": "babel --watch src/ -d bin/ --source-maps",
+    "buildwatch2": "tsc -w -p ./",
     "build": "babel src/ -d bin/ --source-maps",
-    
     "runon": "forever start ./bin/index.js",
     "runoff": "forever stop ./bin/index.js"
   },
   "author": "Ben Otter <benotter@me.com>",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^7.0.14",
     "babel-cli": "^6.22.2",
     "babel-plugin-transform-class-properties": "^6.23.0",
-    "babel-preset-env": "^1.1.8"
+    "babel-preset-env": "^1.1.8",
+    "typescript": "^2.3.2"
   },
   "dependencies": {
     "bcrypt": "^1.0.2",

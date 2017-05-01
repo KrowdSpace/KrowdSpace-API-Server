@@ -5,7 +5,8 @@
         "experimentalDecorators": true
     },
     "include": [
-        "src/**/*"
+        "src/**/*",
+        "src_2/**/*"
     ],
     "exclude": [
         "bin",
