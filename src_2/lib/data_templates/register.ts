@@ -49,6 +49,21 @@ export class EmailListGetter extends dataman_extras.MySQLDataGetter
             });
         });
     }
+
+    public get(data: any): Promise<DataResponse>
+    {
+        return new Promise((resolve, reject)=>
+        {
+            let {email} = this.escape(data);
+            this.select("*", {email}, void 0, (err, res, f)=>
+            {
+                if(!err)
+                    resolve({success: true, data: res});
+                else
+                    reject({success: false, data: err});
+            });
+        });
+    }
 }
 
 export default [

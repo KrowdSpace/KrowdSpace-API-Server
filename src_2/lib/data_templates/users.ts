@@ -26,6 +26,22 @@ export class UsersGetter extends dataman_extras.MySQLDataGetter
             });
         });
     }
+    public set(id: any, data: any): Promise<DataResponse>
+    {
+        return new Promise((reject, resolve)=>
+        {
+            id = this.escape(id);
+            data = this.escape(data);
+
+            this.update(id, data, void 0, (err, res, f)=>
+            {
+                if(!err)
+                    resolve({success: true, data: res[0]});
+                else
+                    reject({success: false, data: err});
+            });
+        });
+    }
     public get(data: any): Promise<DataResponse>
     {
         return new Promise((resolve, reject)=>

@@ -1,6 +1,6 @@
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
-import {RestURL, safeJSON} from '@otter-co/ottlib';
+import {RestURL} from '@otter-co/ottlib';
 
 export class ContactUsURL extends RestURL implements RestURL
 {
@@ -26,6 +26,38 @@ export class ContactUsURL extends RestURL implements RestURL
     }
 }
 
+export class EmailListURL extends RestURL implements RestURL
+{
+    public static url = "/register/email_list";
+    public static type = "post";
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {
+            FNAME: fname,
+            LNAME: lname,
+            EMAIL: email,
+            KSUSER: ksuser,
+            IGUSER: iguser
+        } = data;
+
+        let emailListG = this.dataG['email_list_getter'];
+
+        let emailExists = await emailListG.get({email}).catch(err=>err);
+
+        if(emailExists && emailExists.data[0])
+            this.end(rest, {success: false, data:{notnew: true}});
+
+        let elR = await emailListG.add({fname, lname, email, ksuser, iguser}).catch(err=>err);
+
+        if(elR.success)
+            this.end(rest, {success: true});
+        else
+            this.end(rest, {success: false});
+    }
+}
+
 export class RegisterUserURL extends RestURL implements RestURL 
 {
     public static url = "/register/user";
@@ -44,6 +76,11 @@ export class RegisterUserURL extends RestURL implements RestURL
             KSUSER: ksuser,
             IGUSER: iguser,
         } = data;
+
+        let banNames = this.cfg.user_register.banned_names;
+
+        if(banNames.indexOf(username) >= 0)
+            return this.end(rest, {success:false, badname:true});
 
         let user_data = JSON.stringify({fname, lname, ksuser, iguser});
 
@@ -82,7 +119,32 @@ export class RegisterUserURL extends RestURL implements RestURL
     }
 }
 
+export class VerifyURL extends RestURL implements RestURL 
+{
+    public static url = "/register/verify";
+    public static type = "post";
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {VERIFY_CODE: verify_code} = data;
+
+        let userG = this.dataG['users_getter'];
+
+        let usrP = userG.set({verifed: "Y"}, {verified: "N", verify_code}).catch(err=>err);
+
+        let usrR = await usrP;
+
+        if(usrR.success)
+            this.end(rest, {success: true});
+        else
+            this.end(rest, {success: false});
+    }
+}
+
 export default [
     ContactUsURL,
-    RegisterUserURL
+    EmailListURL,
+    RegisterUserURL,
+    VerifyURL,
 ];
