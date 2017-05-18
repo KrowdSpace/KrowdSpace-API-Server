@@ -42,7 +42,7 @@ export class UsersGetter extends dataman_extras.MySQLDataGetter
             });
         });
     }
-    public get(data: any): Promise<DataResponse>
+    public get(data: UserGet): Promise<DataResponse>
     {
         return new Promise((resolve, reject)=>
         {
@@ -60,6 +60,12 @@ export class UsersGetter extends dataman_extras.MySQLDataGetter
             });
         });
     }
+}
+
+export interface UserGet
+{
+    username?:string;
+    email?:string;
 }
 
 export default [

@@ -27,7 +27,7 @@ async function serverStartup()
     let dataMan = new DataManager(dataCon);
 
     for(let DataG of data_templates)
-        dataMan.addDataGetter(DataG);
+        dataMan.addDataGetter(DataG); 
 
     let restServer = new RestServer(cfg.restConf, dataMan);
 

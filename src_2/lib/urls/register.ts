@@ -14,15 +14,8 @@ export class ContactUsURL extends RestURL implements RestURL
 
         let cuG = this.dataG['contact_us_getter'];
 
-        try
-        {
-            let cuR = await cuG.add( {fname, lname, email, comment} );
-            this.end(rest, {success: true});
-        }
-        catch (err)
-        {
-            this.end(rest, {success: false});
-        }
+        let cuR = await cuG.add( {fname, lname, email, comment} ).catch(err=>err);
+        this.end(rest, {success: cuR.success});
     }
 }
 
@@ -46,15 +39,12 @@ export class EmailListURL extends RestURL implements RestURL
 
         let emailExists = await emailListG.get({email}).catch(err=>err);
 
-        if(emailExists && emailExists.data[0])
+        if(emailExists.success && emailExists.data[0])
             this.end(rest, {success: false, data:{notnew: true}});
 
         let elR = await emailListG.add({fname, lname, email, ksuser, iguser}).catch(err=>err);
 
-        if(elR.success)
-            this.end(rest, {success: true});
-        else
-            this.end(rest, {success: false});
+        this.end(rest, {success: elR.success});
     }
 }
 
