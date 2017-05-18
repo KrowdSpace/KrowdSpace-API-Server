@@ -62,6 +62,82 @@ export class UsersGetter extends dataman_extras.MySQLDataGetter
     }
 }
 
+export class SessionsGetter extends dataman_extras.MySQLDataGetter 
+{
+    public serviceName: string = "sessions_getter";
+    table: string = "sessions";
+
+    public add(data: any): Promise<DataResponse>
+    {
+        return new Promise((resolve, reject)=>
+        {
+            let {
+                session_id,
+                username,
+                last_ip
+            } = this.escape(data);
+
+            this.insert({session_id, username, last_ip}, (err, res, f)=>
+            {
+                if(!err)
+                    resolve({success: true});
+                else
+                    reject({success: false, data: err});
+            });
+        });
+    }
+    public get(data: any): Promise<DataResponse>
+    {
+        return new Promise((resolve, reject)=>
+        {
+            let {
+                session_id
+            } = this.escape(data);
+
+            this.select("*", {session_id}, undefined, (err, res, f)=>
+            {
+                if(!err)
+                    resolve({success: true, data: res[0]});
+                else
+                    reject({success: false, data: err});
+            });
+        });
+    }
+    public set(id: any, data: any): Promise<DataResponse>
+    {
+        return new Promise((reject, resolve)=>
+        {
+            id = this.escape(id);
+            data = this.escape(data);
+
+            this.update(id, data, undefined, (err, res, f)=>
+            {
+                if(!err)
+                    resolve({success: true, data: res[0]});
+                else
+                    reject({success: false, data: err});
+            });
+        });
+    }
+    public rid(data: any): Promise<DataResponse>
+    {
+        return new Promise((resolve, reject)=>
+        {
+            let {
+                session_id
+            } = this.escape(data);
+
+            this.delete({session_id}, (err, res, f)=>
+            {
+                if(!err)
+                    resolve({success: true});
+                else
+                    reject({success: false, data: err});
+            });
+        });
+    }
+}
+
 export interface UserGet
 {
     username?:string;
@@ -70,4 +146,5 @@ export interface UserGet
 
 export default [
     UsersGetter,
+    SessionsGetter,
 ];
