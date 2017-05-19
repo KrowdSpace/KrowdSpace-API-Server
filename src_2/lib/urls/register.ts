@@ -70,7 +70,7 @@ export class RegisterUserURL extends RestURL implements RestURL
         let banNames = this.cfg.user_register.banned_names;
 
         if(banNames.indexOf(username) >= 0)
-            return this.end(rest, {success:false, badname:true});
+            return this.end(rest, {success: false, badname: true});
 
         let user_data = JSON.stringify({fname, lname, ksuser, iguser});
 

@@ -91,10 +91,11 @@ export class SessionsGetter extends dataman_extras.MySQLDataGetter
         return new Promise((resolve, reject)=>
         {
             let {
-                session_id
+                session_id = "''",
+                username = "''"
             } = this.escape(data);
 
-            this.select("*", {session_id}, undefined, (err, res, f)=>
+            this.select("*", {session_id, username}, " OR ", (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true, data: res[0]});
@@ -110,7 +111,7 @@ export class SessionsGetter extends dataman_extras.MySQLDataGetter
             id = this.escape(id);
             data = this.escape(data);
 
-            this.update(id, data, undefined, (err, res, f)=>
+            this.update(data, id, undefined, (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true, data: res[0]});

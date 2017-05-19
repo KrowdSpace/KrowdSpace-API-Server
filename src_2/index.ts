@@ -29,7 +29,7 @@ async function serverStartup()
     for(let DataG of data_templates)
         dataMan.addDataGetter(DataG); 
 
-    let restServer = new RestServer(cfg.restConf, dataMan);
+    let restServer = new RestServer(cfg, dataMan);
 
     for(let UrlC of urls)
         restServer.addURL(UrlC);
