@@ -63,8 +63,8 @@ export class RegisterUserURL extends RestURL implements RestURL
 
             FNAME: fname,
             LNAME: lname,
-            KSUSER: ksuser,
-            IGUSER: iguser,
+            KS_USER: ksuser,
+            IG_USER: iguser,
         } = data;
 
         let banNames = this.cfg.user_register.banned_names;
