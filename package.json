@@ -15,6 +15,7 @@
     "buildwatch": "babel --watch src/ -d bin/ --source-maps",
     "buildwatch2": "tsc -w -p ./",
     "build": "babel src/ -d bin/ --source-maps",
+    "build2": "tsc -p ./",
     "runon": "forever start ./bin/index.js",
     "runoff": "forever stop ./bin/index.js"
   },
