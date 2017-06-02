@@ -23,8 +23,6 @@ async function serverStartup()
     let config = new ConfigHandler(cfgDir);
     let cfg = await config.start();
 
-    console.log(cfg);
-
     let dataCon = new dataman_extras.MySQLConnection(cfg.dbConf);
     let dataMan = new DataManager(dataCon);
 
