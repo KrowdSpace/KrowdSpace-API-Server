@@ -10,7 +10,7 @@
   "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "npm run build",
+    "install": "npm run build2",
     "start": "node .",
     "buildwatch": "babel --watch src/ -d bin/ --source-maps",
     "buildwatch2": "tsc -w -p ./",
