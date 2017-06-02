@@ -27,15 +27,16 @@ export class ProjectURL extends RestURL implements RestURL
 
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{ not_found: true }});
-
-        return this.end(rest, {success: true, data: projR.data[0]});
+        else
+            return this.end(rest, {success: true, data: projR.data[0]});
     }
 }
 
 export class SetProjectURL extends RestURL implements RestURL
 {
-    static url = "/projects/set_project";
-    static type = "post";
+    public static url = "/projects/set_project";
+    public static type = "post";
+    public reqs = RestURL.reqs.dataReq;
 
     public async onLoad(rest, data, cooks)
     {
@@ -50,10 +51,28 @@ export class SetProjectURL extends RestURL implements RestURL
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let sessR = await sessG.get(cooks['ks-session']);
+        let sessR = await sessG.get(cooks['ks-session']).catch(err=>err);
 
         if(!sessR.success)
-            return this.end(rest, {success: false, data: {not_autorized: true}});
+            return this.end(rest, {success: false, data: {not_authorized: true}});
+
+        let projR = await projG.get(projectID).catch(err=>err);
+
+        if(!projR.success || !projR.data[0])
+            return this.end(rest, {success: false, data: {not_found: true}});
+
+        let proj = projR.data[0],
+            user = sessR.data[0];
+
+        if(!proj.owner === user.username)
+            return this.end(rest, {success: false, data: {not_authorized: true}});
+
+        let updtR = await sessG.set(projectID, data).catch(err=>err);
+
+        if(!updtR.success)
+            return this.end(rest, {success: false, data: {server_error: true}});
+        else
+            return this.end(rest, {success: true});
     }
 }
 

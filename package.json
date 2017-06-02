@@ -34,7 +34,9 @@
     "colors": "^1.1.2",
     "forever": "^0.15.3",
     "mysql": "^2.13.0",
-    "request": "^2.79.0",
+    "request": "^2.81.0",
+    "request-promise-any": "^1.0.4",
+    "request-promise-native": "^1.0.4",
     "restify": "^4.3.0",
     "restify-cookies": "^0.2.2",
     "sendmail": "^1.1.1"

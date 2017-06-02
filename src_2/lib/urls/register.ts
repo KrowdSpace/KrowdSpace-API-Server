@@ -1,6 +1,10 @@
 import * as crypto from 'crypto';
+
 import * as bcrypt from 'bcrypt';
-import {RestURL} from '@otter-co/ottlib';
+import request from 'request-promise-native';
+import cheerio from 'cheerio';
+
+import {RestURL, safeJSON} from '@otter-co/ottlib';
 
 export class ContactUsURL extends RestURL implements RestURL
 {
@@ -45,6 +49,29 @@ export class EmailListURL extends RestURL implements RestURL
         let elR = await emailListG.add({fname, lname, email, ksuser, iguser}).catch(err=>err);
 
         this.end(rest, {success: elR.success});
+    }
+}
+
+export class VerifyURL extends RestURL implements RestURL 
+{
+    public static url = "/register/verify";
+    public static type = "post";
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {VERIFY_CODE: verify_code} = data;
+
+        let userG = this.dataG['users_getter'];
+
+        let usrP = userG.set({verifed: "Y"}, {verified: "N", verify_code}).catch(err=>err);
+
+        let usrR = await usrP;
+
+        if(usrR.success)
+            this.end(rest, {success: true});
+        else
+            this.end(rest, {success: false});
     }
 }
 
@@ -105,30 +132,117 @@ export class RegisterUserURL extends RestURL implements RestURL
         else
             resp = "Unkown error";
 
-        this.end(rest, {success: false, data: resp});
+        return this.end(rest, {success: false, data: resp});
     }
 }
 
-export class VerifyURL extends RestURL implements RestURL 
+export class RegisterProjectURL extends RestURL implements RestURL
 {
-    public static url = "/register/verify";
-    public static type = "post";
+    public static url = '/register/project';
+    public static type = 'post';
     public reqs = RestURL.reqs.dataReq;
 
     public async onLoad(rest, data, cooks)
     {
-        let {VERIFY_CODE: verify_code} = data;
+        let {
+            CATEGORY: cat,
+            URL: url,
+            REWARD: reward,
+            REWARDVALUE: rewardVal,
+            REWARDAMOUNT: rewardAmm,
+            PROJECTIMAGE,
+        } = data;
 
-        let userG = this.dataG['users_getter'];
+        let projG = this.dataG["projects-getter"],
+            sessG = this.dataG["sessions-getter"];
 
-        let usrP = userG.set({verifed: "Y"}, {verified: "N", verify_code}).catch(err=>err);
+        if(!cooks['ks-session'])
+            return this.end(rest, {success: false, data: {not_authorized: true}});
+        
+        let sessP = sessG.get(cooks['ks-session']).catch(err=>err),
+            projP = projG.get("").catch(err=>err);
 
-        let usrR = await usrP;
+        let sessR = await sessP,
+            projR = await projP;
 
-        if(usrR.success)
-            this.end(rest, {success: true});
+        if(!sessR.success || !sessR.data[0])
+            return this.end(rest, {success: false, data: {not_authorized: true} });
+
+        if(projR.success && projR.data && projR.data[0])
+            return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
+
+        let webData = this.getKSURLData(url, this.ksPageIDs);
+
+        let newProj = {
+            name: webData.title.content,
+            owner: sessR.data[0].username,
+            platform: "kickstarter",
+            project_data: JSON.stringify({
+                data: webData
+            }),
+        };
+
+        let newPR = await projG.add(newProj);
+
+        if(!newPR.success)
+            return this.end(rest, {success: false, data: {server_error: true}});
         else
-            this.end(rest, {success: false});
+            return this.end(rest, {success: true});
+    }
+
+    public ksPageIDs = {
+        title: [
+        'meta[property="og:title"]',
+        'content'
+        ],
+    description: [
+        'meta[property="og:description"]',
+        'content'
+        ],
+    content: [
+        "div.full-description",
+        'text'
+        ],
+    stats: [
+        "#pledged",
+        'data-goal',
+        'data-percent-raised',
+        'data-pledged'
+        ],
+    };
+
+    protected getKSURLData(url, dataT)
+    {
+        return request(url).then((data)=>
+        {
+            let $ = cheerio.load(data);
+
+            let retVal = {};
+
+            for(let el in dataT)
+            {
+                let ar = dataT[el],
+                    id = ar.shift(),
+                    val = {};
+
+                for(let att in ar)
+                {
+                    let prN = ar[att],
+                        prV = null;
+                    
+                    if(prN === "text")
+                        prV = $(id).text();
+                    else
+                        prV = $(id).attr(prN);
+
+                    val[prN] = prV;
+                }
+
+                retVal[el] = val;
+            }
+
+            return Promise.resolve(retVal);
+        });
     }
 }
 
