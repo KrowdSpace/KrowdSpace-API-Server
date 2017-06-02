@@ -251,4 +251,5 @@ export default [
     EmailListURL,
     RegisterUserURL,
     VerifyURL,
+    RegisterProjectURL,
 ];
