@@ -157,7 +157,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             sessG = this.dataG["sessions-getter"];
 
         if(!cooks['ks-session'])
-            return this.end(rest, {success: false, data: {not_authorized: true}});
+            return this.end(rest, {success: false, data: {not_authorized1: true}});
         
         let sessP = sessG.get(cooks['ks-session']).catch(err=>err),
             projP = projG.get("").catch(err=>err);
@@ -166,7 +166,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             projR = await projP;
 
         if(!sessR.success || !sessR.data[0])
-            return this.end(rest, {success: false, data: {not_authorized: true} });
+            return this.end(rest, {success: false, data: {not_authorized2: true} });
 
         if(projR.success && projR.data && projR.data[0])
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
