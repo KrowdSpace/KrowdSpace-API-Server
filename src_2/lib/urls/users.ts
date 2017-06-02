@@ -61,6 +61,7 @@ export class LoginURL extends RestURL implements RestURL
 
         let cookieOpts = {
             httpOnly: true,
+            path: "/../",
             domain: this.cfg.domain,
             maxAge: undefined
         };
