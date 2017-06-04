@@ -167,7 +167,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let sessR = await sessP,
             projR = await projP;
 
-        if(!sessR.success || !sessR.data[0])
+        if(!sessR.success || !sessR.data || !sessR.data[0])
             return this.end(rest, {success: false, data: {not_authorized2: true} });
 
         if(projR.success && projR.data && projR.data[0])
