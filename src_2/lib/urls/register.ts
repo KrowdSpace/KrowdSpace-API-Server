@@ -183,6 +183,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             project_data: JSON.stringify({
                 web_data: webData,
                 info_data: {
+                    url,
                     category: cat,
                     reward,
                     reward_value: rewardVal,
