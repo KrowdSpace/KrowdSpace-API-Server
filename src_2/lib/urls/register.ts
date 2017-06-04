@@ -160,7 +160,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized1: true}});
         
-        let sessP = sessG.get(cooks['ks-session']).catch(err=>err),
+        let sessP = sessG.get({session_id: cooks['ks-session']}).catch(err=>err),
             projP = projG.get("").catch(err=>err);
 
         let sessR = await sessP,
