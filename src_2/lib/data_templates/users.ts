@@ -36,7 +36,7 @@ export class UsersGetter extends dataman_extras.MySQLDataGetter
             this.update(id, data, void 0, (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res[0]});
+                    resolve({success: true, data: res});
                 else
                     reject({success: false, data: err});
             });
@@ -98,7 +98,7 @@ export class SessionsGetter extends dataman_extras.MySQLDataGetter
             this.select("*", {session_id, username}, " OR ", (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res[0]});
+                    resolve({success: true, data: res});
                 else
                     reject({success: false, data: err});
             });
@@ -114,7 +114,7 @@ export class SessionsGetter extends dataman_extras.MySQLDataGetter
             this.update(data, id, undefined, (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res[0]});
+                    resolve({success: true, data: res});
                 else
                     reject({success: false, data: err});
             });
