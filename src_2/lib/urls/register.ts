@@ -240,6 +240,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
                 
                 if(prN === "text")
                     prV = $(id).text();
+                else if(prN === "html")
+                    prV = $(id).html();
                 else
                     prV = $(id).attr(prN);
 
