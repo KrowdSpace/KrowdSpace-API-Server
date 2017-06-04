@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 
 import * as bcrypt from 'bcrypt';
 
-import {request} from 'request-promise-native';
+import * as request from 'request-promise-native';
 import cheerio from 'cheerio';
 
 import {RestURL, safeJSON} from '@otter-co/ottlib';
