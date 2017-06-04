@@ -157,8 +157,6 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let projG = this.dataG["projects_getter"],
             sessG = this.dataG["sessions_getter"];
 
-        console.log(projG, sessG, this.dataG);
-
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized1: true}});
         
@@ -174,7 +172,9 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(projR.success && projR.data && projR.data[0])
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
 
-        let webData = this.getKSURLData(url, this.ksPageIDs);
+        let rawWData = await request(url).catch(err=>err);
+
+        let webData = this.getKSURLData(rawWData, this.ksPageIDs);
 
         let newPrData = {
             name: webData.title.content,
@@ -195,57 +195,54 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
     public ksPageIDs = {
         title: [
-        'meta[property="og:title"]',
-        'content'
+            'meta[property="og:title"]',
+            'content'
         ],
-    description: [
-        'meta[property="og:description"]',
-        'content'
+        description: [
+            'meta[property="og:description"]',
+            'content'
         ],
-    content: [
-        "div.full-description",
-        'text'
+        content: [
+            "div.full-description",
+            'text'
         ],
-    stats: [
-        "#pledged",
-        'data-goal',
-        'data-percent-raised',
-        'data-pledged'
+        stats: [
+            "#pledged",
+            'data-goal',
+            'data-percent-raised',
+            'data-pledged'
         ],
     };
 
-    protected getKSURLData(url, dataT)
+    protected getKSURLData(data, dataT): any
     {
-        return request(url).then((data)=>
+        let $ = cheerio.load(data);
+
+        let retVal = {};
+
+        for(let el in dataT)
         {
-            let $ = cheerio.load(data);
+            let ar = dataT[el],
+                id = ar.shift(),
+                val = {};
 
-            let retVal = {};
-
-            for(let el in dataT)
+            for(let att in ar)
             {
-                let ar = dataT[el],
-                    id = ar.shift(),
-                    val = {};
+                let prN = ar[att],
+                    prV = null;
+                
+                if(prN === "text")
+                    prV = $(id).text();
+                else
+                    prV = $(id).attr(prN);
 
-                for(let att in ar)
-                {
-                    let prN = ar[att],
-                        prV = null;
-                    
-                    if(prN === "text")
-                        prV = $(id).text();
-                    else
-                        prV = $(id).attr(prN);
-
-                    val[prN] = prV;
-                }
-
-                retVal[el] = val;
+                val[prN] = prV;
             }
 
-            return Promise.resolve(retVal);
-        });
+            retVal[el] = val;
+        }
+
+        return retVal;
     }
 }
 
