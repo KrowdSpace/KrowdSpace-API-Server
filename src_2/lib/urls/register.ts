@@ -156,6 +156,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let projG = this.dataG["projects_getter"],
             sessG = this.dataG["sessions_getter"];
 
+        console.log(projG, sessG, this.dataG);
+
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized1: true}});
         
