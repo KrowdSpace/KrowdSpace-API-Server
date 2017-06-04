@@ -72,7 +72,6 @@ export class ProjectsGetter extends dataman_extras.MySQLDataGetter
             });
         });
     }
-
 }
 
 export default [

@@ -18,7 +18,7 @@ export class ProjectURL extends RestURL implements RestURL
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data:{ not_authorized: true }});
         
-        let sessR = await sessG.get(cooks['ks-session']).catch(err=>err);
+        let sessR = await sessG.get({sessions_id: cooks['ks-session']}).catch(err=>err);
 
         if(!sessR.success)
             return this.end(rest, {success: false, data: {not_authorized: true}});
@@ -51,7 +51,7 @@ export class SetProjectURL extends RestURL implements RestURL
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let sessR = await sessG.get(cooks['ks-session']).catch(err=>err);
+        let sessR = await sessG.get({sessions_id: cooks['ks-session']}).catch(err=>err);
 
         if(!sessR.success)
             return this.end(rest, {success: false, data: {not_authorized: true}});

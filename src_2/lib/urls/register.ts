@@ -166,8 +166,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let sessR = await sessP,
             projR = await projP;
 
-        if(!sessR.success || !sessR.data)
-            return this.end(rest, {success: false, data: {not_authorized2: true} });
+        if(!sessR.success || !sessR.data || !sessR.data[0])
+            return this.end(rest, {success: false, data: {not_authorized: true} });
 
         if(projR.success && projR.data && projR.data[0])
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
@@ -181,7 +181,13 @@ export class RegisterProjectURL extends RestURL implements RestURL
             owner: sessR.data[0].username,
             platform: "kickstarter",
             project_data: JSON.stringify({
-                data: webData
+                web_data: webData,
+                info_data: {
+                    category: cat,
+                    reward,
+                    reward_value: rewardVal,
+                    reward_ammount: rewardAmm,
+                }       
             }),
         };
 
