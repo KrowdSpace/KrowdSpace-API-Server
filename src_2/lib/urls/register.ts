@@ -211,7 +211,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         ],
         content: [
             "div.full-description",
-            'text'
+            'text',
+            'html'
         ],
         stats: [
             "#pledged",
