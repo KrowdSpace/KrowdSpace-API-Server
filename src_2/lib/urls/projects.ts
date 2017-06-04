@@ -12,8 +12,8 @@ export class ProjectURL extends RestURL implements RestURL
             PROJECTID: projectID
         } = data;
 
-        let projG = this.dataG["projects-getter"],
-            sessG = this.dataG["sessions-getter"];
+        let projG = this.dataG["projects_getter"],
+            sessG = this.dataG["sessions_getter"];
 
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data:{ not_authorized: true }});
@@ -45,8 +45,8 @@ export class SetProjectURL extends RestURL implements RestURL
             DATA: projData
         } = data;
 
-        let projG = this.dataG["projects-getter"],
-            sessG = this.dataG["sessions-getter"];
+        let projG = this.dataG["projects_getter"],
+            sessG = this.dataG["sessions_getter"];
 
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized: true}});
