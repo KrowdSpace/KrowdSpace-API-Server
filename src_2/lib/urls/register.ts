@@ -111,8 +111,8 @@ export class RegisterUserURL extends RestURL implements RestURL
         let bcrpP = bcrypt.hash(password, salts).catch(err=>err),
             usrChkP = userG.get({username, email}).catch(err=>err);
 
-        let pass_hash = await bcrpP;
-        let userExists = await usrChkP;
+        let pass_hash = await bcrpP,
+            userExists = await usrChkP;
 
         let resp: string | any;
 
@@ -153,8 +153,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
             PROJECTIMAGE,
         } = data;
 
-        let projG = this.dataG["projects-getter"],
-            sessG = this.dataG["sessions-getter"];
+        let projG = this.dataG["projects_getter"],
+            sessG = this.dataG["sessions_getter"];
 
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized1: true}});
@@ -173,7 +173,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
         let webData = this.getKSURLData(url, this.ksPageIDs);
 
-        let newProj = {
+        let newPrData = {
             name: webData.title.content,
             owner: sessR.data[0].username,
             platform: "kickstarter",
@@ -182,9 +182,9 @@ export class RegisterProjectURL extends RestURL implements RestURL
             }),
         };
 
-        let newPR = await projG.add(newProj);
+        let newProj = await projG.add(newPrData).catch(err=>err);
 
-        if(!newPR.success)
+        if(!newProj.success)
             return this.end(rest, {success: false, data: {server_error: true}});
         else
             return this.end(rest, {success: true});
