@@ -28,7 +28,7 @@ export class ProjectURL extends RestURL implements RestURL
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{ not_found: true }});
         else
-            return this.end(rest, {success: true, data: projR.data[0]});
+            return this.end(rest, {success: true, data: projR.data});
     }
 }
 
