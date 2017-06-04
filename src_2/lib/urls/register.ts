@@ -8,7 +8,7 @@ import {RestURL, safeJSON} from '@otter-co/ottlib';
 
 export class ContactUsURL extends RestURL implements RestURL
 {
-    public static url = "/register/contact_us";
+    public static url = "/v1/register/contact_us";
     public static type = "post";
     public reqs = RestURL.reqs.dataReq;
 
@@ -25,7 +25,7 @@ export class ContactUsURL extends RestURL implements RestURL
 
 export class EmailListURL extends RestURL implements RestURL
 {
-    public static url = "/register/email_list";
+    public static url = "/v1/register/email_list";
     public static type = "post";
     public reqs = RestURL.reqs.dataReq;
 
@@ -54,7 +54,7 @@ export class EmailListURL extends RestURL implements RestURL
 
 export class VerifyURL extends RestURL implements RestURL 
 {
-    public static url = "/register/verify";
+    public static url = "/v1/register/verify";
     public static type = "post";
     public reqs = RestURL.reqs.dataReq;
 
@@ -77,7 +77,7 @@ export class VerifyURL extends RestURL implements RestURL
 
 export class RegisterUserURL extends RestURL implements RestURL 
 {
-    public static url = "/register/user";
+    public static url = "/v1/register/user";
     public static type = "post";
     public reqs = RestURL.reqs.dataReq;
 
@@ -138,7 +138,7 @@ export class RegisterUserURL extends RestURL implements RestURL
 
 export class RegisterProjectURL extends RestURL implements RestURL
 {
-    public static url = '/register/project';
+    public static url = '/v1/register/project';
     public static type = 'post';
     public reqs = RestURL.reqs.dataReq;
 

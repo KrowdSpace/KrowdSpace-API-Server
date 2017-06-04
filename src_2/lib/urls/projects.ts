@@ -2,7 +2,7 @@ import {RestURL} from '@otter-co/ottlib';
 
 export class ProjectURL extends RestURL implements RestURL 
 {
-    static url = "/projects/projects";
+    static url = "/v1/projects/projects";
     static type = "post";
     public reqs = RestURL.reqs.dataReq;
 
@@ -34,7 +34,7 @@ export class ProjectURL extends RestURL implements RestURL
 
 export class SetProjectURL extends RestURL implements RestURL
 {
-    public static url = "/projects/set_project";
+    public static url = "/v1/projects/set_project";
     public static type = "post";
     public reqs = RestURL.reqs.dataReq;
 

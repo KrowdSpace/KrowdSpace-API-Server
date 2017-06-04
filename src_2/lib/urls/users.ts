@@ -4,7 +4,7 @@ import {RestURL} from '@otter-co/ottlib';
 
 export class LoginURL extends RestURL implements RestURL
 {
-    public static url = "/users/login";
+    public static url = "/v1/login";
     public static type = "post";
     public reqs = RestURL.reqs.dataReq;
 
