@@ -220,6 +220,14 @@ export class RegisterProjectURL extends RestURL implements RestURL
             'data-percent-raised',
             'data-pledged'
         ],
+        mainImg: [
+            'meta[property="og:image"]',
+            'content'
+        ],
+        hours: [
+            'span[data-hours-remaining]',
+            'data-hours-remaining',
+        ]
     };
 
     protected getKSURLData(data, dataT): any
