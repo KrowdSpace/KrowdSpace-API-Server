@@ -147,6 +147,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
     {
         let {
             CATEGORY: cat,
+            DOMAINURL: dUrl,
             URL: url,
             REWARD: reward,
             REWARDVALUE: rewardVal,
@@ -171,6 +172,16 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
         if(projR.success && projR.data && projR.data[0])
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
+
+        switch(dUrl) {
+            case 'https://www.kickstarter.com/':
+            case 'https://www.indiegogo.com/':
+                url = dUrl + url;
+            break;
+
+            default:
+                return this.end(rest, {success: false, data: {invalid_URL: true}});
+        }
 
         let rawWData = await request(url).catch(err=>err);
 
