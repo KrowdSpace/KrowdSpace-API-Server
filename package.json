@@ -1,6 +1,6 @@
 {
   "name": "krowdspace-api-server",
-  "version": "0.1.0",
+  "version": "0.3.7",
   "description": "KrowdSpace API Server Software",
   "readme": "readme.txt",
   "repository": {
@@ -29,7 +29,7 @@
     "typescript": "^2.3.2"
   },
   "dependencies": {
-    "@otter-co/ottlib": "^0.1.2",
+    "@otter-co/ottlib": "^0.1.8",
     "bcrypt": "^1.0.2",
     "cheerio": "^0.22.0",
     "colors": "^1.1.2",

@@ -23,7 +23,7 @@ export class ProjectURL extends RestURL implements RestURL
         if(!sessR.success)
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let projR = await projG.get(projectID).catch(err=>err);
+        let projR = await projG.get({'$or':[{id: projectID}, {unique_id: projectID}, {name: projectID}, {owner: projectID}]}).catch(err=>err);
 
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{ not_found: true }});
@@ -56,7 +56,7 @@ export class SetProjectURL extends RestURL implements RestURL
         if(!sessR.success)
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let projR = await projG.get(projectID).catch(err=>err);
+        let projR = await projG.get({'$or':[{id: projectID}, {unique_id: projectID}, {name: projectID}, {owner: projectID}]}).catch(err=>err);
 
         if(!projR.success || !projR.data[0])
             return this.end(rest, {success: false, data: {not_found: true}});

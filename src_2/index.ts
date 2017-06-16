@@ -3,7 +3,7 @@ import {sep} from 'path';
 import {RestServer, 
         ConfigHandler,
         DataManager,
-        dataman_extras} from '@otter-co/ottlib';
+        extras} from '@otter-co/ottlib';
 
 import data_templates from './lib/data_templates/data_templates';
 import urls from './lib/urls/urls';
@@ -23,12 +23,9 @@ async function serverStartup()
     let config = new ConfigHandler(cfgDir);
     let cfg = await config.start();
 
-    let dataCon = new dataman_extras.MySQLConnection(cfg.dbConf);
+    let dataCon = new extras.mongodb_extra.MongoDBConnection(cfg.mongoDBConfg);
     let dataMan = new DataManager(dataCon);
-
-    for(let DataG of data_templates)
-        dataMan.addDataGetter(DataG); 
-
+ 
     let restServer = new RestServer(cfg, dataMan);
 
     for(let UrlC of urls)
@@ -39,6 +36,9 @@ async function serverStartup()
 
     let dcR = await dcP;
     let rsR = await rsP;
+
+    for(let DataG of data_templates)
+        dataMan.addDataGetter(DataG);
 
     if(dcR.success)
         console.log("DataBase Connected!");

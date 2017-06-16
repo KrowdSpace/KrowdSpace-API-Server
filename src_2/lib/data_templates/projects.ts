@@ -1,6 +1,6 @@
-import {DataResponse, dataman_extras} from "@otter-co/ottlib";
+import {DataResponse, extras} from "@otter-co/ottlib";
 
-export class ProjectsGetter extends dataman_extras.MySQLDataGetter
+export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
 {
     public serviceName = "projects_getter";
     table = "projects";
@@ -31,10 +31,13 @@ export class ProjectsGetter extends dataman_extras.MySQLDataGetter
         {
             id = this.escape(id);
             
-            this.select("*", {id: id, unique_id: id, name: id, owner: id}, " OR ", (err, res, f)=>
+            this.select("*", id, " OR ", (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res});
+                    res.toArray((err, docs)=>
+                    {
+                        resolve({success: true, data: docs});
+                    });
                 else
                     reject({success: false, data: err});
             });

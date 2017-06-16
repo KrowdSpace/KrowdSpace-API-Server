@@ -1,6 +1,6 @@
-import {DataResponse, dataman_extras} from '@otter-co/ottlib';
+import {DataResponse, extras} from '@otter-co/ottlib';
 
-export class UsersGetter extends dataman_extras.MySQLDataGetter
+export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
 {
     public serviceName: string = "users_getter";
     table: string = "users";
@@ -46,15 +46,15 @@ export class UsersGetter extends dataman_extras.MySQLDataGetter
     {
         return new Promise((resolve, reject)=>
         {
-            let {
-                email,
-                username
-            } = this.escape(data);   
+            data = this.escape(data);
 
-            this.select("*", {email, username}, " OR ", (err, res, f)=>
+            this.select("*", data, " OR ", (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res});
+                    res.toArray((err, docs)=>
+                    {
+                        resolve({success: true, data: docs});
+                    });
                 else
                     reject({success: false, data: err});
             });
@@ -62,7 +62,7 @@ export class UsersGetter extends dataman_extras.MySQLDataGetter
     }
 }
 
-export class SessionsGetter extends dataman_extras.MySQLDataGetter 
+export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
 {
     public serviceName: string = "sessions_getter";
     table: string = "sessions";
@@ -90,15 +90,15 @@ export class SessionsGetter extends dataman_extras.MySQLDataGetter
     {
         return new Promise((resolve, reject)=>
         {
-            let {
-                session_id = "''",
-                username = "''"
-            } = this.escape(data);
+            data = this.escape(data);
 
-            this.select("*", {session_id, username}, " OR ", (err, res, f)=>
+            this.select("*", data, " OR ", (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res});
+                    res.toArray((err, docs)=>
+                    {
+                        resolve({success: true, data: docs});
+                    });
                 else
                     reject({success: false, data: err});
             });

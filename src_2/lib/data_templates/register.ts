@@ -1,6 +1,6 @@
-import {DataResponse, dataman_extras} from '@otter-co/ottlib';
+import {DataResponse, extras} from '@otter-co/ottlib';
 
-export class ContactUsGetter extends dataman_extras.MySQLDataGetter
+export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
 {
     public serviceName: string = "contact_us_getter";
     table: string = "contact_us";
@@ -21,7 +21,7 @@ export class ContactUsGetter extends dataman_extras.MySQLDataGetter
     }
 }
 
-export class EmailListGetter extends dataman_extras.MySQLDataGetter 
+export class EmailListGetter extends extras.mongodb_extra.MongoDBDataGetter
 {
     public serviceName: string = "email_list_getter";
     table: string = "email_list";

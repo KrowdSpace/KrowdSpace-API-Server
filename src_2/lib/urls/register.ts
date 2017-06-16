@@ -100,7 +100,7 @@ export class RegisterUserURL extends RestURL implements RestURL
         if(banNames.indexOf(username) >= 0)
             return this.end(rest, {success: false, badname: true});
 
-        let user_data = JSON.stringify({fname, lname, ksuser, iguser});
+        let user_data = {fname, lname, ksuser, iguser};
 
         let userG = this.dataG['users_getter'];
 
@@ -162,7 +162,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             return this.end(rest, {success: false, data: {not_authorized1: true}});
         
         let sessP = sessG.get({session_id: cooks['ks-session']}).catch(err=>err),
-            projP = projG.get("").catch(err=>err);
+            projP = projG.get({"project_data.info_data.url": dUrl + url}).catch(err=>err);
 
         let sessR = await sessP,
             projR = await projP;
@@ -191,7 +191,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             name: webData.title.content,
             owner: sessR.data[0].username,
             platform: "kickstarter",
-            project_data: JSON.stringify({
+            project_data: {
                 web_data: webData,
                 info_data: {
                     url,
@@ -200,7 +200,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
                     reward_value: rewardVal,
                     reward_ammount: rewardAmm,
                 }       
-            }),
+            },
         };
 
         let newProj = await projG.add(newPrData).catch(err=>err);
