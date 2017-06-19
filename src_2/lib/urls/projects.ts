@@ -78,4 +78,5 @@ export class SetProjectURL extends RestURL implements RestURL
 
 export default [
     ProjectURL,
+    SetProjectURL,
 ];
