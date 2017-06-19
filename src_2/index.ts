@@ -23,7 +23,7 @@ async function serverStartup()
     let config = new ConfigHandler(cfgDir);
     let cfg = await config.start();
 
-    let dataCon = new extras.mongodb_extra.MongoDBConnection(cfg.mongoDBConfg);
+    let dataCon = new extras.mongodb_extra.MongoDBConnection(cfg.dbConf);
     let dataMan = new DataManager(dataCon);
  
     let restServer = new RestServer(cfg, dataMan);
@@ -31,8 +31,8 @@ async function serverStartup()
     for(let UrlC of urls)
         restServer.addURL(UrlC);
 
-    let dcP = dataCon.open(),
-        rsP = restServer.start();
+    let dcP = dataCon.open().catch(err=>err),
+        rsP = restServer.start().catch(err=>err);
 
     let dcR = await dcP;
     let rsR = await rsP;
