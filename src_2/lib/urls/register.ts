@@ -187,10 +187,13 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
         let webData = this.getKSURLData(rawWData, this.ksPageIDs);
 
+        let coupon_code = crypto.randomBytes(6).toString('base64');
+
         let newPrData = {
             name: webData.title.content,
             owner: sessR.data[0].username,
             platform: "kickstarter",
+            coupon_code,
             project_data: {
                 web_data: webData,
                 info_data: {
@@ -214,30 +217,43 @@ export class RegisterProjectURL extends RestURL implements RestURL
     public ksPageIDs = {
         title: [
             'meta[property="og:title"]',
+
             'content'
         ],
         description: [
             'meta[property="og:description"]',
+
             'content'
         ],
         content: [
             "div.full-description",
+
             'text',
             'html'
         ],
         stats: [
             "#pledged",
+
             'data-goal',
             'data-percent-raised',
             'data-pledged'
         ],
         mainImg: [
             'meta[property="og:image"]',
+
             'content'
         ],
         hours: [
             'span[data-hours-remaining]',
-            'data-hours-remaining',
+
+            'data-duration',
+            'data-end_time',
+            'text'
+        ],
+        funding: [
+            'span.money',
+
+            'text'
         ]
     };
 
