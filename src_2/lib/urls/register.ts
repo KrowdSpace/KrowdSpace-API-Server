@@ -188,8 +188,10 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let webData = this.getKSURLData(rawWData, this.ksPageIDs);
 
         let coupon_code = crypto.randomBytes(6).toString('base64');
+        let unique_id = crypto.randomBytes(10).toString('base64');
 
         let newPrData = {
+            unique_id,
             name: webData.title.content,
             owner: sessR.data[0].username,
             platform: "kickstarter",
