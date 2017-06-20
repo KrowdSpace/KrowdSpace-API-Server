@@ -109,6 +109,8 @@ export class RegisterUserURL extends RestURL implements RestURL
         
         let verify_code = crypto.randomBytes(byC).toString('base64');
 
+        let unique_id = crypto.randomBytes(10).toString('base64');
+
         let bcrpP = bcrypt.hash(password, salts).catch(err=>err),
             usrChkP = userG.get({username, email}).catch(err=>err);
 
@@ -120,7 +122,7 @@ export class RegisterUserURL extends RestURL implements RestURL
         if(userExists.data && !userExists.data[0] && pass_hash)
         {
             resp = "Error Adding user to DB";
-            let usrAddP = userG.add({username, email, pass_hash, user_data, verify_code}).catch(err=>err);
+            let usrAddP = userG.add({username, unique_id, email, pass_hash, user_data, verify_code}).catch(err=>err);
             let usrAddR = await usrAddP;
 
             if(usrAddR)

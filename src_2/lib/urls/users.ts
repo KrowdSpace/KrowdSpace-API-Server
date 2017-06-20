@@ -102,7 +102,7 @@ export class UsersURL extends RestURL implements RestURL
         if(!searchUser)
             return this.end(rest, {success: false, data: {user_not_found: true}});
         
-        let usrR = await userG.get({username: searchUser}).catch(err=>err);
+        let usrR = await userG.get({'$or':[{username: searchUser}, {unique_id: searchUser}]}).catch(err=>err);
 
         if(!usrR.success || !usrR.data || !usrR.data[0])
             return this.end(rest, {success: false, data: {user_not_found: true}});
