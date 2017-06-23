@@ -111,10 +111,11 @@ export class UsersURL extends RestURL implements RestURL
             let {
                 username,
                 email,
-                user_data
+                user_data,
+                level
             } = usrR.data[0];
 
-            return this.end(rest, {success: true, data: {username, email, user_data}});
+            return this.end(rest, {success: true, data: {username, email, user_data, level}});
         }
     }
 }

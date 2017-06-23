@@ -18,12 +18,15 @@ export class ProjectURL extends RestURL implements RestURL
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data:{ not_authorized: true }});
         
-        let sessR = await sessG.get({sessions_id: cooks['ks-session']}).catch(err=>err);
+        let sessR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
 
-        if(!sessR.success)
+        if(!sessR.success || !sessR.data || !sessR.data[0])
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let projR = await projG.get({'$or':[{id: projectID}, {unique_id: projectID}, {name: projectID}, {owner: projectID}]}).catch(err=>err);
+        if(!projectID || projectID === ' ')
+            projectID = sessR.data[0].username;
+        
+        let projR = await projG.get({'$or':[{name: projectID}, {owner: projectID}]}).catch(err=>err);
 
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{ not_found: true }});

@@ -158,7 +158,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         } = data;
 
         let projG = this.dataG["projects_getter"],
-            sessG = this.dataG["sessions_getter"];
+            sessG = this.dataG["sessions_getter"],
+            userG = this.dataG["users_getter"];
 
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized1: true}});
@@ -215,7 +216,12 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(!newProj.success)
             return this.end(rest, {success: false, data: {server_error: true}});
         else
+        {
+            let usrU = await userG.set({username: sessR.data[0].username}, {'$set':{level:'PO'}}).catch(err=>err);
+            
             return this.end(rest, {success: true});
+        }
+            
     }
 
     public ksPageIDs = {
