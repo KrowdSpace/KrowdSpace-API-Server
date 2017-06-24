@@ -31,7 +31,8 @@ export class LoginURL extends RestURL implements RestURL
             let loggedInR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
 
             if(loggedInR.success && loggedInR.data && loggedInR.data[0])
-                return this.end(rest, {success: true, data: {already_logged_in: true}});
+                if(loggedInR.data[0].username === username)
+                    return this.end(rest, {success: true, data: {already_logged_in: true}});
         }
 
         let usrR = await userG.get( { '$or':[ {username} ] } ).catch(err=>err);
