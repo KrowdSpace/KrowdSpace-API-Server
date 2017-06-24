@@ -9,14 +9,9 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
     {
         return new Promise((resolve, reject)=>
         {
-            let {
-                name,
-                owner,
-                platform,
-                project_data
-            } = this.escape(data);
+            data = this.escape(data);
 
-            this.insert({name, owner, platform, project_data}, (err, res, f)=>
+            this.insert(data, (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true, data: res});
