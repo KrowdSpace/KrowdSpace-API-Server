@@ -176,10 +176,15 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(projR.success && projR.data && projR.data[0])
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
 
+        let scrapeProfile: any,
+            scrapeMetaFunc: any;
+
         switch(dUrl) {
-            case 'https://www.kickstarter.com/':
             case 'https://www.indiegogo.com/':
+            case 'https://www.kickstarter.com/':
                 url = dUrl + url;
+                scrapeProfile = this.ksPageIDs;
+                scrapeMetaFunc = this.ksMetaData;
             break;
 
             default:
@@ -188,7 +193,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
         let rawWData = await request(url).catch(err=>err);
 
-        let webData = this.getKSURLData(rawWData, this.ksPageIDs);
+        let webData = this.getKSURLData(rawWData, scrapeProfile);
 
         let coupon_code = crypto.randomBytes(6).toString('base64');
         let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('');
@@ -207,7 +212,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
                     reward,
                     reward_value: rewardVal,
                     reward_ammount: rewardAmm,
-                }       
+                },
+                meta_data: scrapeMetaFunc(webData)
             },
         };
 
@@ -264,6 +270,22 @@ export class RegisterProjectURL extends RestURL implements RestURL
             'text'
         ]
     };
+
+    protected ksMetaData(wd): any
+    {
+        let retO: any = {};
+
+        retO.funding = parseInt(wd.funding.text.split(/(\$|\€|MX\$)/g)[0]);
+        retO.raisedPercent = wd.stats['data-percent-raised'];
+        retO.raised = +wd.stats['data-percent-raised'] * retO.funding;
+
+        retO.featured = false;
+        retO.explore = false;
+        retO.landing = false;
+        retO.social = false;
+
+        return retO;
+    }
 
     protected getKSURLData(data, dataT): any
     {

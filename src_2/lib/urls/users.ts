@@ -73,8 +73,8 @@ export class LoginURL extends RestURL implements RestURL
 
         let cookieOpts: any = {
             httpOnly: true,
-            path: "/",
-            domain: this.cfg.domain
+            //path: "/",
+            //domain: this.cfg.domain
         };
 
         if(stayLog)
