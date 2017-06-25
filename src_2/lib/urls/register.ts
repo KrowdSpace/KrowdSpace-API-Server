@@ -275,7 +275,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
     {
         let retO: any = {};
 
-        retO.funding = wd.funding.text.split(/(\$|\€|MX\$)/g)[3];
+        retO.funding = wd.funding.text.split(/(\$|\€|MX\$)/g)[2];
 
         try
         {
