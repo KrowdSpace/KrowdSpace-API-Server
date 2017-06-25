@@ -124,11 +124,9 @@ export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
     {
         return new Promise((resolve, reject)=>
         {
-            let {
-                session_id
-            } = this.escape(data);
+            data = this.escape(data);
 
-            this.delete({session_id}, (err, res, f)=>
+            this.delete(data, (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true});

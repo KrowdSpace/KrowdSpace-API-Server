@@ -20,7 +20,8 @@ export class LoginURL extends RestURL implements RestURL
         let {
             USERNAME: username,
             PASSWORD: password,
-            STAYLOGGED: stayLog
+            STAYLOGGED: stayLog,
+            LOGOUT: logout
         } = data;
 
         let userG = this.dataG["users_getter"],
@@ -31,8 +32,18 @@ export class LoginURL extends RestURL implements RestURL
             let loggedInR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
 
             if(loggedInR.success && loggedInR.data && loggedInR.data[0])
+            {
+                if(logout)
+                {
+                    let sessD = await sessG.rid({username: loggedInR.data[0].username});
+                    if(sessD.success)
+                    {
+                        return this.end(rest, {success: true, data: {logged_out: true}});
+                    }
+                }
                 if(loggedInR.data[0].username === username || username === "" || !username)
                     return this.end(rest, {success: true, data: {already_logged_in: true}});
+            }
         }
 
         let usrR = await userG.get( { '$or':[ {username} ] } ).catch(err=>err);
@@ -70,7 +81,7 @@ export class LoginURL extends RestURL implements RestURL
         if(stayLog)
             cookieOpts.maxAge = 172800;
         
-        rest.res.setCookie('ks-session', sess_id);
+        rest.res.setCookie('ks-session', sess_id, cookieOpts);
 
         return this.end(rest, {success: true});
     }
