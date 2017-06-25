@@ -191,7 +191,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let webData = this.getKSURLData(rawWData, this.ksPageIDs);
 
         let coupon_code = crypto.randomBytes(6).toString('base64');
-        let unique_id = crypto.randomBytes(10).toString('base64');
+        let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('');
 
         let newPrData = {
             unique_id,
@@ -218,10 +218,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         else
         {
             let usrU = await userG.set({username: sessR.data[0].username}, {'$set':{level:'PO'}}).catch(err=>err);
-            
             return this.end(rest, {success: true});
         }
-            
     }
 
     public ksPageIDs = {

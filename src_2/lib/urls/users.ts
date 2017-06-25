@@ -121,7 +121,40 @@ export class UsersURL extends RestURL implements RestURL
     }
 }
 
+export class SetUserURL extends RestURL implements RestURL 
+{
+    public static url = "/v1/users/set_users";
+    public static type = 'post';
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {
+            DATA: usrDat,
+        } = data;
+
+        let sessG = this.dataG['sessions_getter'],
+            userG = this.dataG['users_getter'];
+
+        if(!cooks['ks-session'])
+            return this.end(rest, {success: false, data: {not_authorized: true}});
+
+        let sessR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
+
+        if((!sessR.success && !sessR.data && !sessR.data[0]))
+            return this.end(rest, {success: false, data: {not_authorized: true}});
+
+        let userR = await userG.set({username: sessR.data[0].username}, usrDat).catch(err=>err);
+
+        if(!userR.success)
+            return this.end(rest, {success: false, data: {server_error: false}});
+        else
+            return this.end(rest, {success: true});
+    }
+}
+
 export default [
     LoginURL,
-    UsersURL
+    UsersURL,
+    SetUserURL,
 ];

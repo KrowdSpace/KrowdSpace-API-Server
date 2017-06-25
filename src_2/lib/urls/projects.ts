@@ -35,6 +35,8 @@ export class ProjectURL extends RestURL implements RestURL
     }
 }
 
+
+// TODO - FIX AND SANATIZE USER INPUT ASAP
 export class SetProjectURL extends RestURL implements RestURL
 {
     public static url = "/v1/projects/set_project";
@@ -79,7 +81,36 @@ export class SetProjectURL extends RestURL implements RestURL
     }
 }
 
+export class ExploreProjectsURL extends RestURL implements RestURL 
+{
+    public static url = "/v1/projects/explore";
+    public static type = 'post';
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {
+            LIMIT: limit,
+            TITLE: title,
+            OWNER: owner,
+            CATEGORY: cat,
+            AGE: age,
+            ENDTIME: endtime,
+        } = data;
+
+        let projG = this.dataG["projects_getter"];
+
+        let projR = await projG.get({'$or':[{owner}, {category: cat}]}).catch(err=>err);
+
+        if(!projR.success || !projR.data || !projR.data[0])
+            return this.end(rest, {success: false, data:{none_found: true}});
+        else
+            return this.end(rest, {success: true, data: projR.data});
+    }
+}
+
 export default [
     ProjectURL,
     SetProjectURL,
+    ExploreProjectsURL,
 ];
