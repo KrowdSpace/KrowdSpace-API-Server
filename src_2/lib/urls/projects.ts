@@ -1,4 +1,4 @@
-import {RestURL} from '@otter-co/ottlib';
+import {extras, RestURL} from '@otter-co/ottlib';
 
 export class ProjectURL extends RestURL implements RestURL 
 {
@@ -100,10 +100,19 @@ export class ExploreProjectsURL extends RestURL implements RestURL
 
         let projG = this.dataG["projects_getter"];
 
-        let projR = await projG.get({'$or':[
-            {owner}, 
-            {'project_data.info_data.category': cat}
+        let projR;
+
+        if(limit && !title && !owner && !cat && !age && !endtime)
+        {
+            projR = await projG.get({}).catch(err=>err);
+        }
+        else
+        {
+            projR = await projG.get({'$or':[
+                {owner}, 
+                {'project_data.info_data.category': cat}
             ]}).catch(err=>err);
+        }
 
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{none_found: true}});

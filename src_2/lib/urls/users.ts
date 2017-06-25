@@ -71,11 +71,10 @@ export class LoginURL extends RestURL implements RestURL
         if(!sessR.success)
             return this.end(rest, failObj);
 
-        let cookieOpts = {
+        let cookieOpts: any = {
             httpOnly: true,
             path: "/",
-            domain: this.cfg.domain,
-            maxAge: undefined
+            domain: this.cfg.domain
         };
 
         if(stayLog)
