@@ -275,10 +275,14 @@ export class RegisterProjectURL extends RestURL implements RestURL
     {
         let retO: any = {};
 
-        retO.funding = wd.funding.text.split(/(\$|\€|MX\$)/g).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) )[0];
+        retO.funding = wd.funding.text.split(/(\$|\€|MX\$)/g)[3];
 
-        retO.fundingTest = wd.funding.text.split(/(\$|\€|MX\$)/g).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
-
+        try
+        {
+            retO.fundingTest = wd.funding.text.split(/(\$|\€|MX\$)/g).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
+        }
+        catch(e){}
+    
         retO.raisedPercent = wd.stats['data-percent-raised'];
         retO.raised = wd.stats['data-percent-raised'] * retO.funding;
 
