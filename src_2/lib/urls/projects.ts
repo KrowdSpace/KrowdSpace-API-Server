@@ -117,7 +117,7 @@ export class ExploreProjectsURL extends RestURL implements RestURL
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{none_found: true}});
         else
-            return this.end(rest, {success: true, data: projR.data});
+            return this.end(rest, {success: true, data: projR.data.slice(0, limit || 50)});
     }
 }
 
