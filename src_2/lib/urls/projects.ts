@@ -100,7 +100,10 @@ export class ExploreProjectsURL extends RestURL implements RestURL
 
         let projG = this.dataG["projects_getter"];
 
-        let projR = await projG.get({'$or':[{owner}, {category: cat}]}).catch(err=>err);
+        let projR = await projG.get({'$or':[
+            {owner}, 
+            {'project_data.info_data.category': cat}
+            ]}).catch(err=>err);
 
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{none_found: true}});

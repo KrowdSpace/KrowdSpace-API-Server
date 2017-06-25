@@ -123,7 +123,7 @@ export class UsersURL extends RestURL implements RestURL
 
 export class SetUserURL extends RestURL implements RestURL 
 {
-    public static url = "/v1/users/set_users";
+    public static url = "/v1/users/set_user";
     public static type = 'post';
     public reqs = RestURL.reqs.dataReq;
 
@@ -144,7 +144,10 @@ export class SetUserURL extends RestURL implements RestURL
         if((!sessR.success && !sessR.data && !sessR.data[0]))
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let userR = await userG.set({username: sessR.data[0].username}, usrDat).catch(err=>err);
+        let userR = await userG.set(
+            {username: sessR.data[0].username},
+            {user_data: usrDat},
+            ).catch(err=>err);
 
         if(!userR.success)
             return this.end(rest, {success: false, data: {server_error: false}});

@@ -33,7 +33,7 @@ export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
             id = this.escape(id);
             data = this.escape(data);
 
-            this.update(id, data, void 0, (err, res, f)=>
+            this.update(data, id, void 0, (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true, data: res});
