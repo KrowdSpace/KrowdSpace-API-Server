@@ -271,25 +271,24 @@ export class RegisterProjectURL extends RestURL implements RestURL
         ]
     };
 
+    //Regardless of this evidence, I do not hate what I do. I'm just lazy today.
     protected ksMetaData(wd): any
     {
         let retO: any = {};
-
-        retO.funding = wd.funding.text.split(/(\$|\€|MX\$)/g)[2];
-
         try
         {
+            retO.funding = wd.funding.text.split(/(\$|\€|MX\$)/g)[2];
             retO.fundingTest = wd.funding.text.split(/(\$|\€|MX\$)/g).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
+    
+            retO.raisedPercent = wd.stats['data-percent-raised'];
+            retO.raised = wd.stats['data-percent-raised'] * retO.funding;
+
+            retO.featured = false;
+            retO.explore = false;
+            retO.landing = false;
+            retO.social = false;
         }
         catch(e){}
-    
-        retO.raisedPercent = wd.stats['data-percent-raised'];
-        retO.raised = wd.stats['data-percent-raised'] * retO.funding;
-
-        retO.featured = false;
-        retO.explore = false;
-        retO.landing = false;
-        retO.social = false;
 
         return retO;
     }
