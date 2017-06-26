@@ -292,7 +292,10 @@ export class RegisterProjectURL extends RestURL implements RestURL
             retO.landing = false;
             retO.social = false;
         }
-        catch(e){}
+        catch(e)
+        {
+            console.log(e);
+        }
 
         return retO;
     }
