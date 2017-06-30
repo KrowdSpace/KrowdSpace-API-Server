@@ -192,11 +192,10 @@ export class RegisterProjectURL extends RestURL implements RestURL
         }
 
         let rawWData = await request(url).catch(err=>err);
-
         let webData = this.getKSURLData(rawWData, scrapeProfile);
 
         if(!webData.title.content)
-            return this.end(rest, {success: false, data: {web_data_error: true, webData, rawWData, url}});
+            return this.end(rest, {success: false, data: {web_data_error: true}});
             
         let coupon_code = crypto.randomBytes(6).toString('base64');
         let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('');
@@ -263,7 +262,6 @@ export class RegisterProjectURL extends RestURL implements RestURL
         hours: [
             'span[data-hours-remaining]',
 
-            'data-duration',
             'data-end_time',
             'text'
         ],
@@ -281,8 +279,6 @@ export class RegisterProjectURL extends RestURL implements RestURL
         try
         {
             let fund = wd.funding.text;
-
-            console.log(fund, wd.funding.text);
 
             retO.funding = wd.funding.text.split( /(\$|\€|MX\$)/g )[2];
             //retO.fundingTest = fund.split( /(\$|\€|MX\$)/g ).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
@@ -329,6 +325,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
                 val[prN] = prV;
             }
+
+            ar.unshift(id);
 
             retVal[el] = val;
         }
