@@ -191,9 +191,13 @@ export class RegisterProjectURL extends RestURL implements RestURL
                 return this.end(rest, {success: false, data: {invalid_URL: true}});
         }
 
-        let rawWData = await request(url).catch(err=>err);
+        let rawWData, webData, escape = 0;
 
-        let webData = this.getKSURLData(rawWData, scrapeProfile);
+        do {
+            rawWData = await request(url).catch(err=>err);
+            webData = this.getKSURLData(rawWData, scrapeProfile);
+        }
+        while(escape++ < 5 || !webData.title.content);
 
         if(!webData.title.content)
             return this.end(rest, {success: false, data: {web_data_error: true, webData, rawWData}});
