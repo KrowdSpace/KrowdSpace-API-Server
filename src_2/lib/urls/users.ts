@@ -160,7 +160,7 @@ export class SetUserURL extends RestURL implements RestURL
             ).catch(err=>err);
 
         if(!userR.success)
-            return this.end(rest, {success: false, data: {server_error: false}});
+            return this.end(rest, {success: false, data: {server_error: true, userR}});
         else
             return this.end(rest, {success: true});
     }
