@@ -262,6 +262,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         hours: [
             'span[data-hours-remaining]',
 
+            'data-duration',
             'data-end_time',
             'text'
         ],
