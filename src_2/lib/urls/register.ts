@@ -155,6 +155,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             REWARDVALUE: rewardVal,
             REWARDAMOUNT: rewardAmm,
             PROJECTIMAGE,
+            IGREWARD: igrew
         } = data;
 
         let projG = this.dataG["projects_getter"],
@@ -180,7 +181,13 @@ export class RegisterProjectURL extends RestURL implements RestURL
             scrapeMetaFunc: any;
 
         switch(dUrl) {
+
             case 'https://www.indiegogo.com/':
+                url = dUrl + url;
+                scrapeProfile = this.igPageIDs;
+                scrapeMetaFunc = (wd)=>({'nope':true});
+                break;
+
             case 'https://www.kickstarter.com/':
                 url = dUrl + url;
                 scrapeProfile = this.ksPageIDs;
@@ -192,7 +199,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         }
 
         let rawWData = await request(url).catch(err=>err);
-        let webData = this.getKSURLData(rawWData, scrapeProfile);
+        let webData = this.getURLData(rawWData, scrapeProfile);
 
         if(!webData.title.content)
             return this.end(rest, {success: false, data: {web_data_error: true}});
@@ -204,7 +211,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             unique_id,
             name: webData.title.content,
             owner: sessR.data[0].username,
-            platform: "kickstarter",
+            platform: (dUrl === 'https://kickstarter.com/') ? 'kickstarter' : 'indiegogo',
             coupon_code,
             project_data: {
                 web_data: webData,
@@ -214,6 +221,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
                     reward,
                     reward_value: rewardVal,
                     reward_ammount: rewardAmm,
+                    ig_reward: igrew || null
                 },
                 meta_data: scrapeMetaFunc(webData)
             },
@@ -273,6 +281,51 @@ export class RegisterProjectURL extends RestURL implements RestURL
         ]
     };
 
+    public igPageIDs = {
+        title: [
+            'meta[property="og:title"]',
+
+            'content'
+        ],
+        description: [
+            'meta[name="description"]',
+
+            'content'
+        ],
+        content: [
+            'div[gogo-test="description"]',
+
+            'text',
+            'html'
+        ],
+        stats: [
+            'span[gogo-test="raised"]',
+
+            'text',
+        ],
+        percentRaised: [
+            'meta[name="sailthru.pct_funded"]',
+
+            'content'
+        ],
+        mainImg: [
+            'meta[property="og:image"]',
+
+            'content'
+        ],
+        hours: [
+            'meta[name="sailthru.displayed_days_left"]',
+ 
+            'content'
+        ],
+        funding: [
+            'div[gogo-test="percent_funded"]',
+
+            'text',
+            'html'
+        ]
+    };
+
     //Regardless of this evidence, I do not hate what I do. I'm just lazy today.
     protected ksMetaData(wd): any
     {
@@ -300,7 +353,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         return retO;
     }
 
-    protected getKSURLData(data, dataT): any
+    protected getURLData(data, dataT): any
     {
         let $ = cheerio.load(data);
 
