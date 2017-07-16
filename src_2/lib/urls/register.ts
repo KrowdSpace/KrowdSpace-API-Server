@@ -183,7 +183,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let scrapeProfile: any,
             scrapeMetaFunc: any;
 
-        switch(dUrl) {
+        switch(dUrl)
+        {
 
             case 'https://www.indiegogo.com/':
                 url = dUrl + url;
@@ -201,7 +202,14 @@ export class RegisterProjectURL extends RestURL implements RestURL
                 return this.end(rest, {success: false, data: {invalid_URL: true}});
         }
 
-        let rawWData = await request(url).catch(err=>err);
+        let reqOpts = {
+            url,
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
+            }
+        };
+
+        let rawWData = await request(reqOpts).catch(err=>err);
         let webData = this.getURLData(rawWData, scrapeProfile);
 
         console.log(rawWData);
