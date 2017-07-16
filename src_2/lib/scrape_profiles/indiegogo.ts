@@ -10,15 +10,16 @@ export const pageIDs = {
             'content'
         ],
         content: [
-            'div[gogo-test="description"]',
+            'div#campaignDescription',
 
             'text',
             'html'
         ],
         stats: [
-            'span[gogo-test="raised"]',
+            'div[gogo-test="percent_funded"]',
 
             'text',
+            'html'
         ],
         percentRaised: [
             'meta[name="sailthru.pct_funded"]',
@@ -36,10 +37,9 @@ export const pageIDs = {
             'content'
         ],
         funding: [
-            'div[gogo-test="percent_funded"]',
+            'span.campaignGoalProgress-raisedAmount',
 
             'text',
-            'html'
         ]
     };
 

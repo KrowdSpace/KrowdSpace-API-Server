@@ -1,3 +1,5 @@
+import {ScrapeMetaData} from './scrape_base';
+
 export const pageIDs = {
         title: [
             'meta[property="og:title"]',
@@ -41,23 +43,32 @@ export const pageIDs = {
         ]
 };
 
-export function metaDataFunc(wd: any) : any
+export function metaDataFunc(wd: any) : ScrapeMetaData
 {
-    let retO: any = {};
+    let retO: ScrapeMetaData = <ScrapeMetaData> {};
+
         try
         {
             let fund = wd.funding.text;
 
+            retO.content = wd.content.html;
+            retO.mainImg = wd.mainImg.content;
+
             retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];
             //retO.fundingTest = fund.split( /(\$|\€|MX\$)/g ).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
-    
-            retO.raisedPercent = +wd.stats['data-percent-raised'];
+
             retO.raised = +wd.stats['data-percent-raised'] * retO.funding;
+            retO.raisedPercent = +wd.stats['data-percent-raised'];
+
+            retO.duration = wd.hours['data-duration'];
+            retO.endTime = wd.hours['data-end_time'];
 
             retO.featured = false;
             retO.explore = false;
             retO.landing = false;
             retO.social = false;
+
+            retO.refresh = false;
         }
         catch(e)
         {
