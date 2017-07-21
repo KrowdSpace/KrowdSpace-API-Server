@@ -36,8 +36,6 @@ export async function UpdateProject(pID: string, projG: DataGetter)
 
     let p = projR.data[0];
 
-    console.log(projR, p);
-
     let reqOpts = {
         url: p.project_data.info_data.url,
         headers: {
@@ -63,8 +61,7 @@ export async function UpdateProject(pID: string, projG: DataGetter)
     let rawWData = await request(reqOpts).catch(err=>err);
     let webData = getURLData(rawWData, scrapeProfile);
 
-    if(!webData.title.content)
-        return false;
+    console.log(webData);
 
     let setObj = {
         project_data:
