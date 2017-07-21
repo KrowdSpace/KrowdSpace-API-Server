@@ -29,9 +29,9 @@ export interface ScrapeMetaData
 
 export async function UpdateProject(pID: string, projG: DataGetter)
 {
-    let projR = await projG.get({'$or':[{unique_id: pID},{name: pID}, {owner: pID}]}).catch(err=>err);
+    let projR = await projG.get({'$or':[{unique_id: pID}, {name: pID}, {owner: pID}]}).catch(err=>err);
 
-    if(!projR.success)
+    if(!projR.success || !projR.data[0])
         return false;
 
     let p = projR[0];
