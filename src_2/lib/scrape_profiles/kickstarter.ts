@@ -57,7 +57,7 @@ export function metaDataFunc(wd: any) : ScrapeMetaData
             retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];
             //retO.fundingTest = fund.split( /(\$|\€|MX\$)/g ).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
 
-            retO.raised = +wd.stats['data-percent-raised'] * retO.funding;
+            retO.raised = +wd.stats['data-percent-raised'] * +retO.funding.replace(/,/g, '');
             retO.raisedPercent = +wd.stats['data-percent-raised'];
 
             retO.duration = wd.hours['data-duration'];

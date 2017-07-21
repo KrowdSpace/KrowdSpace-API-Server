@@ -6,27 +6,6 @@ import * as igData from './indiegogo';
 
 import {DataGetter} from '@otter-co/ottlib';
 
-export interface ScrapeMetaData
-{
-    content: string,
-    mainImg: string,
-
-    funding: number,
-
-    raised: number,
-    raisedPercent: number,
-
-    duration: number,
-    endTime: number,
-
-    featured: boolean,
-    explore: boolean,
-    landing: boolean,
-    social: boolean,
-
-    refresh: boolean,
-}
-
 export async function UpdateProject(pID: string, projG: DataGetter)
 {
     let projR = await projG.get({'$or':[{unique_id: pID}, {name: pID}, {owner: pID}]}).catch(err=>err);
@@ -77,36 +56,57 @@ export async function UpdateProject(pID: string, projG: DataGetter)
 }
 
 export function getURLData(data, dataT): any
+{
+    let $ = cheerio.load(data);
+
+    let retVal = {};
+
+    for(let el in dataT)
     {
-        let $ = cheerio.load(data);
+        let ar = dataT[el],
+            id = ar.shift(),
+            val = {};
 
-        let retVal = {};
-
-        for(let el in dataT)
+        for(let att in ar)
         {
-            let ar = dataT[el],
-                id = ar.shift(),
-                val = {};
+            let prN = ar[att],
+                prV = null;
+            
+            if(prN === "text")
+                prV = $(id).text();
+            else if(prN === "html")
+                prV = $(id).html();
+            else
+                prV = $(id).attr(prN);
 
-            for(let att in ar)
-            {
-                let prN = ar[att],
-                    prV = null;
-                
-                if(prN === "text")
-                    prV = $(id).text();
-                else if(prN === "html")
-                    prV = $(id).html();
-                else
-                    prV = $(id).attr(prN);
-
-                val[prN] = prV;
-            }
-
-            ar.unshift(id);
-
-            retVal[el] = val;
+            val[prN] = prV;
         }
 
-        return retVal;
+        ar.unshift(id);
+
+        retVal[el] = val;
     }
+
+    return retVal;
+}
+
+export interface ScrapeMetaData
+{
+    content: string,
+    mainImg: string,
+
+    funding: string,
+
+    raised: number,
+    raisedPercent: number,
+
+    duration: number,
+    endTime: number,
+
+    featured: boolean,
+    explore: boolean,
+    landing: boolean,
+    social: boolean,
+
+    refresh: boolean,
+}
