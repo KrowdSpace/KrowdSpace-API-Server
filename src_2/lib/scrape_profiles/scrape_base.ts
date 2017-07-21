@@ -61,8 +61,6 @@ export async function UpdateProject(pID: string, projG: DataGetter)
     let rawWData = await request(reqOpts).catch(err=>err);
     let webData = getURLData(rawWData, scrapeProfile);
 
-    console.log(webData);
-
     let setObj = {
         project_data:
         {
@@ -71,7 +69,11 @@ export async function UpdateProject(pID: string, projG: DataGetter)
         }
     };
 
-    let psR = await projG.set(p.unique_id, setObj).catch(err=>err);
+
+
+    let psR = await projG.set(p._id, setObj).catch(err=>err);
+
+    console.log(psR);
 
     return psR.success;
 }
