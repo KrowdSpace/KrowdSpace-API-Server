@@ -61,7 +61,7 @@ export async function UpdateProject(pID: string, projG: DataGetter)
     }
 
     let rawWData = await request(reqOpts).catch(err=>err);
-    let webData = this.getURLData(rawWData, scrapeProfile);
+    let webData = getURLData(rawWData, scrapeProfile);
 
     if(!webData.title.content)
         return false;
@@ -78,3 +78,38 @@ export async function UpdateProject(pID: string, projG: DataGetter)
 
     return psR.success;
 }
+
+export function getURLData(data, dataT): any
+    {
+        let $ = cheerio.load(data);
+
+        let retVal = {};
+
+        for(let el in dataT)
+        {
+            let ar = dataT[el],
+                id = ar.shift(),
+                val = {};
+
+            for(let att in ar)
+            {
+                let prN = ar[att],
+                    prV = null;
+                
+                if(prN === "text")
+                    prV = $(id).text();
+                else if(prN === "html")
+                    prV = $(id).html();
+                else
+                    prV = $(id).attr(prN);
+
+                val[prN] = prV;
+            }
+
+            ar.unshift(id);
+
+            retVal[el] = val;
+        }
+
+        return retVal;
+    }
