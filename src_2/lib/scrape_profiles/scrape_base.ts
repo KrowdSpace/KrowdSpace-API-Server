@@ -34,7 +34,7 @@ export async function UpdateProject(pID: string, projG: DataGetter)
     if(!projR.success || !projR.data[0])
         return false;
 
-    let p = projR[0];
+    let p = projR.data[0];
 
     console.log(projR, p);
 
@@ -56,7 +56,7 @@ export async function UpdateProject(pID: string, projG: DataGetter)
 
         case 'indiegogo':
             scrapeProfile = igData.pageIDs;
-            metaFunc =igData.metaDataFunc;
+            metaFunc = igData.metaDataFunc;
         break;
     }
 
