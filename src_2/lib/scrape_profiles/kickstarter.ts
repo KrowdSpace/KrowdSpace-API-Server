@@ -67,6 +67,7 @@ export function metaDataFunc(wd: any) : ScrapeMetaData
             retO.explore = false;
             retO.landing = false;
             retO.social = false;
+            retO.reward = false;
 
             retO.refresh = false;
         }

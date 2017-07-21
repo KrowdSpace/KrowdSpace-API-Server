@@ -107,6 +107,7 @@ export interface ScrapeMetaData
     explore: boolean,
     landing: boolean,
     social: boolean,
+    rewards: boolean,
 
     refresh: boolean,
 }
