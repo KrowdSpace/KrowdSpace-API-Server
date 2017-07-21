@@ -1,7 +1,5 @@
 import * as crypto from 'crypto';
-
 import * as bcrypt from 'bcrypt';
-
 import * as request from 'request-promise-native';
 import * as cheerio from 'cheerio';
 
@@ -211,8 +209,6 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
         let rawWData = await request(reqOpts).catch(err=>err);
         let webData = this.getURLData(rawWData, scrapeProfile);
-
-        console.log(rawWData);
 
         if(!webData.title.content)
             return this.end(rest, {success: false, data: {web_data_error: true}});

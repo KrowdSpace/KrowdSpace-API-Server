@@ -1,3 +1,5 @@
+import {ScrapeMetaData} from './scrape_base';
+
 export const pageIDs = {
         title: [
             'meta[property="og:title"]',
@@ -43,7 +45,9 @@ export const pageIDs = {
         ]
     };
 
-export function metaDataFunc(wd: any): any
+export function metaDataFunc(wd: any): ScrapeMetaData
 {
-    return {};
+    let sd : any = {};
+    
+    return <ScrapeMetaData> sd;
 }
