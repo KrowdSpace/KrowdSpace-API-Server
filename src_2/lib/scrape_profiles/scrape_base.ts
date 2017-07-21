@@ -36,6 +36,8 @@ export async function UpdateProject(pID: string, projG: DataGetter)
 
     let p = projR[0];
 
+    console.log(projR, p);
+
     let reqOpts = {
         url: p.info_data.url,
         headers: {
