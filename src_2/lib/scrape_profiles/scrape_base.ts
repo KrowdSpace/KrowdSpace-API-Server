@@ -69,7 +69,7 @@ export async function UpdateProject(pID: string, projG: DataGetter)
         }
     };
 
-    let psR = await projG.set({ id: p._id }, setObj).catch(err=>err);
+    let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
 
     console.log(psR);
 
