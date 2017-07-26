@@ -13,7 +13,7 @@ export const pageIDs = {
         ],
 
         content: [
-            'div.campaignDescription',
+            'ui-view',
 
             'text',
             'html'
