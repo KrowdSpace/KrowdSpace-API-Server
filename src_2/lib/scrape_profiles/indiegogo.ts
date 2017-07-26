@@ -18,10 +18,9 @@ export const pageIDs = {
             'html'
         ],
         stats: [
-            'div[gogo-test="percent_funded"]',
+            'div.campaignGoalProgress-raisedAmount',
 
-            'text',
-            'html'
+            'text'
         ],
         percentRaised: [
             'meta[name="sailthru.pct_funded"]',
@@ -38,8 +37,14 @@ export const pageIDs = {
  
             'content'
         ],
+        endTime: 
+        [
+            'meta[name="sailthru.date"]',
+ 
+            'content'
+        ],
         funding: [
-            'span.campaignGoalProgress-raisedAmount',
+            'div.campaignGoalProgress-detailsGoal div.ng-binding',
 
             'text',
         ]
@@ -47,7 +52,28 @@ export const pageIDs = {
 
 export function metaDataFunc(wd: any): ScrapeMetaData
 {
-    let sd : any = {};
-    
-    return <ScrapeMetaData> sd;
+    let retO : any = {};
+
+    let fund = wd.funding.text;
+
+    retO.content = wd.content.html;
+    retO.mainImg = wd.mainImg.content;
+
+    retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];
+
+    retO.raised = wd.stats.text;
+    retO.raisedPercent = wd.percentRaised.content;
+
+    retO.duration = +wd.hours.content.split(' ')[0];
+    retO.endTime = wd.endTime.content;
+
+    retO.featured = false;
+    retO.explore = false;
+    retO.landing = false;
+    retO.social = false;
+    retO.reward = false;
+
+    retO.refresh = false;
+
+    return <ScrapeMetaData> retO;
 }
