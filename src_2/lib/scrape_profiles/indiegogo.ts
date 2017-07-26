@@ -11,16 +11,18 @@ export const pageIDs = {
 
             'content'
         ],
+
         content: [
-            'div#campaignDescription',
+            'div.campaignDescription',
 
             'text',
             'html'
         ],
         stats: [
-            'div.campaignGoalProgress-raisedAmount',
+            'span.campaignGoalProgress-raisedAmount',
 
-            'text'
+            'text',
+            'html'
         ],
         percentRaised: [
             'meta[name="sailthru.pct_funded"]',
