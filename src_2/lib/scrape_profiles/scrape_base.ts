@@ -52,7 +52,7 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
     setObj.project_data.meta_data = await metaFunc(webData, apiK).catch(err=>err);
 
     let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
-    return psR;
+    return {success: psR};
 }
 
 export function getURLData(data, dataT): any

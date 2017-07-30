@@ -240,7 +240,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(url == 'https://www.indiegogo.com/' && this.cfg && this.cfg.api_keys && this.cfg.api_keys.indiegogo)
             apiK = this.cfg.api_keys.indiegogo;
 
-        let updateP = await scraper.UpdateProject(unique_id, projG, apiK).catch(err=>err);
+        let updateP = await scraper.UpdateProject(unique_id, projG, apiK).catch( err=>err );
 
         if(!updateP.success)
             return this.end(rest, {success: false, data: {server_error: true, update_project_failed: updateP}});
