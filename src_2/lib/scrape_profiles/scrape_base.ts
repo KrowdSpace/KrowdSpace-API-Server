@@ -46,6 +46,7 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
         name: webData.title.content,
         project_data:
         {
+            raw_web_data: rawWData,
             web_data: webData,
             meta_data: {}
         }
