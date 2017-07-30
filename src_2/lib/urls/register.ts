@@ -180,35 +180,6 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(projR.success && projR.data && projR.data[0])
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
 
-        let scrapeProfile: any,
-            scrapeMetaFunc: any;
-
-        switch(dUrl)
-        {
-
-            case 'https://www.indiegogo.com/':
-                url = dUrl + url;
-                scrapeProfile = igData.pageIDs;
-                scrapeMetaFunc = igData.metaDataFunc;
-                break;
-
-            case 'https://www.kickstarter.com/':
-                url = dUrl + url;
-                scrapeProfile = ksData.pageIDs;
-                scrapeMetaFunc = ksData.metaDataFunc;
-            break;
-
-            default:
-                return this.end(rest, {success: false, data: {invalid_URL: true}});
-        }
-
-        let reqOpts = {
-            url,
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
-            }
-        };
-
         let coupon_code = crypto.randomBytes(6).toString('base64');
         let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('');
 
