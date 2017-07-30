@@ -45,9 +45,11 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
         project_data:
         {
             web_data: webData,
-            meta_data: await metaFunc(webData, apiK)
+            meta_data: {}
         }
     };
+
+    setObj.project_data.meta_data = await metaFunc(webData, apiK).catch(err=>err);
 
     let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
     return psR;
