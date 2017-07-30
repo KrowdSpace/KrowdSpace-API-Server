@@ -5,6 +5,8 @@ import * as cheerio from 'cheerio';
 
 import {RestURL, safeJSON} from '@otter-co/ottlib';
 
+import * as scraper from '../scrape_profiles/scrape_base';
+
 import * as ksData from '../scrape_profiles/kickstarter';
 import * as igData from '../scrape_profiles/indiegogo';
 
@@ -207,23 +209,15 @@ export class RegisterProjectURL extends RestURL implements RestURL
             }
         };
 
-        let rawWData = await request(reqOpts).catch(err=>err);
-        let webData = this.getURLData(rawWData, scrapeProfile);
-
-        if(!webData.title.content)
-            return this.end(rest, {success: false, data: {web_data_error: true}});
-            
         let coupon_code = crypto.randomBytes(6).toString('base64');
         let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('');
 
         let newPrData = {
             unique_id,
-            name: webData.title.content,
             owner: sessR.data[0].username,
             platform: (dUrl === 'https://www.kickstarter.com/') ? 'kickstarter' : 'indiegogo',
             coupon_code,
             project_data: {
-                web_data: webData,
                 info_data: {
                     url,
                     category: cat,
@@ -232,7 +226,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
                     reward_ammount: rewardAmm,
                     ig_reward: igrew || null
                 },
-                meta_data: scrapeMetaFunc(webData)
+                meta_data: {}
             },
         };
 
@@ -240,46 +234,22 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
         if(!newProj.success)
             return this.end(rest, {success: false, data: {server_error: true}});
+
+        let apiK = "";
+        if(url == 'https://www.indiegogo.com/' && this.cfg && this.cfg.api_keys && this.cfg.api_keys.indiegogo)
+            apiK = this.cfg.api_keys.indiegogo;
+
+        let updateP = await scraper.UpdateProject(unique_id, projG, apiK);
+
+        if(!updateP.success)
+            return this.end(rest, {success: false, data: {server_error: true}});
+
+        let usrU = await userG.set({username: sessR.data[0].username}, {'$set':{level:'PO'}}).catch(err=>err);
+
+        if(!usrU.success)
+            return this.end(rest, {success: false, data: {server_error: true}});
         else
-        {
-            let usrU = await userG.set({username: sessR.data[0].username}, {'$set':{level:'PO'}}).catch(err=>err);
             return this.end(rest, {success: true});
-        }
-    }
-
-    protected getURLData(data, dataT): any
-    {
-        let $ = cheerio.load(data);
-
-        let retVal = {};
-
-        for(let el in dataT)
-        {
-            let ar = dataT[el],
-                id = ar.shift(),
-                val = {};
-
-            for(let att in ar)
-            {
-                let prN = ar[att],
-                    prV = null;
-                
-                if(prN === "text")
-                    prV = $(id).text();
-                else if(prN === "html")
-                    prV = $(id).html();
-                else
-                    prV = $(id).attr(prN);
-
-                val[prN] = prV;
-            }
-
-            ar.unshift(id);
-
-            retVal[el] = val;
-        }
-
-        return retVal;
     }
 }
 

@@ -6,7 +6,7 @@ import * as igData from './indiegogo';
 
 import {DataGetter} from '@otter-co/ottlib';
 
-export async function UpdateProject(pID: string, projG: DataGetter)
+export async function UpdateProject(pID: string, projG: DataGetter, apiK: string = "")
 {
     let projR = await projG.get({'$or':[{unique_id: pID}, {name: pID}, {owner: pID}]}).catch(err=>err);
 
@@ -41,18 +41,16 @@ export async function UpdateProject(pID: string, projG: DataGetter)
     let webData = getURLData(rawWData, scrapeProfile);
 
     let setObj = {
+        name: webData.title.content,
         project_data:
         {
             web_data: webData,
-            meta_data: metaFunc(webData)
+            meta_data: await metaFunc(webData, apiK)
         }
     };
 
     let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
-
-    console.log(psR);
-
-    return psR.success;
+    return psR;
 }
 
 export function getURLData(data, dataT): any

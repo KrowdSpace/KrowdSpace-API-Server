@@ -1,5 +1,8 @@
 import {ScrapeMetaData} from './scrape_base';
 
+import * as request from 'request-promise-native';
+import {safeJSON} from '@otter-co/ottlib';
+
 export const pageIDs = {
         title: [
             'meta[property="og:title"]',
@@ -8,6 +11,12 @@ export const pageIDs = {
         ],
         description: [
             'meta[name="description"]',
+
+            'content'
+        ],
+        projectID:
+        [
+            'meta[name="sailthru.project_id"]',
 
             'content'
         ],
@@ -52,13 +61,26 @@ export const pageIDs = {
         ]
     };
 
-export function metaDataFunc(wd: any): ScrapeMetaData
+export async function metaDataFunc(wd: any, api_token: any)
 {
     let retO : any = {};
 
+    if(wd.projectID && wd.projectID.content)
+    {
+        let url = `https://api.indiegogo.com/1/campaigns/${ wd.projectID.content }.json?api_token=${api_token}`;
+        let newWD = await request(url);
+
+        retO.content = {
+            raw: newWD,
+            parsed: safeJSON(newWD)
+        };
+    }
+    else
+        retO.content = {fack: "Fack"};
+
     let fund = wd.funding.text;
 
-    retO.content = wd.content.html;
+    // retO.content = wd.content.html;
     retO.mainImg = wd.mainImg.content;
 
     retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];

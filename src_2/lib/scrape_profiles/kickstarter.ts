@@ -43,7 +43,7 @@ export const pageIDs = {
         ]
 };
 
-export function metaDataFunc(wd: any) : ScrapeMetaData
+export async function metaDataFunc(wd: any)
 {
     let retO: ScrapeMetaData = <ScrapeMetaData> {};
 
