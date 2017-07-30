@@ -215,6 +215,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let newPrData = {
             unique_id,
             owner: sessR.data[0].username,
+            name: "",
             platform: (dUrl === 'https://www.kickstarter.com/') ? 'kickstarter' : 'indiegogo',
             coupon_code,
             project_data: {
@@ -242,7 +243,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let updateP = await scraper.UpdateProject(unique_id, projG, apiK);
 
         if(!updateP.success)
-            return this.end(rest, {success: false, data: {server_error: true, update_project_failed: true}});
+            return this.end(rest, {success: false, data: {server_error: true, update_project_failed: updateP}});
 
         let usrU = await userG.set({username: sessR.data[0].username}, {'$set':{level:'PO'}}).catch(err=>err);
 

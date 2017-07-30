@@ -11,7 +11,7 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
     let projR = await projG.get({'$or':[{unique_id: pID}, {name: pID}, {owner: pID}]}).catch(err=>err);
 
     if(!projR.success || !projR.data[0])
-        return false;
+        return {success: false, data: {projR}};
 
     let p = projR.data[0];
 
