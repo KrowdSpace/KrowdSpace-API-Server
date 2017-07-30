@@ -191,7 +191,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             coupon_code,
             project_data: {
                 info_data: {
-                    url,
+                    url: (dUrl === 'https://www.kickstarter.com/') ? 'https://www.kickstarter.com/' + url : 'https://indiegogo.com/' + url,
                     category: cat,
                     reward,
                     reward_value: rewardVal,
@@ -216,7 +216,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(!updateP.success)
             return this.end(rest, {success: false, data: {server_error: true, update_project_failed: updateP}});
 
-        let usrU = await userG.set({username: sessR.data[0].username}, {'$set':{level:'PO'}}).catch(err=>err);
+        let usrU = await userG.set({_id: sessR.data[0]._id}, { $set : {level:'PO'} }).catch(err=>err);
 
         if(!usrU.success)
             return this.end(rest, {success: false, data: {server_error: true, update_user_failed: true}});
