@@ -68,7 +68,15 @@ export async function metaDataFunc(wd: any, api_token: any)
     if(wd.projectID && wd.projectID.content)
     {
         let url = `https://api.indiegogo.com/1/campaigns/${ wd.projectID.content }.json?api_token=${api_token}`;
-        let newWD = await request(url);
+        
+        let reqOpts = {
+            url,
+            headers: {
+                "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
+            }
+        };
+        
+        let newWD = await request(reqOpts);
 
         retO.content = {
             raw: newWD,
