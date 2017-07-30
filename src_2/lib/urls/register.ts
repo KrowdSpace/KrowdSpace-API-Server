@@ -233,7 +233,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let newProj = await projG.add(newPrData).catch(err=>err);
 
         if(!newProj.success)
-            return this.end(rest, {success: false, data: {server_error: true}});
+            return this.end(rest, {success: false, data: {server_error: true, add_project_failed: true}});
 
         let apiK = "";
         if(url == 'https://www.indiegogo.com/' && this.cfg && this.cfg.api_keys && this.cfg.api_keys.indiegogo)
@@ -242,12 +242,12 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let updateP = await scraper.UpdateProject(unique_id, projG, apiK);
 
         if(!updateP.success)
-            return this.end(rest, {success: false, data: {server_error: true}});
+            return this.end(rest, {success: false, data: {server_error: true, update_project_failed: true}});
 
         let usrU = await userG.set({username: sessR.data[0].username}, {'$set':{level:'PO'}}).catch(err=>err);
 
         if(!usrU.success)
-            return this.end(rest, {success: false, data: {server_error: true}});
+            return this.end(rest, {success: false, data: {server_error: true, update_user_failed: true}});
         else
             return this.end(rest, {success: true});
     }

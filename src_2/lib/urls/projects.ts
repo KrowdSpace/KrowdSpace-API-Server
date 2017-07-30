@@ -117,7 +117,11 @@ export class UpdateProjectURL extends RestURL implements RestURL
         if(!proj.owner === user.username)
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let updtR = await UpdateProject(proj.unique_id, this.dataG['projects_getter']);
+        let apiK = "";
+        if(proj.platform == "indiegogo" && this.cfg && this.cfg.api_keys && this.cfg.api_keys.indiegogo)
+            apiK = this.cfg.api_keys.indiegogo;
+
+        let updtR = await UpdateProject(proj.unique_id, this.dataG['projects_getter'], apiK);
 
         if(!updtR)
             return this.end(rest, {success: false, data: {server_error: true}});
