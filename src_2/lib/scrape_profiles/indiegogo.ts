@@ -67,19 +67,23 @@ export async function metaDataFunc(wd: any, rawWD: string)
     let retO : any = {};
 
     retO.jsonReply = safeJSON(rawWD);
+    
+    try
+    {
+        let fund = wd.funding.text;
 
-    let fund = wd.funding.text;
+        // retO.content = wd.content.html;
+        retO.mainImg = wd.mainImg.content;
 
-    // retO.content = wd.content.html;
-    retO.mainImg = wd.mainImg.content;
+        retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];
 
-    retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];
+        retO.raised = wd.stats.text;
+        retO.raisedPercent = wd.percentRaised.content;
 
-    retO.raised = wd.stats.text;
-    retO.raisedPercent = wd.percentRaised.content;
+        retO.duration = +wd.hours.content.split(' ')[0];
+        retO.endTime = wd.endTime.content;
 
-    retO.duration = +wd.hours.content.split(' ')[0];
-    retO.endTime = wd.endTime.content;
+    }catch(e){}
 
     retO.featured = false;
     retO.explore = false;
