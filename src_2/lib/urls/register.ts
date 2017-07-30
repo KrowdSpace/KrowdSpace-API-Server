@@ -183,6 +183,15 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let coupon_code = crypto.randomBytes(6).toString('base64');
         let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('');
 
+        if(dUrl === "https://www.kickstarter.com/")
+        {
+            url = 'https://www.kickstarter.com/' + url;
+        }
+        else
+        {
+            url = `https://api.indiegogo.com/1/campaigns/${ url }.json?api_token=${this.cfg.api_keys.indiegogo}`;
+        }
+
         let newPrData = {
             unique_id,
             owner: sessR.data[0].username,
@@ -191,7 +200,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             coupon_code,
             project_data: {
                 info_data: {
-                    url: (dUrl === 'https://www.kickstarter.com/') ? 'https://www.kickstarter.com/' + url : 'https://indiegogo.com/' + url,
+                    url,
                     category: cat,
                     reward,
                     reward_value: rewardVal,

@@ -3,88 +3,70 @@ import {ScrapeMetaData} from './scrape_base';
 import * as request from 'request-promise-native';
 import {safeJSON} from '@otter-co/ottlib';
 
-export const pageIDs = {
-        title: [
-            'meta[property="og:title"]',
+export const pageIDs = Object.create(null);
+// {
+//         title: [
+//             'meta[property="og:title"]',
 
-            'content'
-        ],
-        description: [
-            'meta[name="description"]',
+//             'content'
+//         ],
+//         description: [
+//             'meta[name="description"]',
 
-            'content'
-        ],
-        projectID:
-        [
-            'meta[name="sailthru.project_id"]',
+//             'content'
+//         ],
+//         projectID:
+//         [
+//             'meta[name="sailthru.project_id"]',
 
-            'content'
-        ],
+//             'content'
+//         ],
 
-        content: [
-            'ui-view',
+//         content: [
+//             'ui-view',
 
-            'text',
-            'html'
-        ],
-        stats: [
-            'span.campaignGoalProgress-raisedAmount',
+//             'text',
+//             'html'
+//         ],
+//         stats: [
+//             'span.campaignGoalProgress-raisedAmount',
 
-            'text',
-            'html'
-        ],
-        percentRaised: [
-            'meta[name="sailthru.pct_funded"]',
+//             'text',
+//             'html'
+//         ],
+//         percentRaised: [
+//             'meta[name="sailthru.pct_funded"]',
 
-            'content'
-        ],
-        mainImg: [
-            'meta[property="og:image"]',
+//             'content'
+//         ],
+//         mainImg: [
+//             'meta[property="og:image"]',
 
-            'content'
-        ],
-        hours: [
-            'meta[name="sailthru.displayed_days_left"]',
+//             'content'
+//         ],
+//         hours: [
+//             'meta[name="sailthru.displayed_days_left"]',
  
-            'content'
-        ],
-        endTime: 
-        [
-            'meta[name="sailthru.date"]',
+//             'content'
+//         ],
+//         endTime: 
+//         [
+//             'meta[name="sailthru.date"]',
  
-            'content'
-        ],
-        funding: [
-            'div.campaignGoalProgress-detailsGoal div.ng-binding',
+//             'content'
+//         ],
+//         funding: [
+//             'div.campaignGoalProgress-detailsGoal div.ng-binding',
 
-            'text',
-        ]
-    };
+//             'text',
+//         ]
+//     };
 
-export async function metaDataFunc(wd: any, api_token: any)
+export async function metaDataFunc(wd: any, rawWD: string)
 {
     let retO : any = {};
 
-    if(wd.projectID && wd.projectID.content)
-    {
-        let url = `https://api.indiegogo.com/1/campaigns/${ wd.projectID.content }.json?api_token=${api_token}`;
-        
-        let reqOpts = {
-            url,
-            headers: {
-                "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
-            }
-        };
-        
-        let newWD = await request(reqOpts);
-
-        retO.content = {
-            raw: newWD,
-            parsed: safeJSON(newWD)
-        };
-    }
-    else
-        retO.content = {fack: "Fack"};
+    retO.jsonReply = safeJSON(rawWD);
 
     let fund = wd.funding.text;
 
