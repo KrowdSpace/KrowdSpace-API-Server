@@ -43,7 +43,7 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
     let webData = getURLData(rawWData, scrapeProfile);
 
     let setObj = {
-        name: webData.title.content,
+        name: (webData && webData.title && webData.title.content) ? webData.title.content : "",
         project_data:
         {
             raw_web_data: rawWData,
@@ -53,6 +53,9 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
     };
 
     setObj.project_data.meta_data = await metaFunc(webData, rawWData).catch(err=>err);
+
+    if(!setObj.name && setObj.project_data.meta_data)
+            setObj.name = 'YUUUUUGGGGGGGEEE';
 
     let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
     
