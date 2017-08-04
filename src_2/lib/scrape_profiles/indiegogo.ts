@@ -68,7 +68,7 @@ export async function metaDataFunc(wd: any, rawWD: string)
 
     retO.jsonReply = safeJSON(rawWD);
 
-    let dO = retO.jsonReply.reponse;
+    let dO = retO.jsonReply.response;
     
     try
     {
