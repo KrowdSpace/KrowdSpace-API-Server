@@ -9,89 +9,89 @@ export const pageIDs = Object.create(null);
 //             'meta[property="og:title"]',
 
 //             'content'
-//         ],
-//         description: [
-//             'meta[name="description"]',
-
-//             'content'
-//         ],
-//         projectID:
-//         [
-//             'meta[name="sailthru.project_id"]',
-
-//             'content'
-//         ],
-
-//         content: [
-//             'ui-view',
-
-//             'text',
-//             'html'
-//         ],
-//         stats: [
-//             'span.campaignGoalProgress-raisedAmount',
-
-//             'text',
-//             'html'
-//         ],
-//         percentRaised: [
-//             'meta[name="sailthru.pct_funded"]',
-
-//             'content'
-//         ],
-//         mainImg: [
-//             'meta[property="og:image"]',
-
-//             'content'
-//         ],
-//         hours: [
-//             'meta[name="sailthru.displayed_days_left"]',
- 
-//             'content'
-//         ],
-//         endTime: 
-//         [
-//             'meta[name="sailthru.date"]',
- 
-//             'content'
-//         ],
-//         funding: [
-//             'div.campaignGoalProgress-detailsGoal div.ng-binding',
-
-//             'text',
 //         ]
-//     };
+    //     description: [
+    //         'meta[name="description"]',
+
+    //         'content'
+    //     ],
+    //     projectID:
+    //     [
+    //         'meta[name="sailthru.project_id"]',
+
+    //         'content'
+    //     ],
+
+    //     content: [
+    //         'ui-view',
+
+    //         'text',
+    //         'html'
+    //     ],
+    //     stats: [
+    //         'span.campaignGoalProgress-raisedAmount',
+
+    //         'text',
+    //         'html'
+    //     ],
+    //     percentRaised: [
+    //         'meta[name="sailthru.pct_funded"]',
+
+    //         'content'
+    //     ],
+    //     mainImg: [
+    //         'meta[property="og:image"]',
+
+    //         'content'
+    //     ],
+    //     hours: [
+    //         'meta[name="sailthru.displayed_days_left"]',
+ 
+    //         'content'
+    //     ],
+    //     endTime: 
+    //     [
+    //         'meta[name="sailthru.date"]',
+ 
+    //         'content'
+    //     ],
+    //     funding: [
+    //         'div.campaignGoalProgress-detailsGoal div.ng-binding',
+
+    //         'text',
+    //     ]
+    // };
 
 export async function metaDataFunc(wd: any, rawWD: string)
 {
     let retO : any = {};
 
     retO.jsonReply = safeJSON(rawWD);
+
+    let dO = retO.jsonReply.reponse;
     
     try
     {
-        let fund = wd.funding.text;
+        retO.mainImg = dO.video_overlay_url;
+        retO.title = dO.title;
 
-        // retO.content = wd.content.html;
-        retO.mainImg = wd.mainImg.content;
+        retO.description = dO.tagline;
 
-        retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];
+        retO.content = "";
+        
+        retO.funding = dO.goal;
 
-        retO.raised = wd.stats.text;
-        retO.raisedPercent = wd.percentRaised.content;
+        retO.raised = dO.collected_funds;
+        retO.raisedPercent = retO.raised / retO.funding;
 
-        retO.duration = +wd.hours.content.split(' ')[0];
-        retO.endTime = wd.endTime.content;
+        retO.duration = dO.funding_days;
+        retO.endTime = dO.funding_ends_at;
 
-    }catch(e){}
-
-    retO.featured = false;
-    retO.explore = false;
-    retO.landing = false;
-    retO.social = false;
-    retO.reward = false;
-
-    retO.refresh = false;
+    }
+    catch(e)
+    {
+        console.log(e);
+    }
 
     return <ScrapeMetaData> retO;
 }

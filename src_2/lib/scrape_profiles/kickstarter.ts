@@ -49,7 +49,8 @@ export async function metaDataFunc(wd: any)
 
         try
         {
-            let fund = wd.funding.text;
+            retO.title = wd.title.content;
+            retO.description = wd.description.content;
 
             retO.content = wd.content.html;
             retO.mainImg = wd.mainImg.content;
@@ -62,19 +63,13 @@ export async function metaDataFunc(wd: any)
 
             retO.duration = wd.hours['data-duration'];
             retO.endTime = wd.hours['data-end_time'];
-
-            retO.featured = false;
-            retO.explore = false;
-            retO.landing = false;
-            retO.social = false;
-            retO.reward = false;
-
-            retO.refresh = false;
         }
         catch(e)
         {
             console.log(e);
         }
+
+        
 
         return retO;
 };

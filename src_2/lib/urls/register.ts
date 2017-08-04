@@ -205,7 +205,15 @@ export class RegisterProjectURL extends RestURL implements RestURL
                     reward,
                     reward_value: rewardVal,
                     reward_ammount: rewardAmm,
-                    ig_reward: igrew || null
+                    ig_reward: igrew || null,
+
+                    featured: false,
+                    explore: false,
+                    landing: false,
+                    social: false,
+                    rewardValid: RewardStatus.Pending,
+                    refresh: false
+                    
                 },
                 meta_data: {}
             },
@@ -241,3 +249,9 @@ export default [
     VerifyURL,
     RegisterProjectURL,
 ];
+
+const RewardStatus = {
+    "Pending": 0,
+    "Approved": 1,
+    "Denied": 2
+};

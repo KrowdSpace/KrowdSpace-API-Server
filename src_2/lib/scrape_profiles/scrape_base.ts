@@ -48,14 +48,14 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
         {
             raw_web_data: rawWData,
             web_data: webData,
-            meta_data: {}
+            meta_data: {} as ScrapeMetaData
         }
     };
 
     setObj.project_data.meta_data = await metaFunc(webData, rawWData).catch(err=>err);
 
     if(!setObj.name && setObj.project_data.meta_data)
-            setObj.name = 'YUUUUUGGGGGGGEEE';
+            setObj.name = setObj.project_data.meta_data.title;
 
     let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
     
@@ -104,6 +104,9 @@ export function getURLData(data, dataT): any
 
 export interface ScrapeMetaData
 {
+    title: string,
+    description: string,
+
     content: string,
     mainImg: string,
 
@@ -114,12 +117,4 @@ export interface ScrapeMetaData
 
     duration: number,
     endTime: number,
-
-    featured: boolean,
-    explore: boolean,
-    landing: boolean,
-    social: boolean,
-    reward: boolean,
-
-    refresh: boolean,
 }
