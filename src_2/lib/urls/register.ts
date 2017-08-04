@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt';
 import * as request from 'request-promise-native';
 import * as cheerio from 'cheerio';
 
-import sendMail from 'sendmail';
+import * as sendMail from 'sendmail';
 
 import {RestURL, safeJSON} from '@otter-co/ottlib';
 
@@ -136,6 +136,8 @@ export class RegisterUserURL extends RestURL implements RestURL
             if(usrAddR)
             {
                 this.end(rest, {success: true});
+
+                let verify_url = "https://www.krowdspace.com/account/verify=" + verify_code;
                 
                 mailer({
                     from: 'no-reply@krowdspace.com',
