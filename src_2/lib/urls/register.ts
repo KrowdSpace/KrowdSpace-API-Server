@@ -3,12 +3,16 @@ import * as bcrypt from 'bcrypt';
 import * as request from 'request-promise-native';
 import * as cheerio from 'cheerio';
 
+import sendMail from 'sendmail';
+
 import {RestURL, safeJSON} from '@otter-co/ottlib';
 
 import * as scraper from '../scrape_profiles/scrape_base';
 
 import * as ksData from '../scrape_profiles/kickstarter';
 import * as igData from '../scrape_profiles/indiegogo';
+
+const mailer = sendMail();
 
 export class ContactUsURL extends RestURL implements RestURL
 {
@@ -110,9 +114,9 @@ export class RegisterUserURL extends RestURL implements RestURL
         let byC = (this.cfg.user_security && this.cfg.user_security.validate_key_length) || 64;
         let salts = (this.cfg.user_security && this.cfg.user_security.pass_salts) || 11;
         
-        let verify_code = crypto.randomBytes(byC).toString('base64');
+        let verify_code = crypto.randomBytes(byC).toString('base64').replace(/[^A-Za-z0-9]/g, "");
 
-        let unique_id = crypto.randomBytes(10).toString('base64');
+        let unique_id = crypto.randomBytes(10).toString('base64').replace(/[^A-Za-z0-9]/g, "");
 
         let bcrpP = bcrypt.hash(password, salts).catch(err=>err),
             usrChkP = userG.get({username, email}).catch(err=>err);
@@ -128,9 +132,37 @@ export class RegisterUserURL extends RestURL implements RestURL
             let usrAddP = userG.add({username, unique_id, email, pass_hash, user_data, verify_code}).catch(err=>err);
             let usrAddR = await usrAddP;
 
+            // Success Path!
             if(usrAddR)
+            {
                 this.end(rest, {success: true});
-            
+                
+                mailer({
+                    from: 'no-reply@krowdspace.com',
+                    to: email,
+                    subject: "Verify KrowdSpace Email",
+                    html: 
+                        `Heya, ${fname}! <br>
+                        <br>
+                        Please Click 
+                            <a href="https://www.krowdspace.com/account/verify=${verify_code}">
+                                Here
+                            </a>
+                        to confirm this email for your KrowdSpace Account!
+                        <br>
+                        <br>
+                        (Here's the URL if the the 'Here' link does not work correctly in your email viewer:
+                        <br>
+                        https://www.krowdspace.com/account/verify=${verify_code}")
+                        <br>
+                        <br>
+                        - The KrowdSpace Team`,
+                });
+                
+
+                return;
+            }
+    
         } else if(userExists.data[0])
             resp = {notnew: true};
         else if(!pass_hash)
@@ -180,8 +212,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(projR.success && projR.data && projR.data[0])
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
 
-        let coupon_code = crypto.randomBytes(6).toString('base64');
-        let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('');
+        let coupon_code = crypto.randomBytes(6).toString('base64').replace(/[^A-Za-z0-9]/g, "");
+        let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('').replace(/[^A-Za-z0-9]/g, "");;
 
         if(dUrl === "https://www.kickstarter.com/")
         {
