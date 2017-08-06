@@ -72,7 +72,7 @@ export class VerifyURL extends RestURL implements RestURL
 
         let userG = this.dataG['users_getter'];
 
-        let usrP = userG.set({verifed: "Y"}, {verified: "N", verify_code}).catch(err=>err);
+        let usrP = userG.set({verifed: "Y"}, {$set:{verify_code}}).catch(err=>err);
 
         let usrR = await usrP;
 
@@ -129,7 +129,19 @@ export class RegisterUserURL extends RestURL implements RestURL
         if(userExists.data && !userExists.data[0] && pass_hash)
         {
             resp = "Error Adding user to DB";
-            let usrAddP = userG.add({username, unique_id, email, pass_hash, user_data, verify_code}).catch(err=>err);
+
+            let userO = {
+                username, 
+                unique_id, 
+                email, 
+                pass_hash, 
+                user_data,
+                verified: "N",
+                verify_code,
+                forget_code: ""
+            };
+
+            let usrAddP = userG.add(userO).catch(err=>err);
             let usrAddR = await usrAddP;
 
             // Success Path!
