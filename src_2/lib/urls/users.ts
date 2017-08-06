@@ -10,7 +10,7 @@ export class LoginURL extends RestURL implements RestURL
 
     private failObj = {
             success: false, 
-            data: {bad_combo: true}
+            data: {bad_combo_def: true}
         };
 
     public async onLoad(rest, data, cooks)
