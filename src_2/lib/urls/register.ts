@@ -72,7 +72,7 @@ export class VerifyURL extends RestURL implements RestURL
 
         let userG = this.dataG['users_getter'];
 
-        let usrP = userG.set({verifed: "Y"}, {$set:{verify_code}}).catch(err=>err);
+        let usrP = userG.set({verifed: true}, {$set:{verify_code}}).catch(err=>err);
 
         let usrR = await usrP;
 
@@ -139,7 +139,7 @@ export class RegisterUserURL extends RestURL implements RestURL
                 email: email,
                 pass_hash, 
                 user_data,
-                verified: "N",
+                verified: false,
                 verify_code,
                 forget_code: ""
             };
