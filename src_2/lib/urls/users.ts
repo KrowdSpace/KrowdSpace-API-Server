@@ -41,8 +41,11 @@ export class LoginURL extends RestURL implements RestURL
                         return this.end(rest, {success: true, data: {logged_out: true}});
                     }
                 }
-                if(loggedInR.data[0].username === username || username === "" || !username)
-                    return this.end(rest, {success: true, data: {already_logged_in: true}});
+                 let usrR = await userG.get( { '$or':[ {username}, {email: username.toLowerCase()} ] } ).catch(err=>err);
+
+                if(!(!usrR.success || !usrR.data || !usrR.data[0]))
+                    if(loggedInR.data[0].username === usrR.data[0].username || username === "" || !username)
+                        return this.end(rest, {success: true, data: {already_logged_in: true}});
             }
         }
 
@@ -65,7 +68,7 @@ export class LoginURL extends RestURL implements RestURL
         let sessR;
 
         if(sessE.success && sessE.data && sessE.data[0])
-            sessR = await sessG.set({username: user.username}, {session_id: sess_id}).catch(err=>err);
+            sessR = await sessG.set({ username: user.username }, {$set:{session_id: sess_id}}).catch(err=>err);
         else
             sessR = await sessG.add({ session_id: sess_id, username: user.username, last_ip: '127.0.0.1'}).catch(err=>err);
     
