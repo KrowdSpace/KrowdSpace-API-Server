@@ -9,15 +9,7 @@ export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
     {
         return new Promise((resolve, reject)=>
         {
-            let {
-                username,
-                pass_hash,
-                email,
-                user_data,
-                verify_code
-            } = this.escape(data);
-
-            this.insert({username, pass_hash, email, user_data, verify_code}, (err, res, f)=>
+            this.insert(this.escape(data), (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true});
@@ -71,13 +63,7 @@ export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
     {
         return new Promise((resolve, reject)=>
         {
-            let {
-                session_id,
-                username,
-                last_ip
-            } = this.escape(data);
-
-            this.insert({session_id, username, last_ip}, (err, res, f)=>
+            this.insert(this.escape(data), (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true});
