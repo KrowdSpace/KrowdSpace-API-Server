@@ -18,10 +18,10 @@ export class LoginURL extends RestURL implements RestURL
         let failObj = this.failObj;
 
         let {
-            USERNAME: username = "",
-            PASSWORD: password = "",
-            STAYLOGGED: stayLog = false,
-            LOGOUT: logout = false
+            USERNAME: username,
+            PASSWORD: password,
+            STAYLOGGED: stayLog,
+            LOGOUT: logout
         } = data;
 
         let userG = this.dataG["users_getter"],
@@ -41,11 +41,8 @@ export class LoginURL extends RestURL implements RestURL
                         return this.end(rest, {success: true, data: {logged_out: true}});
                     }
                 }
-                let usrR = await userG.get( { '$or':[ {username}, {email: username.toLowerCase()} ] } ).catch(err=>err);
-
-                if(!(!usrR.success || !usrR.data || !usrR.data[0]))
-                    if(loggedInR.data[0].username === usrR.data[0].username || username === "" || !username)
-                        return this.end(rest, {success: true, data: {already_logged_in: true}});
+                
+                return this.end(rest, {success: true, data: {already_logged_in: true}});                        
             }
         }
 
