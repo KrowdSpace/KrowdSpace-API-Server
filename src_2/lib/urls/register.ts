@@ -131,9 +131,9 @@ export class RegisterUserURL extends RestURL implements RestURL
             resp = "Error Adding user to DB";
 
             let userO = {
-                username, 
+                username,
                 unique_id, 
-                email, 
+                email: email.toLowerCase(), 
                 pass_hash, 
                 user_data,
                 verified: "N",
@@ -302,6 +302,8 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
         let {
             EMAIL
         } = data;
+        
+        EMAIL = EMAIL.toLowerCase();
 
         let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
 
@@ -321,7 +323,9 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
                         <br>
                         Here is your Reset Code: ${resetCode},
                         <br>
-                        Please use this to reset your password.`,
+                        Please use this to reset your password 
+                        <br>
+                        <a href="${this.cfg.reset_url}">Here.</a>"`,
                 });
 
         return this.end(rest, {success: true});
