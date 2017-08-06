@@ -92,8 +92,8 @@ export class RegisterUserURL extends RestURL implements RestURL
     public async onLoad(rest, data, cooks)
     {
         let {
-            USERNAME: username, 
-            EMAIL: email, 
+            USERNAME: username = "", 
+            EMAIL: email = "", 
             PASSWORD: password,
 
             FNAME: fname,
@@ -101,6 +101,9 @@ export class RegisterUserURL extends RestURL implements RestURL
             KS_USER: ksuser,
             IG_USER: iguser,
         } = data;
+
+        username = username.toLowerCase();
+        password = password.toLowerCase();
 
         let banNames = this.cfg.user_register.banned_names;
 
@@ -131,9 +134,9 @@ export class RegisterUserURL extends RestURL implements RestURL
             resp = "Error Adding user to DB";
 
             let userO = {
-                username,
+                username: username,
                 unique_id, 
-                email: email.toLowerCase(), 
+                email: email,
                 pass_hash, 
                 user_data,
                 verified: "N",
