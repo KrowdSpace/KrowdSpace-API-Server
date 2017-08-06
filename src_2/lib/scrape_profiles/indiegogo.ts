@@ -72,7 +72,7 @@ export async function metaDataFunc(wd: any, rawWD: string)
     
     try
     {
-        retO.mainImg = dO.video_overlay_url;
+        retO.mainImg = dO.image_types && dO.image_types.original;
         retO.title = dO.title;
 
         retO.description = dO.tagline;
@@ -86,7 +86,6 @@ export async function metaDataFunc(wd: any, rawWD: string)
 
         retO.duration = dO.funding_days;
         retO.endTime = dO.funding_ends_at;
-
     }
     catch(e)
     {
