@@ -227,7 +227,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             return this.end(rest, {success: false, data: {unique_id_already_exists: true}});
 
         let coupon_code = crypto.randomBytes(6).toString('base64').replace(/[^A-Za-z0-9]/g, "");
-        let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('').replace(/[^A-Za-z0-9]/g, "");;
+        let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('').replace(/[^A-Za-z0-9]/g, "");
 
         let iUrl = url;
 
@@ -291,12 +291,61 @@ export class RegisterProjectURL extends RestURL implements RestURL
     }
 }
 
+export class RequestResetPasswordURL extends RestURL implements RestURL 
+{
+    public static url = '/v1/register/request_reset_password';
+    public static type = 'post';
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {
+            EMAIL
+        } = data;
+
+        let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
+
+        let userG = this.dataG["users_getter"];
+        let userR = await userG.set({email: EMAIL}, {$set:{forget_code: resetCode}}).catch(err=>err);
+
+        return this.end(rest, {success: true});
+    }
+}
+
+export class ResetPasswordURL extends RestURL implements RestURL 
+{
+    public static url = '/v1/register/reset_password';
+    public static type = 'post';
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {
+            RESET_CODE,
+            NEW_PASSWORD
+        } = data;
+        
+        let userG = this.dataG['users_getter'];
+
+        let byC = (this.cfg.user_security && this.cfg.user_security.validate_key_length) || 64;
+        let salts = (this.cfg.user_security && this.cfg.user_security.pass_salts) || 11;
+
+        let bcrpP = bcrypt.hash(NEW_PASSWORD, salts).catch(err=>err);
+        let pass_hash = await bcrpP;
+
+        let userR = await userG.set({forget_code: RESET_CODE}, {$set: {pass_hash}}).catch(err=>err);
+        
+        return this.end(rest, {success: userR.success});
+    }
+}
+
 export default [
     ContactUsURL,
     EmailListURL,
     RegisterUserURL,
     VerifyURL,
     RegisterProjectURL,
+    RequestResetPasswordURL
 ];
 
 const RewardStatus = {
