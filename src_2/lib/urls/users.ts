@@ -21,7 +21,7 @@ export class LoginURL extends RestURL implements RestURL
             USERNAME: username = "",
             PASSWORD: password = "",
             STAYLOGGED: stayLog = false,
-            LOGOUT: logout = true
+            LOGOUT: logout = false
         } = data;
 
         let userG = this.dataG["users_getter"],
@@ -41,7 +41,7 @@ export class LoginURL extends RestURL implements RestURL
                         return this.end(rest, {success: true, data: {logged_out: true}});
                     }
                 }
-                 let usrR = await userG.get( { '$or':[ {username}, {email: username.toLowerCase()} ] } ).catch(err=>err);
+                let usrR = await userG.get( { '$or':[ {username}, {email: username.toLowerCase()} ] } ).catch(err=>err);
 
                 if(!(!usrR.success || !usrR.data || !usrR.data[0]))
                     if(loggedInR.data[0].username === usrR.data[0].username || username === "" || !username)
