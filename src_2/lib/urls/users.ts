@@ -50,8 +50,9 @@ export class LoginURL extends RestURL implements RestURL
 
         if(!usrR.success || !usrR.data || !usrR.data[0])
             return this.end(rest, failObj);
-    
-        let storedHash = usrR.data[0].pass_hash;
+        
+        let user = usrR.data[0];
+        let storedHash = user.pass_hash;
 
         let passR = await bcrypt.compare(password, storedHash);
 
@@ -60,13 +61,13 @@ export class LoginURL extends RestURL implements RestURL
         
         let sess_id = crypto.randomBytes(this.cfg.user_security.sess_key_length).toString('base64');
 
-        let sessE = await sessG.get({username}).catch(err=>err);
+        let sessE = await sessG.get({username: user.unique_id}).catch(err=>err);
         let sessR;
 
         if(sessE.success && sessE.data && sessE.data[0])
-            sessR = await sessG.set({username}, {session_id: sess_id}).catch(err=>err);
+            sessR = await sessG.set({username: user.unique_id}, {session_id: sess_id}).catch(err=>err);
         else
-            sessR = await sessG.add({ session_id: sess_id, username, last_ip: '127.0.0.1'}).catch(err=>err);
+            sessR = await sessG.add({ session_id: sess_id, username: user.unique_id, last_ip: '127.0.0.1'}).catch(err=>err);
     
         if(!sessR.success)
             return this.end(rest, failObj);
