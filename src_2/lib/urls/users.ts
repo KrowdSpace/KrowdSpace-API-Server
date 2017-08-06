@@ -54,7 +54,7 @@ export class LoginURL extends RestURL implements RestURL
         let usrR = await userG.get( { '$or':[ {username}, {email: username} ] } ).catch(err=>err);
 
         if(!usrR.success || !usrR.data || !usrR.data[0])
-            return this.end(rest, failObj);
+            return this.end(rest, {success: false, data: {bad_username: true}});
         
         let user = usrR.data[0];
         let storedHash = user.pass_hash;
@@ -62,7 +62,7 @@ export class LoginURL extends RestURL implements RestURL
         let passR = await bcrypt.compare(password, storedHash);
 
         if(!passR)
-            return this.end(rest, failObj);
+            return this.end(rest, {success: false, data: {bad_combo: true}});
         
         let sess_id = crypto.randomBytes(this.cfg.user_security.sess_key_length).toString('base64');
 
@@ -70,12 +70,12 @@ export class LoginURL extends RestURL implements RestURL
         let sessR;
 
         if(sessE.success && sessE.data && sessE.data[0])
-            sessR = await sessG.set({$or:[ {username: username }, {email: username} ]}, {$set:{session_id: sess_id}}).catch(err=>err);
+            sessR = await sessG.set({ $or:[ {username: username }, {email: username} ]}, {$set:{session_id: sess_id}}).catch(err=>err);
         else
             sessR = await sessG.add({ session_id: sess_id, email: user.email, username: user.username, last_ip: '127.0.0.1'}).catch(err=>err);
     
         if(!sessR.success)
-            return this.end(rest, failObj);
+            return this.end(rest, {success: false, data: {bad_session_add: true}});
 
         let cookieOpts: any = {
             httpOnly: true,
