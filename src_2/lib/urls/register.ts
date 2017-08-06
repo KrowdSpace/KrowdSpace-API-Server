@@ -137,7 +137,7 @@ export class RegisterUserURL extends RestURL implements RestURL
             {
                 this.end(rest, {success: true});
 
-                let verify_url = "https://dev.krowdspace.com/account/verify=" + verify_code;
+                let verify_url = this.cfg.verify_url + verify_code;
                 
                 mailer({
                     from: 'no-reply@krowdspace.com',
