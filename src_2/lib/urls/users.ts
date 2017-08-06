@@ -61,13 +61,13 @@ export class LoginURL extends RestURL implements RestURL
         
         let sess_id = crypto.randomBytes(this.cfg.user_security.sess_key_length).toString('base64');
 
-        let sessE = await sessG.get({username: user.unique_id}).catch(err=>err);
+        let sessE = await sessG.get({username: user.username}).catch(err=>err);
         let sessR;
 
         if(sessE.success && sessE.data && sessE.data[0])
-            sessR = await sessG.set({username: user.unique_id}, {session_id: sess_id}).catch(err=>err);
+            sessR = await sessG.set({username: user.username}, {session_id: sess_id}).catch(err=>err);
         else
-            sessR = await sessG.add({ session_id: sess_id, username: user.unique_id, last_ip: '127.0.0.1'}).catch(err=>err);
+            sessR = await sessG.add({ session_id: sess_id, username: user.username, last_ip: '127.0.0.1'}).catch(err=>err);
     
         if(!sessR.success)
             return this.end(rest, failObj);
