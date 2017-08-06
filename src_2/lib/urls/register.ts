@@ -306,20 +306,23 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
         let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
 
         let userG = this.dataG["users_getter"];
+
+        let userE = await userG.get({email: EMAIL}).catch(err=>err);
         let userR = await userG.set({email: EMAIL}, {$set:{forget_code: resetCode}}).catch(err=>err);
-        
-        if(userR.success)
-            mailer({
-                from: 'no-reply@krowdspace.com',
-                to: EMAIL,
-                subject: "Reset KrowdSpace Password",
-                html: 
-                    `You requested to have your password Reset,
-                    <br>
-                    Here is your Reset Code: ${resetCode},
-                    <br>
-                    Please use this to reset your password.`,
-            });
+
+        if(userE.success && userE.data && userE.data[0])
+            if(userR.success)
+                mailer({
+                    from: 'no-reply@krowdspace.com',
+                    to: EMAIL,
+                    subject: "Reset KrowdSpace Password",
+                    html: 
+                        `You requested to have your password Reset,
+                        <br>
+                        Here is your Reset Code: ${resetCode},
+                        <br>
+                        Please use this to reset your password.`,
+                });
 
         return this.end(rest, {success: true});
     }
