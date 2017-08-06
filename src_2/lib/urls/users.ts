@@ -18,8 +18,8 @@ export class LoginURL extends RestURL implements RestURL
         let failObj = this.failObj;
 
         let {
-            USERNAME: username,
-            PASSWORD: password,
+            USERNAME: username = "",
+            PASSWORD: password = "",
             STAYLOGGED: stayLog,
             LOGOUT: logout
         } = data;
@@ -27,12 +27,16 @@ export class LoginURL extends RestURL implements RestURL
         let userG = this.dataG["users_getter"],
             sessG = this.dataG["sessions_getter"];
 
+        username = username.toLowerCase();
+
         if(cooks['ks-session'])
         {
             let loggedInR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
 
             if(loggedInR.success && loggedInR.data && loggedInR.data[0])
             {
+                let sessO = loggedInR.data[0];
+
                 if(logout)
                 {
                     let sessD = await sessG.rid({username: loggedInR.data[0].username});
@@ -41,12 +45,13 @@ export class LoginURL extends RestURL implements RestURL
                         return this.end(rest, {success: true, data: {logged_out: true}});
                     }
                 }
-                
-                return this.end(rest, {success: true, data: {already_logged_in: true}});                        
+
+                if(!username || sessO.username == username || sessO.email == username)
+                    return this.end(rest, {success: true, data: {already_logged_in: true}});                        
             }
         }
 
-        let usrR = await userG.get( { '$or':[ {username}, {email: username.toLowerCase()} ] } ).catch(err=>err);
+        let usrR = await userG.get( { '$or':[ {username}, {email: username} ] } ).catch(err=>err);
 
         if(!usrR.success || !usrR.data || !usrR.data[0])
             return this.end(rest, failObj);
@@ -64,10 +69,12 @@ export class LoginURL extends RestURL implements RestURL
         let sessE = await sessG.get({username: user.username}).catch(err=>err);
         let sessR;
 
+        username = username.toLowerCase();
+
         if(sessE.success && sessE.data && sessE.data[0])
-            sessR = await sessG.set({ username: user.username }, {$set:{session_id: sess_id}}).catch(err=>err);
+            sessR = await sessG.set({$or:[ {username: username }, {email: username} ]}, {$set:{session_id: sess_id}}).catch(err=>err);
         else
-            sessR = await sessG.add({ session_id: sess_id, username: user.username, last_ip: '127.0.0.1'}).catch(err=>err);
+            sessR = await sessG.add({ session_id: sess_id, email: user.email, username: user.username, last_ip: '127.0.0.1'}).catch(err=>err);
     
         if(!sessR.success)
             return this.end(rest, failObj);
