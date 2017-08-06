@@ -66,9 +66,7 @@ export class LoginURL extends RestURL implements RestURL
 
         let sessE = await sessG.get({username: user.username}).catch(err=>err);
         let sessR;
-
-        username = username.toLowerCase();
-
+        
         if(sessE.success && sessE.data && sessE.data[0])
             sessR = await sessG.set({$or:[ {username: username }, {email: username} ]}, {$set:{session_id: sess_id}}).catch(err=>err);
         else
