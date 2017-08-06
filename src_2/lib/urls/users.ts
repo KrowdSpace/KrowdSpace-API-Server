@@ -27,8 +27,6 @@ export class LoginURL extends RestURL implements RestURL
         let userG = this.dataG["users_getter"],
             sessG = this.dataG["sessions_getter"];
 
-        username = username.toLowerCase();
-
         if(cooks['ks-session'])
         {
             let loggedInR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
