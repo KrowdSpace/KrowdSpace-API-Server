@@ -16,7 +16,7 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
     let p = projR.data[0];
 
     let reqOpts = {
-        url: p.project_data.info_data.url,
+        url: (p.platform == 'indiegogo' ? p.project_data.info_data.scrape_url : p.project_data.info_data.url),
         headers: {
             "User-Agent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0"
         }
@@ -42,7 +42,7 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
     let rawWData = await request(reqOpts).catch(err=>err);
     let webData = getURLData(rawWData, scrapeProfile);
 
-    let setObj = {
+    let setObj: any = {
         name: (webData && webData.title && webData.title.content) ? webData.title.content : "",
         project_data:
         {
@@ -57,6 +57,9 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
     if(!setObj.name && setObj.project_data.meta_data)
             setObj.name = setObj.project_data.meta_data.title;
 
+    if(p.platform === 'indiegogo')
+        setObj.info_data = { url: setObj.meta_data.jsonReply.response.web_url };
+            
     let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
     
     if(psR.success)

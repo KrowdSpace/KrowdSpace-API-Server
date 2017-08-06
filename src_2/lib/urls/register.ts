@@ -137,7 +137,7 @@ export class RegisterUserURL extends RestURL implements RestURL
             {
                 this.end(rest, {success: true});
 
-                let verify_url = "https://www.krowdspace.com/account/verify=" + verify_code;
+                let verify_url = "https://dev.krowdspace.com/account/verify=" + verify_code;
                 
                 mailer({
                     from: 'no-reply@krowdspace.com',
@@ -147,7 +147,7 @@ export class RegisterUserURL extends RestURL implements RestURL
                         `Heya, ${fname}! <br>
                         <br>
                         Please Click 
-                            <a href="https://www.krowdspace.com/account/verify=${verify_code}">
+                            <a href="${verify_url}">
                                 Here
                             </a>
                         to confirm this email for your KrowdSpace Account!
@@ -155,7 +155,7 @@ export class RegisterUserURL extends RestURL implements RestURL
                         <br>
                         (Here's the URL if the the 'Here' link does not work correctly in your email viewer:
                         <br>
-                        https://www.krowdspace.com/account/verify=${verify_code}")
+                            ${verify_url}
                         <br>
                         <br>
                         - The KrowdSpace Team`,
@@ -217,6 +217,8 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let coupon_code = crypto.randomBytes(6).toString('base64').replace(/[^A-Za-z0-9]/g, "");
         let unique_id = crypto.randomBytes(10).toString('base64').split('').slice(0,6).join('').replace(/[^A-Za-z0-9]/g, "");;
 
+        let iUrl = url;
+
         if(dUrl === "https://www.kickstarter.com/")
         {
             url = 'https://www.kickstarter.com/' + url;
@@ -235,6 +237,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
             project_data: {
                 info_data: {
                     url,
+                    scrape_url: url,
                     category: cat,
                     reward,
                     reward_value: rewardVal,
