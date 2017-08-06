@@ -103,6 +103,7 @@ export class RegisterUserURL extends RestURL implements RestURL
         } = data;
 
         username = username.toLowerCase();
+        email = email.toLowerCase();
 
         let banNames = this.cfg.user_register.banned_names;
 
