@@ -325,15 +325,15 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
                 mailer({
                     from: 'no-reply@krowdspace.com',
                     to: EMAIL,
-                    subject: "Reset KrowdSpace Password",
+                    subject: "Reset Krowdspace Password",
                     html: 
-                        `You requested to have your password Reset,
+                        `You requested to have your password reset,
                         <br>
-                        Here is your Reset Code: ${resetCode},
+                        Here is your Reset Code: ${resetCode}
                         <br>
                         Please use this to reset your password 
                         <br>
-                        <a href="${this.cfg.reset_url}">Here.</a>"`,
+                        <a href="${this.cfg.reset_url}">Reset Password Link </a>"`,
                 });
         }
             
