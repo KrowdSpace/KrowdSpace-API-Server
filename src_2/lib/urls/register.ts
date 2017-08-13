@@ -73,7 +73,7 @@ export class VerifyURL extends RestURL implements RestURL
 
         let userG = this.dataG['users_getter'];
 
-        let usrP = userG.set({verifed: true}, {$set:{verify_code}}).catch(err=>err);
+        let usrP = userG.set({verifed: true}, {verify_code}).catch(err=>err);
 
         let usrR = await usrP;
 
@@ -286,7 +286,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
         if(!updateP.success)
             return this.end(rest, {success: false, data: {server_error: true, update_project_failed: updateP}});
 
-        let usrU = await userG.set({_id: sessR.data[0]._id}, { $set : {level:'PO'} }).catch(err=>err);
+        let usrU = await userG.set({_id: sessR.data[0]._id}, {level:'PO'} ).catch(err=>err);
 
         if(!usrU.success)
             return this.end(rest, {success: false, data: {server_error: true, update_user_failed: true}});
@@ -317,7 +317,7 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
         if(userE.success && userE.data && userE.data[0])
         {
             let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
-            let userR = await userG.set({_id: userE.data[0]._id}, {$set: {forget_code: resetCode} }).catch(err=>err);
+            let userR = await userG.set({_id: userE.data[0]._id}, {forget_code: resetCode}).catch(err=>err);
 
             resO.userR = userR;
 
@@ -362,7 +362,7 @@ export class ResetPasswordURL extends RestURL implements RestURL
         let bcrpP = bcrypt.hash(NEW_PASSWORD, salts).catch(err=>err);
 
         let pass_hash = await bcrpP;
-        let userR = await userG.set({forget_code: RESET_CODE}, {$set: {pass_hash}}).catch(err=>err);
+        let userR = await userG.set({forget_code: RESET_CODE}, {pass_hash}).catch(err=>err);
         
         return this.end(rest, {success: userR.success});
     }
