@@ -374,7 +374,8 @@ export default [
     RegisterUserURL,
     VerifyURL,
     RegisterProjectURL,
-    RequestResetPasswordURL
+    RequestResetPasswordURL,
+    ResetPasswordURL,
 ];
 
 const RewardStatus = {
