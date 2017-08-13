@@ -5,6 +5,23 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
     public serviceName = "projects_getter";
     table = "projects";
 
+    public agg(data: any)
+    {
+        return new Promise((ressolve, reject)=>
+        {
+            this.aggregate(data, (err, res, f)=>
+            {
+                if(!err)
+                    res.toArray((err, docs)=>
+                    {
+                        ressolve({success: true, data: docs})
+                    });
+                else
+                    reject({success: false, data: err});
+            });
+        });
+    }
+
     public add(data: any): Promise<DataResponse>
     {
         return new Promise((resolve, reject)=>

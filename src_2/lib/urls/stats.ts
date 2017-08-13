@@ -26,7 +26,7 @@ export class StatsURL extends RestURL implements RestURL
 
         let pCount = await projG.collection.count({});
 
-        let projR = await projG.aggregate([
+        let projR = await projG.agg([
             {$match: {}},
             {$group: {
                 _id: "$platform",
