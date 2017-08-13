@@ -202,7 +202,7 @@ export class DeleteProjectURL extends RestURL implements RestURL
         
         let projR = await projG.rid({unique_id}).catch(err=>err);
 
-        if(!projR.success || !projR.data || !projR.data[0])
+        if(!projR.success)
             return this.end(rest, {success: false, data:{ not_found: true, projR }});
         else
             return this.end(rest, {success: true});
