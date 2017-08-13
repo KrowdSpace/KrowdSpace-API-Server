@@ -37,7 +37,7 @@ export class StatsURL extends RestURL implements RestURL
         
         totalProjects = pCount;
 
-        this.end(rest, {success: true, data: { totalProjects, projR} });
+        this.end(rest, {success: true, data: { totalProjects, platforms: [...projR.data]} });
     }
 }
 
