@@ -29,7 +29,7 @@
     "typescript": "^2.3.2"
   },
   "dependencies": {
-    "@otter-co/ottlib": "^0.2.4",
+    "@otter-co/ottlib": "^0.2.5",
     "bcrypt": "^1.0.2",
     "cheerio": "^0.22.0",
     "colors": "^1.1.2",
