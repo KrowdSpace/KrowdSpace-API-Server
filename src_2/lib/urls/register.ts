@@ -1,5 +1,6 @@
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
+
 import * as request from 'request-promise-native';
 import * as cheerio from 'cheerio';
 
@@ -307,15 +308,15 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
         } = data;
         
         EMAIL = EMAIL.toLowerCase();
-
-        let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
-
         let userG = this.dataG["users_getter"];
 
         let userE = await userG.get({email: EMAIL}).catch(err=>err);
-        let userR = await userG.set({email: EMAIL}, {$set:{forget_code: resetCode}}).catch(err=>err);
 
         if(userE.success && userE.data && userE.data[0])
+        {
+            let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
+            let userR = await userG.set({email: EMAIL}, {$set:{forget_code: resetCode}}).catch(err=>err);
+
             if(userR.success)
                 mailer({
                     from: 'no-reply@krowdspace.com',
@@ -330,7 +331,8 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
                         <br>
                         <a href="${this.cfg.reset_url}">Here.</a>"`,
                 });
-
+        }
+            
         return this.end(rest, {success: true});
     }
 }
@@ -354,8 +356,8 @@ export class ResetPasswordURL extends RestURL implements RestURL
         let salts = (this.cfg.user_security && this.cfg.user_security.pass_salts) || 11;
 
         let bcrpP = bcrypt.hash(NEW_PASSWORD, salts).catch(err=>err);
+        
         let pass_hash = await bcrpP;
-
         let userR = await userG.set({forget_code: RESET_CODE}, {$set: {pass_hash}}).catch(err=>err);
         
         return this.end(rest, {success: userR.success});

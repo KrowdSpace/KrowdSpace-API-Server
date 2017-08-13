@@ -72,7 +72,9 @@ export async function metaDataFunc(wd: any, rawWD: string)
     
     try
     {
-        retO.mainImg = dO.image_types && dO.image_types.original;
+        retO.mainImg = dO.video_overlay_url;
+        retO.altImg = dO.image_types && dO.image_types.original;
+
         retO.title = dO.title;
 
         retO.description = dO.tagline;

@@ -112,6 +112,7 @@ export interface ScrapeMetaData
 
     content: string,
     mainImg: string,
+    altImg: string,
 
     funding: string,
 

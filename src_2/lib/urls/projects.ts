@@ -37,7 +37,6 @@ export class ProjectURL extends RestURL implements RestURL
     }
 }
 
-
 // TODO - FIX AND SANATIZE USER INPUT ASAP
 export class SetProjectURL extends RestURL implements RestURL
 {

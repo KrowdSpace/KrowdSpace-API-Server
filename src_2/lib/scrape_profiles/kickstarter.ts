@@ -54,6 +54,7 @@ export async function metaDataFunc(wd: any)
 
             retO.content = wd.content.html;
             retO.mainImg = wd.mainImg.content;
+            retO.altImg = null;
 
             retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU)/g )[2];
             //retO.fundingTest = fund.split( /(\$|\€|MX\$)/g ).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
