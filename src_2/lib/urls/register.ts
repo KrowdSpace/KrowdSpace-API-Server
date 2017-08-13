@@ -333,7 +333,7 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
                 });
         }
             
-        return this.end(rest, {success: true});
+        return this.end(rest, {success: true, data: {user_exists: userE.success}});
     }
 }
 
@@ -356,7 +356,7 @@ export class ResetPasswordURL extends RestURL implements RestURL
         let salts = (this.cfg.user_security && this.cfg.user_security.pass_salts) || 11;
 
         let bcrpP = bcrypt.hash(NEW_PASSWORD, salts).catch(err=>err);
-        
+
         let pass_hash = await bcrpP;
         let userR = await userG.set({forget_code: RESET_CODE}, {$set: {pass_hash}}).catch(err=>err);
         
