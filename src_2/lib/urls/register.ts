@@ -333,7 +333,7 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
                 });
         }
             
-        return this.end(rest, {success: true, data: {user_exists: userE.success}});
+        return this.end(rest, {success: true, data: {user_exists: !!(userE.success && userE.data && userE.data[0])}});
     }
 }
 
