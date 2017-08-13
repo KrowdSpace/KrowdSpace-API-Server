@@ -308,14 +308,18 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
         } = data;
         
         EMAIL = EMAIL.toLowerCase();
-        let userG = this.dataG["users_getter"];
 
+        let userG = this.dataG["users_getter"];
         let userE = await userG.get({email: EMAIL}).catch(err=>err);
+
+        let resO : any = {};
 
         if(userE.success && userE.data && userE.data[0])
         {
             let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
             let userR = await userG.set({_id: userE.data[0]._id}, {$set: {forget_code: resetCode} }).catch(err=>err);
+
+            resO.userR = userR;
 
             if(userR.success)
                 mailer({
@@ -333,7 +337,7 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
                 });
         }
             
-        return this.end(rest, {success: true, data: {user_exists: !!(userE.success && userE.data && userE.data[0])}});
+        return this.end(rest, {success: true, data: {resO, user_exists: !!(userE.success && userE.data && userE.data[0])}});
     }
 }
 
