@@ -315,7 +315,7 @@ export class RequestResetPasswordURL extends RestURL implements RestURL
         if(userE.success && userE.data && userE.data[0])
         {
             let resetCode = crypto.randomBytes(20).toString('base64').split('').slice(0,20).join('').replace(/[^A-Za-z0-9]/g, "");
-            let userR = await userG.set({email: EMAIL}, {$set:{forget_code: resetCode}}).catch(err=>err);
+            let userR = await userG.set({_id: userE.data[0]._id}, {$set: {forget_code: resetCode} }).catch(err=>err);
 
             if(userR.success)
                 mailer({
