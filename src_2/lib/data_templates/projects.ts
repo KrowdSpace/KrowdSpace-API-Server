@@ -60,7 +60,7 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
         {
             id = this.escape(id);
 
-            this.delete({id: id, unique_id: id}, (err, res, f)=>
+            this.delete(id, (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true, data: res});
