@@ -70,7 +70,7 @@ export class LoginURL extends RestURL implements RestURL
         let sessR;
 
         if(sessE.success && sessE.data && sessE.data[0])
-            sessR = await sessG.set({ $or:[ {username: username }, {email: username} ]}, {$set:{session_id: sess_id}}).catch(err=>err);
+            sessR = await sessG.set({ $or:[ {username: username }, {email: username} ]}, {session_id: sess_id}).catch(err=>err);
         else
             sessR = await sessG.add({ session_id: sess_id, email: user.email, username: user.username, last_ip: '127.0.0.1'}).catch(err=>err);
     
