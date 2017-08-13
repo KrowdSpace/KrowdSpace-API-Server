@@ -169,9 +169,50 @@ export class ExploreProjectsURL extends RestURL implements RestURL
     }
 }
 
+export class DeleteProjectURL extends RestURL implements RestURL 
+{
+    public static url = "/v1/projects/delete";
+    public static type = "post";
+    public reqs = RestURL.reqs.dataReq;
+
+    public async onLoad(rest, data, cooks)
+    {
+        let {
+            UNIQUE_ID: unique_id
+        } = data;
+
+        let projG = this.dataG["projects_getter"],
+            sessG = this.dataG["sessions_getter"];
+
+        if(!cooks['ks-session'])
+            return this.end(rest, {success: false, data:{ not_authorized: true }});
+        
+        let sessR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
+
+        if(!sessR.success || !sessR.data || !sessR.data[0])
+            return this.end(rest, {success: false, data: {not_authorized: true}});
+
+        if(!unique_id)
+            return this.end(rest, {success: false, data: {bad_post_data: true}});
+        
+        let projO = await projG.get({unique_id: unique_id}).catch(err=>err);
+
+        if(!projO.success || !projO.data || !projO.data[0] || projO.data[0].owner != sessR.data[0].username)
+            return this.end(rest, {success: false, data: {not_authorized: true}});
+        
+        let projR = await projG.rid({unique_id}).catch(err=>err);
+
+        if(!projR.success || !projR.data || !projR.data[0])
+            return this.end(rest, {success: false, data:{ not_found: true }});
+        else
+            return this.end(rest, {success: true});
+    }
+}
+
 export default [
     ProjectURL,
     SetProjectURL,
     UpdateProjectURL,
     ExploreProjectsURL,
+    DeleteProjectURL
 ];
