@@ -138,29 +138,48 @@ export class ExploreProjectsURL extends RestURL implements RestURL
     public async onLoad(rest, data, cooks)
     {
         let {
-            LIMIT: limit,
-            TITLE: title,
-            OWNER: owner,
-            CATEGORY: cat,
-            AGE: age,
-            ENDTIME: endtime,
+            LIMIT: limit = 100,
+            TITLE: title = "",
+            OWNER: owner = "",
+            CATEGORY: cat = "",
+            AGE: age = 0,
+            ENDTIME: endtime = 0,
+            ORDER: order = null
         } = data;
 
         let projG = this.dataG["projects_getter"];
 
-        let projR;
+        let getO = {};
 
-        if(limit && !title && !owner && !cat && !age && !endtime)
+        if(title || owner || cat || age || endtime)
         {
-            projR = await projG.get({}).catch(err=>err);
+            let o = getO['$or'] = [];
+            
+            if(title)
+                o.push({title});
+
+            if(owner)
+                o.push({owner});
+
+            if(cat)
+                o.push({'project_data.info_data.category': cat});
         }
-        else
+
+        if(order)
         {
-            projR = await projG.get({'$or':[
-                {owner}, 
-                {'project_data.info_data.category': cat}
-            ]}).catch(err=>err);
+            let ordO : any = {};
+
+            switch(order)
+            {
+                case 'age':
+                    ordO.date_added = -1;
+                break;
+            }
+
+            getO["$orderby"] = ordO;
         }
+
+        let projR = await projG.get(getO).catch(err=>err);
 
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{none_found: true}});
