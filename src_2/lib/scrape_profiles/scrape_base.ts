@@ -22,8 +22,6 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
         }
     };
 
-    console.log(p, p.project_data.info_data.url);
-
     let scrapeProfile, metaFunc;
 
     switch(p.platform)
