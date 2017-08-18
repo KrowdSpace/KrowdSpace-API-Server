@@ -60,7 +60,14 @@ export async function metaDataFunc(wd: any)
             //retO.fundingTest = fund.split( /(\$|\€|MX\$)/g ).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
 
             retO.raised = +wd.stats['data-pledged'];
+
+            if(Number.isNaN(retO.raised))
+                    retO.raised = 0;
+
             retO.raisedPercent = +wd.stats['data-percent-raised'];
+
+            if(Number.isNaN(retO.raisedPercent))
+                    retO.raisedPercent = 0;
 
             retO.duration = wd.hours['data-duration'];
             retO.endTime = wd.hours['data-end_time'];
