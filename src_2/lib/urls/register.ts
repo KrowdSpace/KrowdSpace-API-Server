@@ -158,23 +158,17 @@ export class RegisterUserURL extends RestURL implements RestURL
                 mailer({
                     from: 'no-reply@krowdspace.com',
                     to: email,
-                    subject: "Verify KrowdSpace Email",
+                    subject: "Verify Krowdspace Email",
                     html: 
-                        `Heya, ${fname}! <br>
+                        `Hi ${ fname }!
                         <br>
-                        Please Click 
-                            <a href="${verify_url}">
-                                Here
-                            </a>
-                        to confirm this email for your KrowdSpace Account!
+                        <a href=“${ verify_url }“>Please click here to confirm this email address for your Krowdspace account!</a>
                         <br>
+                        If the the above link does not work correctly in your email viewer please use the below URL:
                         <br>
-                        (Here's the URL if the the 'Here' link does not work correctly in your email viewer:
+                        ${verify_url}
                         <br>
-                            ${verify_url}
-                        <br>
-                        <br>
-                        - The KrowdSpace Team`,
+                        - The Krowdspace Team`,
                 });
                 
 
@@ -257,7 +251,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
                     category: cat,
                     reward,
                     reward_value: rewardVal,
-                    reward_ammount: rewardAmm,
+                    reward_ammount: parseFloat(rewardAmm),
                     ig_reward: igrew || null,
 
                     featured: false,

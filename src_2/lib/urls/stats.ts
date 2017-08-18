@@ -24,7 +24,13 @@ export class StatsURL extends RestURL implements RestURL
         
         let projG = <extras.mongodb_extra.MongoDBDataGetter> this.dataG['projects_getter'];
 
-        let pCount = await projG.collection.count({});
+        let pKSC = projG.collection.count({platform:"kickstarter"});
+        let pIDC = projG.collection.count({platform:"indiegogo"});
+        let tC = projG.collection.count({});
+
+        let ksC = await pKSC,
+            idC = await pIDC,
+            tc = await tC;
 
         let projR = await projG.agg([
             {$match: {}},
@@ -35,9 +41,9 @@ export class StatsURL extends RestURL implements RestURL
             }, }
         ]);
         
-        totalProjects = pCount;
+        totalProjects = tc;
 
-        this.end(rest, {success: true, data: { totalProjects, platforms: [...projR.data]} });
+        this.end(rest, {success: true, data: { totalProjects, ksTotal: ksC, igTotal: idC, platforms: [...projR.data]} });
     }
 }
 
