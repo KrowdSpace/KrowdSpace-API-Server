@@ -59,6 +59,9 @@ export async function UpdateProject(pID: string, projG: DataGetter, apiK: string
 
     if(p.platform === 'indiegogo')
         setObj.project_data.info_data = { url: setObj.project_data.meta_data.jsonReply.response.web_url };
+
+    if(!setObj.project_data.meta_data.title)
+        return {success: false};
             
     let psR = await projG.set({ _id: p._id }, setObj).catch(err=>err);
     

@@ -279,7 +279,11 @@ export class RegisterProjectURL extends RestURL implements RestURL
         let updateP = await scraper.UpdateProject(unique_id, projG, apiK).catch( err=>err );
 
         if(!updateP.success)
+        {
+            projG.rid({unique_id}).catch(err=>console.log(err));
             return this.end(rest, {success: false, data: {server_error: true, update_project_failed: updateP}});
+        }
+            
 
         let usrU = await userG.set({_id: sessR.data[0]._id}, {level:'PO'} ).catch(err=>err);
 
