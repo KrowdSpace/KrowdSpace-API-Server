@@ -240,6 +240,7 @@ export class RegisterProjectURL extends RestURL implements RestURL
 
         let newPrData = {
             unique_id,
+            date_added: new Date(),
             owner: sessR.data[0].username,
             name: "",
             platform: (dUrl === 'https://www.kickstarter.com/') ? 'kickstarter' : 'indiegogo',
