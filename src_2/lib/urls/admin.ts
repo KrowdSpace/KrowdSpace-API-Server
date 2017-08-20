@@ -87,6 +87,8 @@ export class GetCommentsURL extends RestURL implements RestURL
             PROJECTS: projects
         } = data;
 
+
+
         let sessG = this.dataG["sessions_getter"],
             userG = this.dataG["users_getter"];
 
@@ -103,7 +105,6 @@ export class GetCommentsURL extends RestURL implements RestURL
 
         let userR = await userG.get({username: sessR.data[0].username}).catch(err=>err);
 
-
         if(!userR.success || !userR.data || !userR.data[0])
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
@@ -111,6 +112,9 @@ export class GetCommentsURL extends RestURL implements RestURL
 
         if(user.level < UserLevel.Administrator)
             return this.end(rest, {success: false, data: {not_authorized: true}});
+
+
+
 
         let comments = contG.get({});
 
@@ -120,4 +124,5 @@ export class GetCommentsURL extends RestURL implements RestURL
 
 export default [
     AdminSubmitURL,
+    GetCommentsURL,
 ];
