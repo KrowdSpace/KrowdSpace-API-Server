@@ -20,9 +20,9 @@ export class StatsURL extends RestURL implements RestURL
             totalRewards = 0,
             totalRaised = 0;
         
-        extras.mongodb_extra.MongoDBDataGetter;
-        
         let projG = <extras.mongodb_extra.MongoDBDataGetter> this.dataG['projects_getter'];
+
+        let rid = await projG.get({none: false});
 
         let pKSC = projG.collection.count({platform:"kickstarter"});
         let pIDC = projG.collection.count({platform:"indiegogo"});
