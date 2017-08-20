@@ -25,7 +25,7 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
         return new Promise((resolve, reject)=>
         {
             data = this.escape(data);
-            this.select('*', data, " OR " , (err, res, f)=>
+            this.select('*', {}, " OR " , (err, res, f)=>
             {
                 console.log("Comments Error: ", err);
                 
