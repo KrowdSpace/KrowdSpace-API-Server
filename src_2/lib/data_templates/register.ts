@@ -25,15 +25,18 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
         return new Promise((resolve, reject)=>
         {
             data = this.escape(data);
-            this.select('*', data, void 0, (err, res)=>
+            this.select('*', data, " OR " , (err, res, f)=>
             {
                 if(!err)
                     res.toArray((resA)=>
                     {
+                        if(!resA)
+                            console.log("Screwup in array function!");
+                        
                         resolve({success: true, data: resA});
                     });
                 else
-                    reject({success: true, data: err});
+                    reject({success: false, data: err});
             })
         });
     }
