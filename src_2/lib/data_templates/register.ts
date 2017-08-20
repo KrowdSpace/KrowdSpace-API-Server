@@ -27,14 +27,17 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
             data = this.escape(data);
             this.select('*', data, " OR " , (err, res, f)=>
             {
+                console.log("Comments Error: ", err);
+                
                 if(!err)
                     res.toArray((resA)=>
                     {
                         if(!resA)
                             console.log("Screwup in array function!");
-                        
+
                         resolve({success: true, data: resA});
                     });
+
                 else
                     reject({success: false, data: err});
             })
