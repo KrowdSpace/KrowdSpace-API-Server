@@ -25,17 +25,12 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
         return new Promise((resolve, reject)=>
         {
             data = this.escape(data);
-            this.select('*', {}, " OR " , (err, res, f)=>
-            {
-                console.log("Comments Error: ", err);
-                
+            this.select('*', data, " OR " , (err, res, f)=>
+            {   
                 if(!err)
-                    res.toArray((resA)=>
+                    res.toArray((err, resA)=>
                     {
-                        if(!resA)
-                            console.log("Screwup in array function!");
-
-                        resolve({success: true, data: res});
+                        resolve({success: true, data: resA});
                     });
 
                 else
