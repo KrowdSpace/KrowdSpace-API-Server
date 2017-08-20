@@ -40,6 +40,9 @@ export class StatsURL extends RestURL implements RestURL
                 rewardAmmount: { $sum: "$project_data.info_data.reward_ammount" }
             }, }
         ]);
+
+        if(projR.data && !projR.data[0])
+            projR.data = [{raisedAmount: 0, rewardAmmount: 0},{raisedAmount: 0, rewardAmmount: 0}];
         
         totalProjects = tc;
 
