@@ -107,10 +107,10 @@ export class GetCommentsURL extends RestURL implements RestURL
         if(user.level < UserLevel.Administrator)
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
+        let comments = await contG.get({}).catch(err=>err);
 
-
-
-        let comments = contG.get({});
+        if(!comments.success || !comments.data || !comments.data[0])
+            return this.end(rest, {success: false, data:{error_getting_comments: true}});
 
         return this.end(rest, {success: true, data: comments});
     }
