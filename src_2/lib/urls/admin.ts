@@ -50,7 +50,7 @@ export class AdminSubmitURL extends RestURL implements RestURL
             let projectID = proj.projectId;
             let rewardStat = proj.rewardStatus;
 
-            let featureedCheck = proj.featureedCheck && proj.featureedCheck == "on";
+            let featuredCheck = proj.featuredCheck && proj.featuredCheck == "on";
             let exploreCheck = proj.exploreCheck && proj.exploreCheck == "on";
             let landingCheck = proj.landingCheck && proj.landingCheck == "on";
             let socialCheck = proj.socialCheck && proj.socialCheck == "on";
@@ -59,7 +59,7 @@ export class AdminSubmitURL extends RestURL implements RestURL
                 {
                     project_data: {
                         info_data: {
-                            featured: featureedCheck,
+                            featured: featuredCheck,
                             explore: exploreCheck,
                             landing: landingCheck,
                             social: socialCheck,
