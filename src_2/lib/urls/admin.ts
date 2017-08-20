@@ -48,7 +48,7 @@ export class AdminSubmitURL extends RestURL implements RestURL
         for(let proj of projects)
         {
             let projectID = proj.projectId;
-            let rewardStat = proj.RewardStatus;
+            let rewardStat = proj.rewardStatus;
 
             let featureedCheck = proj.featureedCheck && proj.featureedCheck == "on";
             let exploreCheck = proj.exploreCheck && proj.exploreCheck == "on";
