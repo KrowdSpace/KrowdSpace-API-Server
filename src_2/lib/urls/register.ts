@@ -142,7 +142,8 @@ export class RegisterUserURL extends RestURL implements RestURL
                 user_data,
                 verified: false,
                 verify_code,
-                forget_code: ""
+                forget_code: "",
+                level: UserLevel.User
             };
 
             let usrAddP = userG.add(userO).catch(err=>err);
@@ -377,8 +378,19 @@ export default [
     ResetPasswordURL,
 ];
 
-const RewardStatus = {
+export const RewardStatus = 
+{
     "Pending": 0,
     "Approved": 1,
-    "Denied": 2
+    "Denied": 2,
+    "Expired": 3
+};
+
+export const UserLevel =
+{
+    "User": 0,
+    "ProjectOwner": 1,
+    "Moderator": 2,
+    "Administrator": 4,
+    "Otter": 5
 };
