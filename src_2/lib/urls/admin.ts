@@ -109,7 +109,7 @@ export class GetCommentsURL extends RestURL implements RestURL
 
 
 
-        let comments = await contG.get({}).catch(err=>err);
+        let comments = await contG.get({fname: {$exists: true}}).catch(err=>err);
 
         if(!comments.success || !comments.data || !comments.data[0])
             return this.end(rest, {success: false, data:{error_getting_comments: true, err: comments}});
