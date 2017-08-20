@@ -123,7 +123,7 @@ export class RegisterUserURL extends RestURL implements RestURL
         let unique_id = crypto.randomBytes(10).toString('base64').replace(/[^A-Za-z0-9]/g, "");
 
         let bcrpP = bcrypt.hash(password, salts).catch(err=>err),
-            usrChkP = userG.get({username, email}).catch(err=>err);
+            usrChkP = userG.get({ "$or": [{username}, {email}] }).catch(err=>err);
 
         let pass_hash = await bcrpP,
             userExists = await usrChkP;
