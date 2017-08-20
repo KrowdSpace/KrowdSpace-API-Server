@@ -19,6 +19,21 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
             });
         });
     }
+
+    public get(data: any) : Promise<DataResponse>
+    {
+        return new Promise((resolve, reject)=>
+        {
+            data = this.escape(data);
+            this.select('*', data, void 0, (err, res)=>
+            {
+                if(!err)
+                    resolve({success: true, data: res});
+                else
+                    reject({success: true, data: err});
+            })
+        });
+    }
 }
 
 export class EmailListGetter extends extras.mongodb_extra.MongoDBDataGetter
