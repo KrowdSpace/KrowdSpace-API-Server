@@ -35,7 +35,7 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
                         if(!resA)
                             console.log("Screwup in array function!");
 
-                        resolve({success: true, data: resA});
+                        resolve({success: true, data: res});
                     });
 
                 else
