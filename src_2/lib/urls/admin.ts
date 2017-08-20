@@ -83,12 +83,6 @@ export class GetCommentsURL extends RestURL implements RestURL
 
     public async onLoad(rest, data, cooks)
     {
-        let {
-            PROJECTS: projects
-        } = data;
-
-
-
         let sessG = this.dataG["sessions_getter"],
             userG = this.dataG["users_getter"];
 

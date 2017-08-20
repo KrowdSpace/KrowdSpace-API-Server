@@ -28,7 +28,10 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.select('*', data, void 0, (err, res)=>
             {
                 if(!err)
-                    resolve({success: true, data: res});
+                    res.toArray((resA)=>
+                    {
+                        resolve({success: true, data: resA});
+                    });
                 else
                     reject({success: true, data: err});
             })
