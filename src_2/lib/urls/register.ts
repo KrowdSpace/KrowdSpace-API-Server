@@ -284,9 +284,15 @@ export class RegisterProjectURL extends RestURL implements RestURL
             projG.rid({unique_id}).catch(err=>console.log(err));
             return this.end(rest, {success: false, data: {server_error: true, update_project_failed: updateP}});
         }
-            
 
-        let usrU = await userG.set({_id: sessR.data[0]._id}, {level:'PO'} ).catch(err=>err);
+        let userR = await userG.get({username: sessR.data[0].username}).catch(err=>err);
+
+        let newLevel = UserLevel.ProjectOwner;
+
+        if(userR.success && userR.data && userR.data[0] && userR.data[0].level != UserLevel.User)
+            newLevel = userR.data[0].level;
+
+        let usrU = await userG.set({username: sessR.data[0].username}, {level: newLevel} ).catch(err=>err);
 
         if(!usrU.success)
             return this.end(rest, {success: false, data: {server_error: true, update_user_failed: true}});
