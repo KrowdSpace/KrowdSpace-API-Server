@@ -24,12 +24,15 @@ export class LoginURL extends RestURL implements RestURL
             LOGOUT: logout
         } = data;
 
+        if(!username || !password || username == "" || password == "")
+            return this.end(rest, {success: false, data: {bad_username: true}});
+
         username = username.toLowerCase();
 
         let userG = this.dataG["users_getter"],
             sessG = this.dataG["sessions_getter"];
 
-        if(cooks['ks-session'])
+        if(cooks['ks-session'] && !password && !username)
         {
             let loggedInR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
 
