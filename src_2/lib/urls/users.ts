@@ -24,9 +24,6 @@ export class LoginURL extends RestURL implements RestURL
             LOGOUT: logout
         } = data;
 
-        if(!username || !password || username == "" || password == "")
-            return this.end(rest, {success: false, data: {bad_username: true}});
-
         username = username.toLowerCase();
 
         let userG = this.dataG["users_getter"],
@@ -53,6 +50,20 @@ export class LoginURL extends RestURL implements RestURL
                     return this.end(rest, {success: true, data: {already_logged_in: true}});                        
             }
         }
+
+
+        // I'm feeling done with this stuff tonight
+        try
+        {
+            if(username == "" || password == "")
+                return this.end(rest, {success: false, data: {bad_username: true}});
+                
+        }
+        catch(e)
+        {
+            return this.end(rest, {success: false, data: {bad_username: true}});
+        }
+        
 
         let usrR = await userG.get( { '$or':[ {username}, {email: username} ] } ).catch(err=>err);
 
