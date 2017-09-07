@@ -2,6 +2,8 @@ import {extras, RestURL} from '@otter-co/ottlib';
 
 import {UpdateProject} from '../scrape_profiles/scrape_base';
 
+import {ProjectsGetter} from "../data_templates/projects";
+
 export class ProjectURL extends RestURL implements RestURL 
 {
     static url = "/v1/projects/projects";
@@ -147,8 +149,8 @@ export class ExploreProjectsURL extends RestURL implements RestURL
             ORDER: order = null
         } = data;
 
-        let projG = this.dataG["projects_getter"];
-
+        let projG = this.dataG["projects_getter"] as ProjectsGetter;
+        
         let getO = {};
 
         if(title || owner || cat || age || endtime)
@@ -179,7 +181,11 @@ export class ExploreProjectsURL extends RestURL implements RestURL
             getO["$orderby"] = ordO;
         }
 
-        let projR = await projG.get(getO).catch(err=>err);
+        let getFilter = {
+            "project_data.raw_web_data": 0
+        };
+
+        let projR = await projG.get(getO, getFilter).catch(err=>err);
 
         if(!projR.success || !projR.data || !projR.data[0])
             return this.end(rest, {success: false, data:{none_found: true}});

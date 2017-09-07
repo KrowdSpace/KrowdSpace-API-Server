@@ -34,13 +34,13 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
             });
         });
     }
-    public get(id: any): Promise<DataResponse>
+    public get(id: any, props: any = "*"): Promise<DataResponse>
     {
         return new Promise((resolve, reject)=>
         {
             id = this.escape(id);
             
-            this.select("*", id, " OR ", (err, res, f)=>
+            this.select(props, id, " OR ", (err, res, f)=>
             {
                 if(!err)
                     res.toArray((err, docs)=>
