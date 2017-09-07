@@ -34,7 +34,7 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
             });
         });
     }
-    public get(id: any, props: any = "*"): Promise<DataResponse>
+    public get(id: any, props: any = false): Promise<DataResponse>
     {
         return new Promise((resolve, reject)=>
         {

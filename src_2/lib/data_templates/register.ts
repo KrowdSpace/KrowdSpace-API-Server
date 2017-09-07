@@ -25,7 +25,7 @@ export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter
         return new Promise((resolve, reject)=>
         {
             data = this.escape(data);
-            this.select('*', data, " OR " , (err, res, f)=>
+            this.select(false, data, " OR " , (err, res, f)=>
             {   
                 if(!err)
                     res.toArray((err, resA)=>
@@ -74,7 +74,7 @@ export class EmailListGetter extends extras.mongodb_extra.MongoDBDataGetter
         return new Promise((resolve, reject)=>
         {
             let {email} = this.escape(data);
-            this.select("*", {email}, void 0, (err, res, f)=>
+            this.select(false, {email}, void 0, (err, res, f)=>
             {
                 if(!err)
                     resolve({success: true, data: res});

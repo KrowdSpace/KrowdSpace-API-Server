@@ -40,7 +40,7 @@ export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
         {
             data = this.escape(data);
 
-            this.select("*", data, " OR ", (err, res, f)=>
+            this.select(false, data, " OR ", (err, res, f)=>
             {
                 if(!err)
                     res.toArray((err, docs)=>
@@ -78,7 +78,7 @@ export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
         {
             data = this.escape(data);
 
-            this.select("*", data, " OR ", (err, res, f)=>
+            this.select(false, data, " OR ", (err, res, f)=>
             {
                 if(!err)
                     res.toArray((err, docs)=>
