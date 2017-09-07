@@ -182,7 +182,8 @@ export class ExploreProjectsURL extends RestURL implements RestURL
         }
 
         let getFilter = {
-            "project_data.raw_web_data": 0
+            "project_data.raw_web_data": 0,
+            "project_data.web_data": 0
         };
 
         let projR = await projG.get(getO, getFilter).catch(err=>err);
