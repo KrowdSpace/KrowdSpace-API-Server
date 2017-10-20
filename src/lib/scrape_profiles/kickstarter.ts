@@ -1,3 +1,9 @@
+/**
+ * scrape_profiles/kickstarter.ts
+ * 
+ * Contains the Scrape Profile for Kickstarter's WebSite
+ */
+
 import {ScrapeMetaData} from './scrape_base';
 
 export const pageIDs = {
@@ -57,8 +63,6 @@ export async function metaDataFunc(wd: any)
             retO.altImg = "kickstarter";
 
             retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU|HK|S)/g )[2];
-            //retO.fundingTest = fund.split( /(\$|\€|MX\$)/g ).filter( el => !(el.contains('MX$') || el.contains('$') || el.contains('€')) );
-
             retO.raised = +wd.stats['data-pledged'];
 
             if(Number.isNaN(retO.raised))
@@ -76,8 +80,6 @@ export async function metaDataFunc(wd: any)
         {
             console.log(e);
         }
-
-        
 
         return retO;
 };

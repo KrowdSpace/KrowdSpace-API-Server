@@ -1,3 +1,8 @@
+/**
+ * data_templates/users.ts
+ * 
+ * Contains the DataGetter for Adding/Getting Users from the DB.
+ */
 import {DataResponse, extras} from '@otter-co/ottlib';
 
 export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter

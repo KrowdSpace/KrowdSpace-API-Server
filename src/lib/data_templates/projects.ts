@@ -1,3 +1,8 @@
+/**
+ * data_templates/projects.ts
+ * 
+ * Contains the DataGetter for adding / getting Projects from the DB.
+ */
 import {DataResponse, extras} from "@otter-co/ottlib";
 
 export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter

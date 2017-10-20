@@ -1,3 +1,12 @@
+/**
+ * scrape_base.ts
+ * 
+ * Contains the somewhat convoluted code for reading a site profile, and scrapping from the given URL.
+ * TODO: Needs a bit of refactoring.
+ * 
+ * Also contains the base template for scraped data.
+ */
+
 import * as request from 'request-promise-native';
 import * as cheerio from 'cheerio';
 

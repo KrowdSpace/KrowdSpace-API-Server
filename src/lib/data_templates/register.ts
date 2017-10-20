@@ -1,3 +1,8 @@
+/**
+ * data_templates/register.ts
+ * 
+ * Contains the assorted templates for adding a 'Contact Us' message, and getting on the Mailing List.
+ */
 import {DataResponse, extras} from '@otter-co/ottlib';
 
 export class ContactUsGetter extends extras.mongodb_extra.MongoDBDataGetter

@@ -1,14 +1,24 @@
+/**
+ * urls/admin.ts
+ * 
+ * Contains some administrative API functions,
+ * Like mass editing projects.
+ */
+
 import {extras, RestURL} from '@otter-co/ottlib';
 import {UpdateProject} from '../scrape_profiles/scrape_base';
 
 import {RewardStatus, UserLevel} from './register';
 
+/**
+ * @class AdminSubmitURL - Admin URL Class
+ */
 export class AdminSubmitURL extends RestURL implements RestURL 
 {
     static url = "/v1/admin/submit";
     static type = "post";
     public reqs = RestURL.reqs.dataReq;
-
+    
     public async onLoad(rest, data, cooks)
     {
         let {

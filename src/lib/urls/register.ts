@@ -1,3 +1,15 @@
+/**
+ * urls/register.ts
+ * 
+ * Contains the URLS related to Registering:
+ * 
+ * Users,
+ * Projects,
+ * Contact Us Cards,
+ * Getting on the Email List
+ * 
+ */
+
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 

@@ -1,3 +1,9 @@
+/**
+ * urls/users.ts
+ * 
+ * Contains all the URLs for Logging Users in, and getting User Details.
+ */
+
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import {RestURL} from '@otter-co/ottlib';
@@ -40,10 +46,9 @@ export class LoginURL extends RestURL implements RestURL
                 if(logout)
                 {
                     let sessD = await sessG.rid({username: loggedInR.data[0].username});
+                    
                     if(sessD.success)
-                    {
                         return this.end(rest, {success: true, data: {logged_out: true}});
-                    }
                 }
 
                 if(!username || sessO.username == username || sessO.email == username)

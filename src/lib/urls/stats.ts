@@ -1,3 +1,9 @@
+/**
+ * urls/stats.ts
+ * 
+ * Contains the URLs for getting stats on total projects / project value
+ */
+
 import {RestURL, safeJSON} from '@otter-co/ottlib';
 import * as superE from '@otter-co/ottlib';
 

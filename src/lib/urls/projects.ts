@@ -1,8 +1,13 @@
+/**
+ * urls/projects.ts
+ * 
+ * Contains the URLS relating to Adding / Getting profiles for the Web API
+ */
+
 import {extras, RestURL} from '@otter-co/ottlib';
-
 import {UpdateProject} from '../scrape_profiles/scrape_base';
-
 import {ProjectsGetter} from "../data_templates/projects";
+
 
 export class ProjectURL extends RestURL implements RestURL 
 {

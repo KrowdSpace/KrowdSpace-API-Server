@@ -1,67 +1,16 @@
+/**
+ * scrape_profiles/indiegogo.ts
+ * 
+ * Contains the Scrape Profile for IndieGogo,
+ * But really its a hack around my own API for accesing the ig data API.
+ */
+
 import {ScrapeMetaData} from './scrape_base';
 
 import * as request from 'request-promise-native';
 import {safeJSON} from '@otter-co/ottlib';
 
 export const pageIDs = Object.create(null);
-// {
-//         title: [
-//             'meta[property="og:title"]',
-
-//             'content'
-//         ]
-    //     description: [
-    //         'meta[name="description"]',
-
-    //         'content'
-    //     ],
-    //     projectID:
-    //     [
-    //         'meta[name="sailthru.project_id"]',
-
-    //         'content'
-    //     ],
-
-    //     content: [
-    //         'ui-view',
-
-    //         'text',
-    //         'html'
-    //     ],
-    //     stats: [
-    //         'span.campaignGoalProgress-raisedAmount',
-
-    //         'text',
-    //         'html'
-    //     ],
-    //     percentRaised: [
-    //         'meta[name="sailthru.pct_funded"]',
-
-    //         'content'
-    //     ],
-    //     mainImg: [
-    //         'meta[property="og:image"]',
-
-    //         'content'
-    //     ],
-    //     hours: [
-    //         'meta[name="sailthru.displayed_days_left"]',
- 
-    //         'content'
-    //     ],
-    //     endTime: 
-    //     [
-    //         'meta[name="sailthru.date"]',
- 
-    //         'content'
-    //     ],
-    //     funding: [
-    //         'div.campaignGoalProgress-detailsGoal div.ng-binding',
-
-    //         'text',
-    //     ]
-    // };
-
 export async function metaDataFunc(wd: any, rawWD: string)
 {
     let retO : any = {};
