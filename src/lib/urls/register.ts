@@ -25,6 +25,7 @@ import * as scraper from '../scrape_profiles/scrape_base';
 import * as ksData from '../scrape_profiles/kickstarter';
 import * as igData from '../scrape_profiles/indiegogo';
 
+// Emailer
 const mailer = sendMail({silent: true});
 
 export class ContactUsURL extends RestURL implements RestURL
