@@ -9,13 +9,10 @@
   },
   "main": "bin/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "install": "npm run build2",
+    "install": "npm run build",
     "start": "node .",
-    "buildwatch": "babel --watch src/ -d bin/ --source-maps",
-    "buildwatch2": "tsc -w -p ./",
-    "build": "babel src/ -d bin/ --source-maps",
-    "build2": "tsc -p ./",
+    "buildwatch": "tsc -w -p ./",
+    "build": "tsc -p ./",
     "runon": "forever start ./bin/index.js",
     "runoff": "forever stop ./bin/index.js"
   },

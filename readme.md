@@ -1,6 +1,6 @@
 ## KrowdSpace API Server
 
-**Please note:** The KrowdSpace API Server is written in ES6 and (for now) requires building with Babel to run in a NodeJS environment!
+**Please note:** The KrowdSpace API Server is written in TypeScript!
 ___
 This is KrowdSpace API Server software that powers KrowdSpaces Backend Utilities!
 
@@ -9,13 +9,9 @@ This is KrowdSpace API Server software that powers KrowdSpaces Backend Utilities
 **Building**
 ___
 
-To Build, please CD into the Parent Dir, and run;
+To Build, please CD into the Server Software dir, and run;
 
 `npm install`
-
-`npm run build`
-
-There should now be a 'bin' Dir under the parent, this contains the output runnable code!
 
 **Running**
 ___
