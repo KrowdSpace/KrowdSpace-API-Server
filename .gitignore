@@ -3,6 +3,7 @@ node_modules/
 bin/
 .vscode/
 logs/
+conf/
 
 */sec/
 */sec/*
