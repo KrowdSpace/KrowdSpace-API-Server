@@ -26,7 +26,7 @@ export class ProjectPurchaseURL extends RestURL implements RestURL
             return this._stripeObj;
         else
         {
-            var s = new stripe((this.cfg.stripe && this.cfg.stripe.key) || "sk_test_mM7htHAsrWT4CYhst6wDuMr4");
+            var s = new stripe((this.cfg.stripe && this.cfg.stripe.key) || "sk_test_BQokikJOvBiI2HlWgH4olfQ2");
             this._stripeObj = s;
 
             return s;
