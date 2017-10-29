@@ -17,9 +17,9 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.aggregate(data, (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res})
+                    resolve(<DataResponse>{success: true, data: res})
                 else
-                    reject({success: false, data: err});
+                    reject(<DataResponse>{success: false, data: err});
             });
         });
     }
@@ -33,9 +33,9 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.insert(data, (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res});
+                    resolve(<DataResponse>{success: true, data: res});
                 else
-                    reject({success: false, data: err});
+                    reject(<DataResponse>{success: false, data: err});
             });
         });
     }
@@ -50,10 +50,10 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
                 if(!err)
                     res.toArray((err, docs)=>
                     {
-                        resolve({success: true, data: docs});
+                        resolve(<DataResponse>{success: true, data: docs});
                     });
                 else
-                    reject({success: false, data: err});
+                    reject(<DataResponse>{success: false, data: err});
             });
         });
     }
@@ -67,9 +67,9 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.update(data, id, void 0, (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res});
+                    resolve(<DataResponse>{success: true, data: res});
                 else
-                    reject({success: false, data: err});
+                    reject(<DataResponse>{success: false, data: err});
             });
         });
     }
@@ -82,9 +82,9 @@ export class ProjectsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.delete(id, (err, res, f)=>
             {
                 if(!err)
-                    resolve({success: true, data: res});
+                    resolve(<DataResponse>{success: true, data: res});
                 else
-                    reject({success: true, data: err});
+                    reject(<DataResponse>{success: true, data: err});
                 
             });
         });
