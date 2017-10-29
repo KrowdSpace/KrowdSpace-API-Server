@@ -5,19 +5,6 @@
  */
 import {DataResponse, extras} from '@otter-co/ottlib';
 
-export interface UserObj 
-{
-    username: String,
-    unique_id: String, 
-    email: String,
-    pass_hash: String, 
-    user_data: any,
-    verified: false,
-    verify_code: string,
-    forget_code: string,
-    level: Number
-};
-
 export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
 {
     public serviceName: string = "users_getter";
@@ -30,9 +17,9 @@ export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.insert(this.escape(data), (err, res, f)=>
             {
                 if(!err)
-                    resolve(<DataResponse> {success: true});
+                    resolve({success: true});
                 else
-                    reject(<DataResponse> {success: false, data: err});
+                    reject({success: false, data: err});
             });
         });
     }
@@ -46,9 +33,9 @@ export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.update(data, id, void 0, (err, res, f)=>
             {
                 if(!err)
-                    resolve(<DataResponse> {success: true, data: res});
+                    resolve({success: true, data: res});
                 else
-                    reject(<DataResponse> {success: false, data: err});
+                    reject({success: false, data: err});
             });
         });
     }
@@ -61,12 +48,12 @@ export class UsersGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.select(false, data, " OR ", (err, res, f)=>
             {
                 if(!err)
-                    res.toArray((err, docs:UserObj[])=>
+                    res.toArray((err, docs)=>
                     {
-                        resolve(<DataResponse> {success: true, data: docs});
+                        resolve({success: true, data: docs});
                     });
                 else
-                    reject(<DataResponse> {success: false, data: err});
+                    reject({success: false, data: err});
             });
         });
     }
@@ -84,9 +71,9 @@ export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.insert(this.escape(data), (err, res, f)=>
             {
                 if(!err)
-                    resolve(<DataResponse> {success: true});
+                    resolve({success: true});
                 else
-                    reject(<DataResponse> {success: false, data: err});
+                    reject({success: false, data: err});
             });
         });
     }
@@ -101,10 +88,10 @@ export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
                 if(!err)
                     res.toArray((err, docs)=>
                     {
-                        resolve(<DataResponse> {success: true, data: <UserGet[]> docs});
+                        resolve({success: true, data: docs});
                     });
                 else
-                    reject(<DataResponse> {success: false, data: err});
+                    reject({success: false, data: err});
             });
         });
     }
@@ -118,9 +105,9 @@ export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.update(data, id, undefined, (err, res, f)=>
             {
                 if(!err)
-                    resolve(<DataResponse> {success: true, data: res});
+                    resolve({success: true, data: res});
                 else
-                    reject(<DataResponse> {success: false, data: err});
+                    reject({success: false, data: err});
             });
         });
     }
@@ -133,9 +120,9 @@ export class SessionsGetter extends extras.mongodb_extra.MongoDBDataGetter
             this.delete(data, (err, res, f)=>
             {
                 if(!err)
-                    resolve(<DataResponse> {success: true});
+                    resolve({success: true});
                 else
-                    reject(<DataResponse> {success: false, data: err});
+                    reject({success: false, data: err});
             });
         });
     }

@@ -86,61 +86,6 @@ export class AdminSubmitURL extends RestURL implements RestURL
     }
 }
 
-export class AdminDeleteProjects extends RestURL implements RestURL 
-{
-    static url = "/v1/admin/delete";
-    static type = "post";
-    public reqs = RestURL.reqs.dataReq;
-    
-    public async onLoad(rest, data, cooks)
-    {
-        let {
-            PROJECTS: projects
-        } = data;
-
-        let projG = this.dataG["projects_getter"],
-            sessG = this.dataG["sessions_getter"],
-            userG = this.dataG["users_getter"];
-
-        if(!cooks['ks-session'])
-            return this.end(rest, {success: false, data: {not_authorized: true}});
-
-        let sessR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
-
-
-        if(!sessR.success || !sessR.data || !sessR.data[0])
-            return this.end(rest, {success: false, data: {not_authorized: true}});
-
-        let userR = await userG.get({username: sessR.data[0].username}).catch(err=>err);
-
-
-        if(!userR.success || !userR.data || !userR.data[0])
-            return this.end(rest, {success: false, data: {not_authorized: true}});
-
-        let user = userR.data[0];
-
-        if(user.level < UserLevel.Administrator)
-            return this.end(rest, {success: false, data: {not_authorized: true}});
-
-        if(!Array.isArray(projects))
-            return this.end(rest, {success: false, data: {invalid_data: true}});
-
-        let retO = {};
-
-        for(let proj of projects)
-        {
-            let projectID = proj.projectId;
-
-            let delRes = await projG.rid({unique_id: projectID}).catch(err=>err);
-
-            if(delRes.success)
-                    retO[projectID] = true;
-        }
-
-        return this.end(rest, {success: true, data: retO});
-    }
-}
-
 export class GetCommentsURL extends RestURL implements RestURL 
 {
     static url = "/v1/admin/comments";

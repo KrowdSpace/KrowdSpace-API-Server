@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@otter-co/ottlib": "^0.2.11",
-    "@types/stripe": "^4.7.0",
     "bcrypt": "^1.0.2",
     "cheerio": "^0.22.0",
     "colors": "^1.1.2",
@@ -35,7 +34,6 @@
     "request-promise-native": "^1.0.4",
     "restify": "^4.3.0",
     "restify-cookies": "^0.2.2",
-    "sendmail": "^1.1.1",
-    "stripe": "^5.2.0"
+    "sendmail": "^1.1.1"
   }
 }

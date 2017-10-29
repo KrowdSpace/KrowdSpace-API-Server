@@ -62,7 +62,7 @@ export async function metaDataFunc(wd: any)
             retO.mainImg = wd.mainImg.content;
             retO.altImg = "kickstarter";
 
-            retO.funding = wd.funding.text.split( /(\$|\€|\£|\¥|MX\$|CA|AU|HK|S)/g )[2];
+            retO.funding = wd.funding.text.split( /(\$|\€|\£|MX\$|CA|AU|HK|S)/g )[2];
             retO.raised = +wd.stats['data-pledged'];
 
             if(Number.isNaN(retO.raised))

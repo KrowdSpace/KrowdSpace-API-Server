@@ -9,8 +9,6 @@ import users from './users';
 import projects from './projects';
 import stats from './stats';
 
-import purchase from './purchase';
-
 import admin from './admin';
 
 export default [
@@ -18,6 +16,5 @@ export default [
     ...users,
     ...projects,
     ...stats,
-    ...purchase,
     ...admin,
 ];

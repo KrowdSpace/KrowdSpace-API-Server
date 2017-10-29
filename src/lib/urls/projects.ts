@@ -4,7 +4,7 @@
  * Contains the URLS relating to Adding / Getting profiles for the Web API
  */
 
-import {extras, RestURL, DataResponse} from '@otter-co/ottlib';
+import {extras, RestURL} from '@otter-co/ottlib';
 import {UpdateProject} from '../scrape_profiles/scrape_base';
 import {ProjectsGetter} from "../data_templates/projects";
 
@@ -107,7 +107,7 @@ export class UpdateProjectURL extends RestURL implements RestURL
         if(!cooks['ks-session'])
             return this.end(rest, {success: false, data: {not_authorized: true}});
 
-        let sessR = await sessG.get({session_id: cooks['ks-session']}).catch(err=><DataResponse>err);
+        let sessR = await sessG.get({session_id: cooks['ks-session']}).catch(err=>err);
 
         if(!sessR.success || !sessR.data || !sessR.data[0])
             return this.end(rest, {success: false, data: {not_authorized: true}});
