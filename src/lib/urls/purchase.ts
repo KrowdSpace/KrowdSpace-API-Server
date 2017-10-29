@@ -39,10 +39,7 @@ export class ProjectPurchaseURL extends RestURL implements RestURL
             token,
             project: projectID,
             type
-        } = data;
-
-        if(token == undefined || projectID == undefined || type == undefined)
-            return this.end(rest, {success: false, data: {bad_post: true}});
+        } = data.DATA;
 
         let projG = this.dataG["projects_getter"],
             sessG = this.dataG["sessions_getter"];
