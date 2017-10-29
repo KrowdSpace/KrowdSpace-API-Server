@@ -39,7 +39,7 @@ export class ProjectPurchaseURL extends RestURL implements RestURL
             token,
             project: projectID,
             type
-        } = data.DATA;
+        } = data.PURCHASE_DATA;
 
         let projG = this.dataG["projects_getter"],
             sessG = this.dataG["sessions_getter"];
