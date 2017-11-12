@@ -77,7 +77,7 @@ export class ProjectPurchaseURL extends RestURL implements RestURL
             charge = await s.charges.create({
                 amount: cost,
                 currency: 'usd',
-                source: token,
+                source: token.id,
             });
         }
         catch(err)
